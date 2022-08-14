@@ -4,6 +4,13 @@ import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'dart:math' as math;
 
+class Equations {
+  final String eq;
+  final String eqTitle;
+
+  const Equations({required this.eq, required this.eqTitle});
+}
+
 class DuctArea extends StatefulWidget {
   const DuctArea({Key? key}) : super(key: key);
 
@@ -12,6 +19,16 @@ class DuctArea extends StatefulWidget {
 }
 
 class _DuctAreaState extends State<DuctArea> {
+  List<Equations> eqs = [
+    const Equations(
+        eqTitle: 'Rectangle/Square Area', eq: r'Area = HT \times WD'),
+    const Equations(
+        eqTitle: 'Round Area', eq: r'Area = \pi\times(\frac{d}{2})^2'),
+    const Equations(
+        eqTitle: 'Flat Oval Area',
+        eq: r'Area = (HT\times(WD-HT)+(\pi\times(\frac{HT}{2})^2))')
+  ];
+
   final TextEditingController _rectWidthController = TextEditingController();
   final TextEditingController _rectHeightController = TextEditingController();
   final TextEditingController _rectCalcController = TextEditingController();
@@ -530,33 +547,100 @@ class _DuctAreaState extends State<DuctArea> {
   }
 
   Future openDialog() => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          backgroundColor: const Color(0xFF4f46e5 ),
-          content:
-        Math.tex(
-              r'TP(Pa) = SP + SP',
-              mathStyle: MathStyle.display,
-              textStyle: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      context: context,
+      builder: (BuildContext context) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            backgroundColor: Color(0xFF8b5cf6),
+            child: Container(
+              height: 350.0, // Change as per your requirement
+              width: 300.0, // Change as per your requirement
+              child: Center(
+                child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: eqs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final titles = eqs[index];
+                    return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                              titles.eqTitle,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Math.tex(
+                              titles.eq,
+                              mathStyle: MathStyle.display,
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ]);
+                  },
+                ),
               ),
             ),
-          actions: [
-            TextButton(
-              onPressed: submit,
-              child: const Text(
-                'Done',
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          ],
-        ),
-      );
+          ));
+
+  //   content: Container(
+  //   child: Center(
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(25.0),
+  //         border: Border.all(
+  //             color: Colors.white,
+  //           width: 4,
+  //         ),
+  //         color: const Color(0xFF4f46e5 ),
+  //
+  //       ),
+  //       child: PageView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //         itemCount: eqs.length,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           final formulas = eqs[index];
+  //
+  //           return Padding(
+  //             padding: const EdgeInsets.all(20.0),
+  //             child: Math.tex(
+  //                       formulas.eq,
+  //                       mathStyle: MathStyle.display,
+  //                       textStyle: const TextStyle(
+  //                         color: Colors.white,
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.bold,
+  //                       )
+  //             ),
+  //           );
+  //         }
+  //       ),
+  //     ),
+  //   ),
+  // ),
+  //
+  //     ),
+  //   actions: [
+  //     TextButton(
+  //       onPressed: submit,
+  //       child: const Text(
+  //         'Done',
+  //         style: TextStyle(color: Colors.white),
+  //       ),
+  //     )
+  //   ],
+
   void submit() {
     Navigator.of(context).pop();
   }
