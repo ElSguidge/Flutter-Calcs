@@ -1,0 +1,336 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_calcs/constants/constants.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
+
+class TotalPressure extends StatefulWidget {
+  const TotalPressure({Key? key}) : super(key: key);
+
+  @override
+  State<TotalPressure> createState() => _TotalPressureState();
+}
+
+class _TotalPressureState extends State<TotalPressure> {
+  final TextEditingController _firstController = TextEditingController();
+  final TextEditingController _secondController = TextEditingController();
+  final TextEditingController _thirdController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          '',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+          ),
+        ),
+        backgroundColor: const Color(0xFF111827),
+      ),
+      drawer: Drawer(
+        child: Container(
+          color: Colors.white,
+          child: ListView(
+            children: [
+              const DrawerHeader(
+                child: Center(
+                  child: Image(
+                    image: AssetImage('lib/icons/cropped-AGC_Logo_2022.png'),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
+                onTap: () {
+                  Navigator.pushNamed(context, homeRoute);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.build),
+                title: const Text('Install'),
+                onTap: () {
+                  Navigator.pushNamed(context, installHome);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.assignment_turned_in_sharp),
+                title: const Text('Commissioning'),
+                onTap: () {
+                  Navigator.pushNamed(context, commissioningHome);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: const Color(0xFF111827),
+      body: ListView(
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        children: <Widget>[
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
+                  child: MaterialButton(
+                    minWidth: 5,
+                    color: const Color(0xFF6d28d9),
+                    textColor: Colors.white,
+                    child: const Icon(Icons.home),
+                    onPressed: () =>
+                        {Navigator.pushNamed(context, commissioningHome)},
+                    splashColor: const Color(0xFFa78bfa),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                  child: MaterialButton(
+                    minWidth: 5,
+                    color: const Color(0xFF6d28d9),
+                    textColor: Colors.white,
+                    child: const Text('TAB'),
+                    onPressed: () =>
+                        {Navigator.pushNamed(context, calculators)},
+                    splashColor: const Color(0xFFa78bfa),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
+                  child: MaterialButton(
+                    minWidth: 5,
+                    color: const Color(0xFF6d28d9),
+                    textColor: Colors.white,
+                    child: const Text('Air'),
+                    onPressed: () => {Navigator.pushNamed(context, air)},
+                    splashColor: const Color(0xFFa78bfa),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
+                  child: MaterialButton(
+                    minWidth: 1,
+                    color: const Color(0xFF6d28d9),
+                    textColor: Colors.white,
+                    child: const Text('Airflow &..'),
+                    onPressed: () => {Navigator.pushNamed(context, airflowVel)},
+                    splashColor: const Color(0xFFa78bfa),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
+                  child: MaterialButton(
+                    minWidth: 5,
+                    color: const Color(0xFF22c55e),
+                    textColor: Colors.white,
+                    child: const Text('Total Pr..'),
+                    onPressed: () =>
+                        {Navigator.pushNamed(context, totalPressure)},
+                    splashColor: const Color(0xFFa78bfa),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MaterialButton(
+                    onPressed: () {
+                      openDialog();
+                    },
+                    child: Math.tex(
+                      r'\sqrt{abc}',
+                      mathStyle: MathStyle.display,
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Expanded(
+                child: Text(
+                  'TOTAL PRESSURE(TP)',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Expanded(
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xFFe4e4e7)),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              color: const Color(0xFF334155),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
+                    child: Container(
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d+\.?\d{0,1}')),
+                        ],
+                        controller: _firstController,
+                        onChanged: (value) {
+                          _calculate();
+                        },
+                        keyboardType: TextInputType.number,
+                        cursorColor: Colors.white,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFF64748b),
+                          labelText: 'Velocity Pressure (VP)',
+                          hintText: 'Enter velocity pressure [in Pa]',
+                          focusColor: Colors.white,
+                          labelStyle: const TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                // ignore: unnecessary_const
+                                color: const Color(0xFFcbd5e1)),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,1}')),
+                      ],
+                      controller: _secondController,
+                      onChanged: (value) {
+                        _calculate();
+                      },
+                      keyboardType: TextInputType.number,
+                      cursorColor: Colors.white,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFF64748b),
+                        labelText: 'Static Pressure (SP)',
+                        hintText: 'Enter static pressure [in Pa]',
+                        focusColor: Colors.white,
+                        labelStyle: const TextStyle(color: Colors.white),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              // ignore: unnecessary_const
+                              color: const Color(0xFFcbd5e1)),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: const Text(
+                      'Calculated Total Pressure: ',
+                      style: TextStyle(color: Color(0xFFffffff)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        controller: _thirdController,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFF64748b),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future openDialog() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          backgroundColor: const Color(0xFF4f46e5 ),
+          content: Math.tex(
+            r'TP(Pa) = VP + SP',
+            mathStyle: MathStyle.display,
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: submit,
+              child: const Text(
+                'Done',
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        ),
+      );
+  void submit() {
+    Navigator.of(context).pop();
+  }
+
+  void _calculate() {
+    String? str1 = ' Pa';
+    if (_firstController.text.trim().isNotEmpty &&
+        _secondController.text.trim().isNotEmpty) {
+      final firstValue = double.parse(_firstController.text);
+      final secondValue = double.parse(_secondController.text);
+      _thirdController.text = (firstValue + secondValue).toString() + str1;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+const String homeRoute = '/';
+const String commissioningHome = 'commissioning_home';
+const String calculators = 'calculators';
+const String installHome = 'install_home';
+const String conversions = 'conversions';
+const String air = 'air';
+const String electrical = 'electrical';
+const String hydronic = 'hydronic';
+const String airflowVel = 'airflowVel';
+const String airTemp = 'airTemp';
+const String heatTransfer = 'heatTransfer';
+const String fanEquations = 'fanEquations';
+const String sheaveEquations = 'sheaveEquations';
+const String totalPressure = 'totalPressure';
+const String ductArea = 'ductArea';
