@@ -19,6 +19,7 @@ class DuctArea extends StatefulWidget {
 }
 
 class _DuctAreaState extends State<DuctArea> {
+
   List<Equations> eqs = [
     const Equations(
         eqTitle: 'Rectangle/Square Area', eq: r'Area = HT \times WD'),
@@ -37,6 +38,7 @@ class _DuctAreaState extends State<DuctArea> {
   final TextEditingController _flatWidthController = TextEditingController();
   final TextEditingController _flatHeightController = TextEditingController();
   final TextEditingController _flatCalcController = TextEditingController();
+
 
   bool _displayRecTextField = true;
   bool _displayRoundTextField = false;
@@ -109,7 +111,7 @@ class _DuctAreaState extends State<DuctArea> {
                     textColor: Colors.white,
                     child: const Icon(Icons.home),
                     onPressed: () =>
-                        {Navigator.pushNamed(context, commissioningHome)},
+                    {Navigator.pushNamed(context, commissioningHome)},
                     splashColor: const Color(0xFFa78bfa),
                   ),
                 ),
@@ -121,7 +123,7 @@ class _DuctAreaState extends State<DuctArea> {
                     textColor: Colors.white,
                     child: const Text('TAB'),
                     onPressed: () =>
-                        {Navigator.pushNamed(context, calculators)},
+                    {Navigator.pushNamed(context, calculators)},
                     splashColor: const Color(0xFFa78bfa),
                   ),
                 ),
@@ -220,48 +222,48 @@ class _DuctAreaState extends State<DuctArea> {
                       children: <Widget>[
                         Expanded(
                             child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayRecTextField = true;
-                              _displayRoundTextField = false;
-                              _displayFlatTextField = false;
-                            });
-                          },
-                          child: const Text("Rect"),
-                          color:
+                              onPressed: () async {
+                                setState(() {
+                                  _displayRecTextField = true;
+                                  _displayRoundTextField = false;
+                                  _displayFlatTextField = false;
+                                });
+                              },
+                              child: const Text("Rect"),
+                              color:
                               _displayRecTextField ? Colors.blue : Colors.black,
-                          textColor: Colors.white,
-                        )),
+                              textColor: Colors.white,
+                            )),
                         Expanded(
                             child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayRecTextField = false;
-                              _displayRoundTextField = true;
-                              _displayFlatTextField = false;
-                            });
-                          },
-                          child: const Text("Round"),
-                          color: _displayRoundTextField
-                              ? Colors.blue
-                              : Colors.black,
-                          textColor: Colors.white,
-                        )),
+                              onPressed: () async {
+                                setState(() {
+                                  _displayRecTextField = false;
+                                  _displayRoundTextField = true;
+                                  _displayFlatTextField = false;
+                                });
+                              },
+                              child: const Text("Round"),
+                              color: _displayRoundTextField
+                                  ? Colors.blue
+                                  : Colors.black,
+                              textColor: Colors.white,
+                            )),
                         Expanded(
                             child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayRecTextField = false;
-                              _displayRoundTextField = false;
-                              _displayFlatTextField = true;
-                            });
-                          },
-                          child: const Text("Flat Oval"),
-                          color: _displayFlatTextField
-                              ? Colors.blue
-                              : Colors.black,
-                          textColor: Colors.white,
-                        )),
+                              onPressed: () async {
+                                setState(() {
+                                  _displayRecTextField = false;
+                                  _displayRoundTextField = false;
+                                  _displayFlatTextField = true;
+                                });
+                              },
+                              child: const Text("Flat Oval"),
+                              color: _displayFlatTextField
+                                  ? Colors.blue
+                                  : Colors.black,
+                              textColor: Colors.white,
+                            )),
                       ],
                     ),
                   ),
@@ -271,7 +273,7 @@ class _DuctAreaState extends State<DuctArea> {
                     visible: _displayRecTextField,
                     child: Padding(
                       padding:
-                          const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
+                      const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
                       child: Container(
                         child: TextFormField(
                           textAlign: TextAlign.center,
@@ -298,7 +300,7 @@ class _DuctAreaState extends State<DuctArea> {
                             labelStyle: const TextStyle(color: Colors.white),
                             focusedBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
-                                  // ignore: unnecessary_const
+                                // ignore: unnecessary_const
                                   color: const Color(0xFFcbd5e1)),
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -311,7 +313,7 @@ class _DuctAreaState extends State<DuctArea> {
                     visible: _displayRecTextField,
                     child: Padding(
                       padding:
-                          const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                      const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                       child: TextFormField(
                         textAlign: TextAlign.center,
                         inputFormatters: <TextInputFormatter>[
@@ -337,7 +339,7 @@ class _DuctAreaState extends State<DuctArea> {
                           labelStyle: const TextStyle(color: Colors.white),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                                // ignore: unnecessary_const
+                              // ignore: unnecessary_const
                                 color: const Color(0xFFcbd5e1)),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -376,7 +378,7 @@ class _DuctAreaState extends State<DuctArea> {
                           labelStyle: const TextStyle(color: Colors.white),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                                // ignore: unnecessary_const
+                              // ignore: unnecessary_const
                                 color: const Color(0xFFcbd5e1)),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -391,7 +393,7 @@ class _DuctAreaState extends State<DuctArea> {
                     visible: _displayFlatTextField,
                     child: Padding(
                       padding:
-                          const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
+                      const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
                       child: Container(
                         child: TextFormField(
                           textAlign: TextAlign.center,
@@ -418,7 +420,7 @@ class _DuctAreaState extends State<DuctArea> {
                             labelStyle: const TextStyle(color: Colors.white),
                             focusedBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
-                                  // ignore: unnecessary_const
+                                // ignore: unnecessary_const
                                   color: const Color(0xFFcbd5e1)),
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -431,7 +433,7 @@ class _DuctAreaState extends State<DuctArea> {
                     visible: _displayFlatTextField,
                     child: Padding(
                       padding:
-                          const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                      const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                       child: TextFormField(
                         textAlign: TextAlign.center,
                         inputFormatters: <TextInputFormatter>[
@@ -457,7 +459,7 @@ class _DuctAreaState extends State<DuctArea> {
                           labelStyle: const TextStyle(color: Colors.white),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                                // ignore: unnecessary_const
+                              // ignore: unnecessary_const
                                 color: const Color(0xFFcbd5e1)),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -546,123 +548,95 @@ class _DuctAreaState extends State<DuctArea> {
     );
   }
 
-  Future openDialog() => showDialog(
-      context: context,
-      builder: (BuildContext context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            backgroundColor: Color(0xFF8b5cf6),
-            child: Container(
-              height: 350.0, // Change as per your requirement
-              width: 300.0, // Change as per your requirement
-              child: Center(
-                child: PageView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: eqs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final titles = eqs[index];
-                    return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Text(
-                              titles.eqTitle,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Math.tex(
-                              titles.eq,
-                              mathStyle: MathStyle.display,
-                              textStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
+
+  Future openDialog() =>
+      showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                backgroundColor: const Color(0xFF64748b),
+                child: Container(
+                  height: 200.0, // Change as per your requirement
+                  width: 300.0, // Change as per your requirement
+                  child: Center(
+                    child: PageView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: eqs.length,
+                      itemBuilder: (BuildContext context, index) {
+                        final titles = eqs[index];
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                titles.eqTitle,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
-                          ),
-                        ]);
-                  },
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Math.tex(
+                                titles.eq,
+                                mathStyle: MathStyle.display,
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+
+                            // Padding(
+                            //   padding: const EdgeInsets.all(20.0),
+                            //   child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       children: indicators(
+                            //           eqs.length, activePage)),
+                            // )
+                          ],
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ));
+              ));
 
-  //   content: Container(
-  //   child: Center(
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(25.0),
-  //         border: Border.all(
-  //             color: Colors.white,
-  //           width: 4,
-  //         ),
-  //         color: const Color(0xFF4f46e5 ),
-  //
-  //       ),
-  //       child: PageView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //         itemCount: eqs.length,
-  //         itemBuilder: (BuildContext context, int index) {
-  //           final formulas = eqs[index];
-  //
-  //           return Padding(
-  //             padding: const EdgeInsets.all(20.0),
-  //             child: Math.tex(
-  //                       formulas.eq,
-  //                       mathStyle: MathStyle.display,
-  //                       textStyle: const TextStyle(
-  //                         color: Colors.white,
-  //                         fontSize: 15,
-  //                         fontWeight: FontWeight.bold,
-  //                       )
-  //             ),
-  //           );
-  //         }
-  //       ),
-  //     ),
-  //   ),
-  // ),
-  //
-  //     ),
-  //   actions: [
-  //     TextButton(
-  //       onPressed: submit,
-  //       child: const Text(
-  //         'Done',
-  //         style: TextStyle(color: Colors.white),
-  //       ),
-  //     )
-  //   ],
-
-  void submit() {
-    Navigator.of(context).pop();
-  }
 
   void _calculate() {
     String? str1 = ' m2';
 
-    if (_rectWidthController.text.trim().isNotEmpty &&
-        _rectHeightController.text.trim().isNotEmpty) {
+    if (_rectWidthController.text
+        .trim()
+        .isNotEmpty &&
+        _rectHeightController.text
+            .trim()
+            .isNotEmpty) {
       final firstValue = double.parse(_rectWidthController.text);
       final secondValue = double.parse(_rectHeightController.text);
       _rectCalcController.text =
           (firstValue * secondValue / 1000000).toString() + str1;
     }
-    if (_roundController.text.trim().isNotEmpty) {
+    if (_roundController.text
+        .trim()
+        .isNotEmpty) {
       final firstValue = double.parse(_roundController.text);
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
       _roundCalcController.text = (power / 1000000).toStringAsFixed(4) + str1;
     }
-    if (_flatHeightController.text.trim().isNotEmpty &&
-        _flatWidthController.text.trim().isNotEmpty) {
+    if (_flatHeightController.text
+        .trim()
+        .isNotEmpty &&
+        _flatWidthController.text
+            .trim()
+            .isNotEmpty) {
       final firstValue = double.parse(_flatHeightController.text);
       final secondValue = double.parse(_flatWidthController.text);
       final divide = (firstValue / 2);
@@ -673,3 +647,17 @@ class _DuctAreaState extends State<DuctArea> {
     }
   }
 }
+  // List<Widget> indicators(eqsLength, currentIndex) {
+  //   return List<Widget>.generate(eqsLength, (index) {
+  //     return Container(
+  //       margin: const EdgeInsets.all(3),
+  //       width: 10,
+  //       height: 10,
+  //       decoration: BoxDecoration(
+  //           color: currentIndex == index ? Colors.black : Colors.black26,
+  //           shape: BoxShape.circle),
+  //     );
+  //   });
+  // }
+
+
