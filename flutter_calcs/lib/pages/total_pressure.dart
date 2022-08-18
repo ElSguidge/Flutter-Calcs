@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:provider/provider.dart';
+
+import '../models/favorite_list_model.dart';
+import '../models/favorite_page_model.dart';
+import '../widgets/add_button.dart';
 
 class TotalPressure extends StatefulWidget {
   const TotalPressure({Key? key}) : super(key: key);
@@ -14,9 +19,16 @@ class _TotalPressureState extends State<TotalPressure> {
   final TextEditingController _firstController = TextEditingController();
   final TextEditingController _secondController = TextEditingController();
   final TextEditingController _thirdController = TextEditingController();
+  int get index => 1;
 
   @override
   Widget build(BuildContext context) {
+
+    var item = context.select<FavoriteListModel, Item>(
+
+          (favoriteList) => favoriteList.getByPosition(index),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -136,47 +148,41 @@ class _TotalPressureState extends State<TotalPressure> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {
-                      openDialog();
-                    },
-                    child: Math.tex(
-                      r'\sqrt{abc}',
-                      mathStyle: MathStyle.display,
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                child: MaterialButton(
+                  onPressed: () {
+                    openDialog();
+                  },
+                  child: Math.tex(
+                    r'\sqrt{abc}',
+                    mathStyle: MathStyle.display,
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+
               const Expanded(
                 child: Text(
-                  'TOTAL PRESSURE(TP)',
+                  'TOTAL PRESSURE',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const Expanded(
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
+              Expanded(child: AddButton(item: item)),
             ],
           ),
+
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Card(
@@ -295,34 +301,34 @@ class _TotalPressureState extends State<TotalPressure> {
 
   Future openDialog() => showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
-          backgroundColor: const Color(0xFF4f46e5 ),
-          content: Math.tex(
-            r'TP(Pa) = VP + SP',
-            mathStyle: MathStyle.display,
-            textStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          backgroundColor: const Color(0xFF64748b),
+          child: Container(
+            height: 300.0, // Change as per your requirement
+            width: 500.0, // Change as per your requirement
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Math.tex(
+                    r'TP(Pa) = VP + SP',
+                    mathStyle: MathStyle.display,
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: submit,
-              child: const Text(
-                'Done',
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          ],
         ),
       );
-  void submit() {
-    Navigator.of(context).pop();
-  }
 
   void _calculate() {
     String? str1 = ' Pa';

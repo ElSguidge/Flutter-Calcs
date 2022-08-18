@@ -14,7 +14,7 @@ class CommissioningPage extends StatelessWidget {
     const Menu(menuButton: 'TAB Calculators', nav: calculators),
     const Menu(menuButton: 'Conversions', nav: conversions),
     const Menu(menuButton: 'Abbreviations', nav: homeRoute),
-    const Menu(menuButton: 'Favourites', nav: calculators),
+    const Menu(menuButton: 'Favourites', nav: favoritePage),
     const Menu(menuButton: 'Procedures', nav: homeRoute),
     const Menu(menuButton: 'Instructional', nav: homeRoute),
   ];

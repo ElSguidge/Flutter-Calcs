@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calcs/constants/constants.dart';
+import 'package:flutter_calcs/models/favorite_list_model.dart';
+import 'package:flutter_calcs/widgets/add_button.dart';
+import 'package:provider/provider.dart';
+import '../models/favorite_page_model.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'dart:math' as math;
-
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Equations {
@@ -14,7 +17,9 @@ class Equations {
 }
 
 class DuctArea extends StatefulWidget {
-  const DuctArea({Key? key}) : super(key: key);
+  const DuctArea({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DuctArea> createState() => _DuctAreaState();
@@ -22,6 +27,7 @@ class DuctArea extends StatefulWidget {
 
 class _DuctAreaState extends State<DuctArea> {
   late PageController _pageController;
+
   List<Equations> eqs = [
     const Equations(
         eqTitle: 'Rectangle/Square Area', eq: r'Area = HT \times WD'),
@@ -40,10 +46,11 @@ class _DuctAreaState extends State<DuctArea> {
   final TextEditingController _flatWidthController = TextEditingController();
   final TextEditingController _flatHeightController = TextEditingController();
   final TextEditingController _flatCalcController = TextEditingController();
-
   bool _displayRecTextField = true;
   bool _displayRoundTextField = false;
   bool _displayFlatTextField = false;
+
+  int get index => 0;
 
   @override
   void initState() {
@@ -53,6 +60,11 @@ class _DuctAreaState extends State<DuctArea> {
 
   @override
   Widget build(BuildContext context) {
+    var favoritePage = context.watch<FavoritePageModel>();
+
+    var item = context.select<FavoriteListModel, Item>(
+      (favoriteList) => favoriteList.getByPosition(index),
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -171,23 +183,20 @@ class _DuctAreaState extends State<DuctArea> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {
-                      openDialog();
-                    },
-                    child: Math.tex(
-                      r'\sqrt{abc}',
-                      mathStyle: MathStyle.display,
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                child: MaterialButton(
+                  onPressed: () {
+                    openDialog();
+                  },
+                  child: Math.tex(
+                    r'\sqrt{abc}',
+                    mathStyle: MathStyle.display,
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -195,21 +204,16 @@ class _DuctAreaState extends State<DuctArea> {
               const Expanded(
                 child: Text(
                   'DUCT AREA',
+                  // favoritePage.items[index].name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const Expanded(
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
+              Expanded(child: AddButton(item: item)),
             ],
           ),
           Padding(
@@ -576,15 +580,8 @@ class _DuctAreaState extends State<DuctArea> {
                       pageSnapping: true,
                       itemCount: eqs.length,
                       controller: _pageController,
-                      // onPageChanged: (page)  {
-                      //   setState(() {
-                      //     activePage = page;
-                      //     // print(activePage);
-                      //   });
-                      // },
                       itemBuilder: (context, index) {
                         final titles = eqs[index];
-
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -620,17 +617,11 @@ class _DuctAreaState extends State<DuctArea> {
                                 ),
                               ),
                             ),
-
-                              ],
-
+                          ],
                         );
-
                       },
                     ),
                   ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: indicators(eqs.length, activePage))
                   SmoothPageIndicator(
                       controller: _pageController, // PageController
                       count: eqs.length,
@@ -668,17 +659,4 @@ class _DuctAreaState extends State<DuctArea> {
       _flatCalcController.text = addition.toStringAsFixed(4) + str1;
     }
   }
-}
-
-List<Widget> indicators(eqsLength, currentIndex) {
-  return List<Widget>.generate(eqsLength, (index) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(
-          color: currentIndex == index ? Colors.greenAccent : Colors.black26,
-          shape: BoxShape.circle),
-    );
-  });
 }

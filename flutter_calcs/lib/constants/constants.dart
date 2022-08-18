@@ -13,3 +13,4 @@ const String fanEquations = 'fanEquations';
 const String sheaveEquations = 'sheaveEquations';
 const String totalPressure = 'totalPressure';
 const String ductArea = 'ductArea';
+const String favoritePage = 'favoritePage';
