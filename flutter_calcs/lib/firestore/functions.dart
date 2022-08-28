@@ -67,6 +67,7 @@ class Functions {
       for (var element in querySnapshot.docs) {
         bookmarks = Map.from(element["bookmarks"]);
       }
+      print(bookmarks);
     });
   }
 

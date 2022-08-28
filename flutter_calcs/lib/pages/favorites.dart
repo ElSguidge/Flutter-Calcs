@@ -86,20 +86,27 @@ class FavoritePageList extends StatelessWidget {
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.all(4.0),
         child: Material(
-          color: const Color(0xFF3b82f6 ),
+          color: const Color(0xFF3b82f6),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(context, favoritePage.items[index].route);
               },
               title: Text(
                 favoritePage.items[index].name,
-                style: const TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
               ),
               trailing: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.white, size: 30,),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                  size: 30,
+                ),
                 onPressed: () {
                   favoritePage.remove(favoritePage.items[index]);
                 },
@@ -115,4 +122,3 @@ class FavoritePageList extends StatelessWidget {
     );
   }
 }
-
