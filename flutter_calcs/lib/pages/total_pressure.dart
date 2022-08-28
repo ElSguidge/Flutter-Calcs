@@ -23,10 +23,8 @@ class _TotalPressureState extends State<TotalPressure> {
 
   @override
   Widget build(BuildContext context) {
-
     var item = context.select<FavoriteListModel, Item>(
-
-          (favoriteList) => favoriteList.getByPosition(index),
+      (favoriteList) => favoriteList.getByPosition(index),
     );
 
     return Scaffold(
@@ -166,13 +164,11 @@ class _TotalPressureState extends State<TotalPressure> {
                   ),
                 ),
               ),
-
               const Expanded(
                 child: Text(
                   'TOTAL PRESSURE',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -182,7 +178,6 @@ class _TotalPressureState extends State<TotalPressure> {
               Expanded(child: AddButton(item: item)),
             ],
           ),
-
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Card(

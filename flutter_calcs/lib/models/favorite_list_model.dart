@@ -1,4 +1,3 @@
-
 class FavoriteListModel {
   static List<String> itemNames = [
     'Duct Area',
@@ -17,12 +16,12 @@ class FavoriteListModel {
 
   // Get item by [id]
   Item getById(int id) => Item(
-    id,
-    itemNames[id % itemNames.length],
-    itemSubtitle[id % itemSubtitle.length],
-    itemPath[id % itemPath.length],
-  );
-   //Get items by its position in the List
+        id,
+        itemNames[id % itemNames.length],
+        itemSubtitle[id % itemSubtitle.length],
+        itemPath[id % itemPath.length],
+      );
+  //Get items by its position in the List
   Item getByPosition(int position) {
     return getById(position);
   }
@@ -34,12 +33,7 @@ class Item {
   final String subtitle;
   final String route;
 
-  const Item(
-      this.id,
-      this.name,
-      this.subtitle,
-      this.route
-      );
+  const Item(this.id, this.name, this.subtitle, this.route);
 
   @override
   int get hashCode => id;

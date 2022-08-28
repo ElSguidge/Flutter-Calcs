@@ -1,34 +1,14 @@
+import 'dart:convert';
+import 'package:flutter_calcs/firestore/functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/models/favorite_list_model.dart';
 import 'package:flutter/foundation.dart';
-//
-// class Favorites {
-//   late final int? id;
-//   final String? calcName;
-//   final String? category;
-//   final String? route;
-//   // bool isFav = false;
-//
-//   Favorites(
-//       {required this.route, required this.id,  this.calcName, required this.category});
-//
-// Favorites.fromMap(Map<dynamic, dynamic> data)
-//       : id = data['id'],
-//         calcName = data['calcName'],
-//         category = data['category'],
-//         route = data['route'];
-//
-//   Map<String, dynamic> toMap() {
-//     return {
-//       'id': id,
-//       'calcName': calcName,
-//       'category': category,
-//       'route': route,
-//     };
-//   }
-// }
 
 class FavoritePageModel extends ChangeNotifier {
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   late FavoriteListModel _favoriteList;
 
@@ -55,6 +35,7 @@ class FavoritePageModel extends ChangeNotifier {
     _itemIds.add(item.id);
     notifyListeners();
   }
+
   void remove(Item item) {
     _itemIds.remove(item.id);
     notifyListeners();

@@ -14,6 +14,8 @@ import 'package:flutter_calcs/pages/heat_transfer.dart';
 import 'package:flutter_calcs/pages/homepage.dart';
 import 'package:flutter_calcs/pages/hydronic_home.dart';
 import 'package:flutter_calcs/pages/install_home.dart';
+import 'package:flutter_calcs/pages/log_in.dart';
+import 'package:flutter_calcs/pages/register_page.dart';
 import 'package:flutter_calcs/pages/sheave_eq.dart';
 import 'package:flutter_calcs/pages/total_pressure.dart';
 
@@ -51,6 +53,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const DuctArea());
     case routes.favoritePage:
       return MaterialPageRoute(builder: (_) => const FavoritePage());
+    case routes.registerPage:
+      return MaterialPageRoute(builder: (_) => const RegisterPage());
+    case routes.logIn:
+      return MaterialPageRoute(builder: (_) => const LoginPage());
 
     default:
       return MaterialPageRoute(

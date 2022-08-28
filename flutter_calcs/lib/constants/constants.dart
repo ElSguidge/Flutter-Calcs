@@ -1,4 +1,5 @@
-const String homeRoute = '/';
+const String logIn = '/';
+const String homeRoute = 'homeRoute';
 const String commissioningHome = 'commissioning_home';
 const String calculators = 'calculators';
 const String installHome = 'install_home';
@@ -14,3 +15,4 @@ const String sheaveEquations = 'sheaveEquations';
 const String totalPressure = 'totalPressure';
 const String ductArea = 'ductArea';
 const String favoritePage = 'favoritePage';
+const String registerPage = 'RegisterPage';

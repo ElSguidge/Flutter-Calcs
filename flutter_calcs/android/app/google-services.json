@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "871803800191",
+    "project_id": "flutter-calcs",
+    "storage_bucket": "flutter-calcs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871803800191:android:253ce20fc89621ee620d4a",
+        "android_client_info": {
+          "package_name": "com.example.fluttercalcs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871803800191-0gmv5094bpcvvdpfd7631uhj2rf2cf1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwOe-hHBERTe0RifeGCUiQT_atZ8cn9fY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871803800191-0gmv5094bpcvvdpfd7631uhj2rf2cf1c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
