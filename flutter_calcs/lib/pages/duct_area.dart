@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_calcs/constants/constants.dart';
-import 'package:flutter_calcs/models/favorite_list_model.dart';
-import 'package:flutter_calcs/widgets/add_button.dart';
-import 'package:provider/provider.dart';
-import '../models/favorite_page_model.dart';
+import 'package:flutter_calcs/constants/constants.dart'; // import 'package:provider/provider.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'dart:math' as math;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -15,6 +11,14 @@ class Equations {
 
   const Equations({required this.eq, required this.eqTitle});
 }
+
+// class Calculator {
+//   final String name;
+//   final String subtitle;
+//   final String route;
+
+//   const Calculator({required this.name, required this.subtitle, required this.route});
+// }
 
 class DuctArea extends StatefulWidget {
   const DuctArea({
@@ -49,7 +53,6 @@ class _DuctAreaState extends State<DuctArea> {
   bool _displayRecTextField = true;
   bool _displayRoundTextField = false;
   bool _displayFlatTextField = false;
-
   int get index => 0;
 
   @override
@@ -60,11 +63,8 @@ class _DuctAreaState extends State<DuctArea> {
 
   @override
   Widget build(BuildContext context) {
-    var favoritePage = context.watch<FavoritePageModel>();
+    // var favoritePage = context.watch<FavoritePageModel>();
 
-    var item = context.select<FavoriteListModel, Item>(
-      (favoriteList) => favoriteList.getByPosition(index),
-    );
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -213,7 +213,7 @@ class _DuctAreaState extends State<DuctArea> {
                   ),
                 ),
               ),
-              Expanded(child: AddButton(item: item)),
+              // Expanded(child: AddButton(calculator:calculator)),
             ],
           ),
           Padding(

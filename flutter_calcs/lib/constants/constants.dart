@@ -16,3 +16,4 @@ const String totalPressure = 'totalPressure';
 const String ductArea = 'ductArea';
 const String favoritePage = 'favoritePage';
 const String registerPage = 'RegisterPage';
+const String openingView = 'openingView';

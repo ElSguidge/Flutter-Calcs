@@ -15,6 +15,7 @@ import 'package:flutter_calcs/pages/homepage.dart';
 import 'package:flutter_calcs/pages/hydronic_home.dart';
 import 'package:flutter_calcs/pages/install_home.dart';
 import 'package:flutter_calcs/pages/log_in.dart';
+import 'package:flutter_calcs/pages/opening_screen.dart';
 import 'package:flutter_calcs/pages/register_page.dart';
 import 'package:flutter_calcs/pages/sheave_eq.dart';
 import 'package:flutter_calcs/pages/total_pressure.dart';
@@ -51,8 +52,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const TotalPressure());
     case routes.ductArea:
       return MaterialPageRoute(builder: (_) => const DuctArea());
-    case routes.favoritePage:
-      return MaterialPageRoute(builder: (_) => const FavoritePage());
+    case routes.openingView:
+      return MaterialPageRoute(builder: (_) => OpeningView());
     case routes.registerPage:
       return MaterialPageRoute(builder: (_) => const RegisterPage());
     case routes.logIn:
