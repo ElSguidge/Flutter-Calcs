@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart';
+import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_calcs/widgets/list_buttons.dart';
 
 class Sections {
@@ -38,43 +39,7 @@ class _AirFlowVelMenuState extends State<AirFlowVelMenu> {
         ),
         backgroundColor: const Color(0xFF111827),
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.white,
-          child: ListView(
-            children: [
-              const DrawerHeader(
-                child: Center(
-                  child: Image(
-                    image: AssetImage('lib/icons/cropped-AGC_Logo_2022.png'),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-                onTap: () {
-                  Navigator.pushNamed(context, homeRoute);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.build),
-                title: const Text('Install'),
-                onTap: () {
-                  Navigator.pushNamed(context, installHome);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.assignment_turned_in_sharp),
-                title: const Text('Commissioning'),
-                onTap: () {
-                  Navigator.pushNamed(context, commissioningHome);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: const CustomDrawer(),
       backgroundColor: const Color(0xFF111827),
 
       // ignore: avoid_unnecessary_containers
