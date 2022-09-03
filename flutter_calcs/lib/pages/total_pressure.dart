@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calcs/constants/constants.dart';
+import 'package:flutter_calcs/models/favorite_page_model.dart';
+import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:provider/provider.dart';
+
+import '../models/favorite_list_model.dart';
 
 class TotalPressure extends StatefulWidget {
   const TotalPressure({Key? key}) : super(key: key);
@@ -20,6 +24,12 @@ class _TotalPressureState extends State<TotalPressure> {
 
   @override
   Widget build(BuildContext context) {
+    var favoritePage = context.watch<FavoritePageModel>();
+
+    var item = context.select<FavoriteListModel, Item>(
+      (favoriteList) => favoriteList.getByPosition(index),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -132,7 +142,7 @@ class _TotalPressureState extends State<TotalPressure> {
                   ),
                 ),
               ),
-              // Expanded(child: AddButton(item: item)),
+              Expanded(child: AddButton(item: item)),
             ],
           ),
           Padding(

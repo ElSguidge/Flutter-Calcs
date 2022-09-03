@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
             return AlertDialog(
               content: Container(
                 width: MediaQuery.of(context).size.width / 1.2,
-                height: MediaQuery.of(context).size.height / 4.5,
+                height: MediaQuery.of(context).size.height / 4,
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[

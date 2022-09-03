@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_calcs/constants/constants.dart';
-import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:provider/provider.dart';
 import 'dart:math' as math;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_calcs/constants/constants.dart';
+import 'package:flutter_calcs/widgets/add_button.dart';
+import 'package:flutter_calcs/widgets/custom_drawer.dart';
+import '../models/favorite_list_model.dart';
+import '../models/favorite_page_model.dart';
 
 class Equations {
   final String eq;
@@ -34,7 +38,6 @@ class _DuctAreaState extends State<DuctArea> {
         eqTitle: 'Flat Oval Area',
         eq: r'Area = (HT\times(WD-HT)+(\pi\times(\frac{HT}{2})^2))')
   ];
-
   final TextEditingController _rectWidthController = TextEditingController();
   final TextEditingController _rectHeightController = TextEditingController();
   final TextEditingController _rectCalcController = TextEditingController();
@@ -56,8 +59,11 @@ class _DuctAreaState extends State<DuctArea> {
 
   @override
   Widget build(BuildContext context) {
-    // var favoritePage = context.watch<FavoritePageModel>();
+    var favoritePage = context.watch<FavoritePageModel>();
 
+    var item = context.select<FavoriteListModel, Item>(
+      (favoriteList) => favoriteList.getByPosition(index),
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -170,7 +176,9 @@ class _DuctAreaState extends State<DuctArea> {
                   ),
                 ),
               ),
-              // Expanded(child: AddButton(calculator:calculator)),
+              Expanded(
+                child: AddButton(item: item),
+              ),
             ],
           ),
           Padding(

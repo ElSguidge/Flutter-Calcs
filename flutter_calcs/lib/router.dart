@@ -53,12 +53,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case routes.ductArea:
       return MaterialPageRoute(builder: (_) => const DuctArea());
     case routes.openingView:
-      return MaterialPageRoute(builder: (_) => OpeningView());
+      return MaterialPageRoute(builder: (_) => const OpeningView());
     case routes.registerPage:
       return MaterialPageRoute(builder: (_) => const RegisterPage());
     case routes.logIn:
       return MaterialPageRoute(builder: (_) => const LoginPage());
-
+    case routes.favoritePage:
+      return MaterialPageRoute(builder: (_) => const FavoritePage());
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(
