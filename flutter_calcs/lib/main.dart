@@ -1,11 +1,9 @@
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/router.dart' as router;
-import 'package:provider/provider.dart';
-
-import 'models/favorite_list_model.dart';
-import 'models/favorite_page_model.dart';
+// import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,25 +17,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(create: (context) => FavoriteListModel()),
-        ChangeNotifierProxyProvider<FavoriteListModel, FavoritePageModel>(
-          create: (context) => FavoritePageModel(),
-          update: (context, favoriteList, favoritePage) {
-            if (favoritePage == null) {
-              throw ArgumentError.notNull('favoritePage');
-            }
-            favoritePage.favoriteList = favoriteList;
-            return favoritePage;
-          },
-        ),
-      ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: router.generateRoute,
-        initialRoute: openingView,
-      ),
+    // final FirebaseServices firebaseServices = FirebaseServices();
+    // return StreamProvider(
+    //   create: (BuildContext context) => firebaseServices.getCalcs(),
+    //   // ChangeNotifierProxyProvider<FavoriteListModel, FavoritePageModel>(
+    //   //   create: (context) => FavoritePageModel(),
+    //   //   update: (context, favoriteList, favoritePage) {
+    //   //     if (favoritePage == null) {
+    //   //       throw ArgumentError.notNull('favoritePage');
+    //   //     }
+    //   //     favoritePage.favoriteList = favoriteList;
+    //   //     return favoritePage;
+    //   //   },
+    //   // ),
+    //   initialData: const [],
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: router.generateRoute,
+      initialRoute: openingView,
     );
   }
 }

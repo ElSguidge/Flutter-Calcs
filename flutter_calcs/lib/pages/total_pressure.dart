@@ -1,13 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calcs/constants/constants.dart';
-import 'package:flutter_calcs/models/favorite_page_model.dart';
+import 'package:flutter_calcs/database/db.dart';
 import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:provider/provider.dart';
-
-import '../models/favorite_list_model.dart';
 
 class TotalPressure extends StatefulWidget {
   const TotalPressure({Key? key}) : super(key: key);
@@ -17,19 +15,23 @@ class TotalPressure extends StatefulWidget {
 }
 
 class _TotalPressureState extends State<TotalPressure> {
+  FirebaseServices firebaseServices = FirebaseServices();
+
+  String title = 'Total Pressure';
+
   final TextEditingController _firstController = TextEditingController();
   final TextEditingController _secondController = TextEditingController();
   final TextEditingController _thirdController = TextEditingController();
-  int get index => 1;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var favoritePage = context.watch<FavoritePageModel>();
-
-    var item = context.select<FavoriteListModel, Item>(
-      (favoriteList) => favoriteList.getByPosition(index),
-    );
-
+    // final db = FirebaseFirestore.instance;
+    // final email = firebaseServices.auth.currentUser!.email.toString();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -142,7 +144,7 @@ class _TotalPressureState extends State<TotalPressure> {
                   ),
                 ),
               ),
-              Expanded(child: AddButton(item: item)),
+              AddButton(title: title),
             ],
           ),
           Padding(
@@ -299,6 +301,14 @@ class _TotalPressureState extends State<TotalPressure> {
       final firstValue = double.parse(_firstController.text);
       final secondValue = double.parse(_secondController.text);
       _thirdController.text = (firstValue + secondValue).toString() + str1;
+    }
+  }
+
+  bool isFav(isFav) {
+    if (isFav != false) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

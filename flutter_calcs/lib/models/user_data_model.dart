@@ -1,22 +1,18 @@
 class UserData {
-  final String? uid;
+  final String? id;
+  final String? email;
   final String? displayName;
-  final String? creationDate;
-  final int? avatar;
+  List<dynamic> favorites;
 
-  const UserData({
-    this.uid,
-    this.displayName,
-    this.creationDate,
-    this.avatar,
-  });
+  UserData({this.id, this.email, this.displayName, required this.favorites});
 
-  factory UserData.fromJson(Map<String, dynamic> json) {
-    return UserData(
-      uid: json['UID'].toString(),
-      displayName: json['DisplayName'].toString(),
-      creationDate: json['CreationDate'].toString(),
-      avatar: json['Avatar'] as int,
-    );
-  }
+  Map<String, dynamic> toMap() =>
+      {'displayName': displayName, 'email': email, 'favorites': favorites};
 }
+
+//   UserData.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
+//       : id = doc.id,
+//         email = doc.data()!['email'],
+//         displayName = doc.data()!['displayName'],
+//         favorites = Favorites.fromMap(doc.data()!['favorites']);
+// }

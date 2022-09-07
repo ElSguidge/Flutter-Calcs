@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart';
+import 'package:flutter_calcs/database/db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  FirebaseServices firebaseServices = FirebaseServices();
+
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -205,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
               final String name = user.displayName!;
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.setString('displayName', name);
-
+              await firebaseServices.checkUserData(user.email.toString());
               Navigator.pushNamed(context, homeRoute);
             }
           } catch (e) {

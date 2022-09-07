@@ -58,8 +58,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const RegisterPage());
     case routes.logIn:
       return MaterialPageRoute(builder: (_) => const LoginPage());
-    case routes.favoritePage:
-      return MaterialPageRoute(builder: (_) => const FavoritePage());
+    // case routes.favoritePage:
+    //   return MaterialPageRoute(builder: (_) => const FavoritePage());
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

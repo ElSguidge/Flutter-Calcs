@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:provider/provider.dart';
 import 'dart:math' as math;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_calcs/constants/constants.dart';
-import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
-import '../models/favorite_list_model.dart';
-import '../models/favorite_page_model.dart';
+
+import '../database/db.dart';
 
 class Equations {
   final String eq;
@@ -27,6 +26,9 @@ class DuctArea extends StatefulWidget {
 }
 
 class _DuctAreaState extends State<DuctArea> {
+  FirebaseServices firebaseServices = FirebaseServices();
+
+  String title = 'Duct Area';
   late PageController _pageController;
 
   List<Equations> eqs = [
@@ -49,21 +51,15 @@ class _DuctAreaState extends State<DuctArea> {
   bool _displayRecTextField = true;
   bool _displayRoundTextField = false;
   bool _displayFlatTextField = false;
-  int get index => 0;
 
   @override
   void initState() {
-    super.initState();
     _pageController = PageController();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var favoritePage = context.watch<FavoritePageModel>();
-
-    var item = context.select<FavoriteListModel, Item>(
-      (favoriteList) => favoriteList.getByPosition(index),
-    );
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -166,8 +162,8 @@ class _DuctAreaState extends State<DuctArea> {
               ),
               const Expanded(
                 child: Text(
-                  'DUCT AREA',
-                  // favoritePage.items[index].name,
+                  'Duct Area',
+                  // _products.isEmpty ? '' : _products[index]['name'],
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -176,9 +172,7 @@ class _DuctAreaState extends State<DuctArea> {
                   ),
                 ),
               ),
-              Expanded(
-                child: AddButton(item: item),
-              ),
+              AddButton(title: title),
             ],
           ),
           Padding(
