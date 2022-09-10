@@ -9,7 +9,7 @@ import 'package:flutter_calcs/pages/conversions.dart';
 import 'package:flutter_calcs/pages/duct_area.dart';
 import 'package:flutter_calcs/pages/electrical_home.dart';
 import 'package:flutter_calcs/pages/fan_eq.dart';
-import 'package:flutter_calcs/pages/favorites.dart';
+import 'package:flutter_calcs/pages/favorites_page.dart';
 import 'package:flutter_calcs/pages/heat_transfer.dart';
 import 'package:flutter_calcs/pages/homepage.dart';
 import 'package:flutter_calcs/pages/hydronic_home.dart';
@@ -58,8 +58,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const RegisterPage());
     case routes.logIn:
       return MaterialPageRoute(builder: (_) => const LoginPage());
-    // case routes.favoritePage:
-    //   return MaterialPageRoute(builder: (_) => const FavoritePage());
+    case routes.favoritePage:
+      return MaterialPageRoute(builder: (_) => FavoritePage());
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

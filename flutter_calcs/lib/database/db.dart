@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_calcs/models/favorites.dart';
 
 class FirebaseServices {
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+
   Map<String, dynamic> bookmarks = {};
 
   Future<void> deleteUser(String documentId) async {
@@ -24,11 +26,16 @@ class FirebaseServices {
         .collection("calculators")
         .get()
         .then((QuerySnapshot querySnapshot) {
+      int index = 0;
+
       for (var element in querySnapshot.docs) {
+        print(element['id']);
+        int id = element['id'];
         final name = element["name"].toString();
         final subtitle = element['subtitle'].toString();
         final route = element['route'].toString();
         bookmarks[element['name'].toString()] = {
+          'id': id,
           "name": name,
           "isFavorite": false,
           'subtitle': subtitle,
@@ -86,4 +93,14 @@ class FirebaseServices {
 
     await getItemsLogin(email);
   }
+
+  // Stream<List<Favorites>> getFavorites(String email) {
+  //   return _db
+  //       .collection('user-favorites')
+  //       .where("email", isEqualTo: email)
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.docs
+  //           .map((document) => Favorites.fromMap(document.data()))
+  //           .toList());
+  // }
 }
