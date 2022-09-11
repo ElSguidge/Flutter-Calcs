@@ -23,9 +23,10 @@ class FavoritePage extends StatelessWidget {
           ),
           backgroundColor: Colors.black,
         ),
+        backgroundColor: Colors.black,
         drawer: const CustomDrawer(),
         body: Container(
-          color: Colors.black,
+          color: Colors.white,
           child: Column(
             children: const [
               Expanded(
@@ -60,11 +61,12 @@ class _FavoritePageListState extends State<FavoritePageList> {
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               // get course document
+              bookmarks = [];
               var userFavoriteDoc = snapshot.data as DocumentSnapshot;
 
               // get sections from the document
               var sections = userFavoriteDoc['bookmarks'];
-              print(sections);
+              // print(sections);
               for (final i in sections.entries) {
                 // final key = i.key;
                 final value = i.value;
@@ -77,13 +79,22 @@ class _FavoritePageListState extends State<FavoritePageList> {
                   };
                   bookmarks.add(favoriteMap);
                 }
+                // print(bookmarks);
               }
               if (bookmarks == []) {
-                return const Text('You have no favorites!');
+                return const Align(
+                  alignment: Alignment.center,
+                  child: Center(
+                      child: Text(
+                    'You have no favorites!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black),
+                  )),
+                );
               }
               return ListView.builder(
                 itemCount: bookmarks.length,
-                itemBuilder: (_, int index) {
+                itemBuilder: (BuildContext context, int index) {
                   // print(bookmarks.length);
                   return Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -110,8 +121,14 @@ class _FavoritePageListState extends State<FavoritePageList> {
                                 color: Colors.white,
                                 size: 30,
                               ),
-                              onPressed: () {
-                                // firebaseServices.remove(favoritePage.items[index]);
+                              onPressed: () async {
+                                await firebaseServices.update(
+                                    email, bookmarks[index]['name']);
+                                setState(() {
+                                  if (bookmarks.isNotEmpty) {
+                                    bookmarks.removeAt(index);
+                                  }
+                                });
                               },
                             ),
                             subtitle: Text(

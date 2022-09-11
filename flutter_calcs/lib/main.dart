@@ -1,12 +1,8 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart';
-import 'package:flutter_calcs/database/db.dart';
-import 'package:flutter_calcs/models/favorites.dart';
 import 'package:flutter_calcs/router.dart' as router;
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,17 +16,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseAuth auth = FirebaseAuth.instance;
-    // FirebaseServices firebaseServices = FirebaseServices();
-
-    // return MultiProvider(
-    //     providers: [
-    //       StreamProvider<List<Favorites?>>.value(
-    //           value: firebaseServices
-    //               .getFavorites(auth.currentUser!.email.toString()),
-    //           initialData: const [])
-    //     ],
-    // child:
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: router.generateRoute,

@@ -29,7 +29,7 @@ class FirebaseServices {
       int index = 0;
 
       for (var element in querySnapshot.docs) {
-        print(element['id']);
+        // print(element['id']);
         int id = element['id'];
         final name = element["name"].toString();
         final subtitle = element['subtitle'].toString();
@@ -93,14 +93,4 @@ class FirebaseServices {
 
     await getItemsLogin(email);
   }
-
-  // Stream<List<Favorites>> getFavorites(String email) {
-  //   return _db
-  //       .collection('user-favorites')
-  //       .where("email", isEqualTo: email)
-  //       .snapshots()
-  //       .map((snapshot) => snapshot.docs
-  //           .map((document) => Favorites.fromMap(document.data()))
-  //           .toList());
-  // }
 }
