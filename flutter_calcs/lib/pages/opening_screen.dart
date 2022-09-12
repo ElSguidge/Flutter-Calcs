@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 
@@ -38,8 +39,8 @@ class OpeningViewState extends State<OpeningView> {
 
     final loginButton = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(25.0),
-      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.0),
+      color: ColorConstants.darkScaffoldBackgroundColor,
       child: MaterialButton(
         minWidth: mq.size.width / 1.2,
         padding: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
@@ -48,8 +49,7 @@ class OpeningViewState extends State<OpeningView> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 20.0,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         onPressed: () {
@@ -60,8 +60,8 @@ class OpeningViewState extends State<OpeningView> {
 
     final registerButton = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(25.0),
-      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.0),
+      color: ColorConstants.darkScaffoldBackgroundColor,
       child: MaterialButton(
         minWidth: mq.size.width / 1.2,
         padding: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
@@ -70,8 +70,7 @@ class OpeningViewState extends State<OpeningView> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 20.0,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         onPressed: () {
@@ -97,9 +96,7 @@ class OpeningViewState extends State<OpeningView> {
         return Text(
           "Welcome back $word!",
           style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         );
       } else {
         return const Text(
@@ -113,7 +110,7 @@ class OpeningViewState extends State<OpeningView> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(36),
         child: Column(

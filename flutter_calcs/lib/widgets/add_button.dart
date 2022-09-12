@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/database/db.dart';
 
+import '../constants/color_constants.dart';
+
 class AddButton extends StatefulWidget {
   String title;
 
@@ -31,9 +33,10 @@ class _AddButtonState extends State<AddButton> {
                 setState(() {});
               },
               icon: isFav
-                  ? const Icon(Icons.bookmark_added, color: Colors.orange)
+                  ? const Icon(Icons.bookmark_added,
+                      color: ColorConstants.lightGreen)
                   : const Icon(
-                      Icons.bookmark_added_outlined,
+                      Icons.bookmark_outline,
                       color: Colors.white,
                     ),
             ),

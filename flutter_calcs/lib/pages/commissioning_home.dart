@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/app_buttons.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
@@ -29,14 +30,12 @@ class CommissioningPage extends StatelessWidget {
         title: const Text(
           'Commissioning',
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 25,
-          ),
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF111827),
+        backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
       drawer: const CustomDrawer(),
-      backgroundColor: const Color(0xFF111827),
+      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: ListView(
         shrinkWrap: true,
         physics: const ScrollPhysics(),
@@ -47,7 +46,7 @@ class CommissioningPage extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(10.0, 0.0, 3.0, 0.0),
                 child: MaterialButton(
                   minWidth: 5,
-                  color: const Color(0xFF22c55e),
+                  color: ColorConstants.messageColor,
                   textColor: Colors.white,
                   child: const Icon(Icons.home),
                   onPressed: () =>
@@ -76,10 +75,10 @@ class CommissioningPage extends StatelessWidget {
                 },
                 child: AppButtons(
                   textColor: Colors.white,
-                  backgroundColor: const Color(0xFF6b7280),
-                  borderColor: Colors.grey[200]!,
+                  backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
+                  borderColor: Colors.grey[900]!,
                   text: buttons.menuButton,
-                  size: 17,
+                  size: 20,
                 ),
               );
             },

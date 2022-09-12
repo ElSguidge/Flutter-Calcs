@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart' as routes;
+import 'package:flutter_calcs/pages/ach_ph.dart';
 import 'package:flutter_calcs/pages/air_home.dart';
 import 'package:flutter_calcs/pages/air_temp.dart';
 import 'package:flutter_calcs/pages/airflow_vel.dart';
@@ -19,6 +20,8 @@ import 'package:flutter_calcs/pages/opening_screen.dart';
 import 'package:flutter_calcs/pages/register_page.dart';
 import 'package:flutter_calcs/pages/sheave_eq.dart';
 import 'package:flutter_calcs/pages/total_pressure.dart';
+import 'package:flutter_calcs/pages/vel_air.dart';
+import 'package:flutter_calcs/pages/vol_flow_rate.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -59,7 +62,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case routes.logIn:
       return MaterialPageRoute(builder: (_) => const LoginPage());
     case routes.favoritePage:
-      return MaterialPageRoute(builder: (_) => FavoritePage());
+      return MaterialPageRoute(builder: (_) => const FavoritePage());
+    case routes.volFlowRate:
+      return MaterialPageRoute(builder: (_) => const VolFlowRate());
+    case routes.velOfAir:
+      return MaterialPageRoute(builder: (_) => const VelocityAir());
+    case routes.airChange:
+      return MaterialPageRoute(builder: (_) => const AirChangesPh());
+
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

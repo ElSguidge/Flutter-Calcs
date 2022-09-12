@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,10 +42,10 @@ class _RegisterPageState extends State<RegisterPage> {
         hintText: "John Doe",
         labelText: "Username",
         labelStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white70,
         ),
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white30,
         ),
       ),
     );
@@ -65,10 +66,10 @@ class _RegisterPageState extends State<RegisterPage> {
         hintText: "something@example.com",
         labelText: "Email",
         labelStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white70,
         ),
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white30,
         ),
       ),
     );
@@ -88,10 +89,10 @@ class _RegisterPageState extends State<RegisterPage> {
         hintText: "password",
         labelText: "Password",
         labelStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white70,
         ),
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white30,
         ),
       ),
     );
@@ -112,10 +113,10 @@ class _RegisterPageState extends State<RegisterPage> {
         hintText: "password",
         labelText: "Re-enter Password",
         labelStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white70,
         ),
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white30,
         ),
       ),
     );
@@ -133,8 +134,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     final registerButton = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(25.0),
-      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.0),
+      color: ColorConstants.darkScaffoldBackgroundColor,
       child: MaterialButton(
         minWidth: mq.size.width / 1.2,
         padding: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
@@ -143,7 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 20.0,
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -208,7 +209,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

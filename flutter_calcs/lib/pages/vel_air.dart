@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
@@ -7,21 +10,23 @@ import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
-class TotalPressure extends StatefulWidget {
-  const TotalPressure({Key? key}) : super(key: key);
+class VelocityAir extends StatefulWidget {
+  const VelocityAir({Key? key}) : super(key: key);
 
   @override
-  State<TotalPressure> createState() => _TotalPressureState();
+  State<VelocityAir> createState() => _VelocityAirState();
 }
 
-class _TotalPressureState extends State<TotalPressure> {
+class _VelocityAirState extends State<VelocityAir> {
+  bool standard = true;
   FirebaseServices firebaseServices = FirebaseServices();
 
-  String title = 'Total Pressure';
+  String title = 'Velocity of Air';
 
-  final TextEditingController _firstController = TextEditingController();
-  final TextEditingController _secondController = TextEditingController();
+  final TextEditingController _velocityController = TextEditingController();
   final TextEditingController _thirdController = TextEditingController();
+  final TextEditingController _airDensity = TextEditingController();
+  final TextEditingController _airDensityAnswer = TextEditingController();
 
   @override
   void initState() {
@@ -103,9 +108,8 @@ class _TotalPressureState extends State<TotalPressure> {
                     minWidth: 5,
                     color: ColorConstants.messageColor,
                     textColor: Colors.white,
-                    child: const Text('Total Pr..'),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, totalPressure)},
+                    child: const Text('Veloc..'),
+                    onPressed: () => {Navigator.pushNamed(context, velOfAir)},
                     splashColor: const Color(0xFFa78bfa),
                   ),
                 ),
@@ -133,7 +137,7 @@ class _TotalPressureState extends State<TotalPressure> {
               ),
               const Expanded(
                 child: Text(
-                  'TOTAL PRESSURE',
+                  'Velocity of Air (V)',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -166,7 +170,7 @@ class _TotalPressureState extends State<TotalPressure> {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,1}')),
                         ],
-                        controller: _firstController,
+                        controller: _velocityController,
                         onChanged: (value) {
                           _calculate();
                         },
@@ -195,64 +199,153 @@ class _TotalPressureState extends State<TotalPressure> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^\d+\.?\d{0,1}')),
-                      ],
-                      controller: _secondController,
-                      onChanged: (value) {
-                        _calculate();
-                      },
-                      keyboardType: TextInputType.number,
-                      cursorColor: Colors.white,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.white70),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        filled: true,
-                        fillColor: ColorConstants.lightScaffoldBackgroundColor,
-                        labelText: 'Static Pressure (SP)',
-                        hintText: 'Enter static pressure [in Pa]',
-                        focusColor: Colors.white,
-                        labelStyle: const TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              // ignore: unnecessary_const
-                              color: Colors.white60),
-                          borderRadius: BorderRadius.circular(8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      const Text(
+                        "Standard Air?",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          standard == true ? "Yes" : "No",
+                          style: TextStyle(
+                              color: standard == true
+                                  ? CupertinoColors.activeGreen
+                                  : CupertinoColors.destructiveRed,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CupertinoSwitch(
+                          // This bool value toggles the switch.
+                          value: standard,
+                          thumbColor: Colors.white,
+                          trackColor: ColorConstants.borderColor,
+                          activeColor: ColorConstants.lightGreen,
+                          onChanged: (bool? value) {
+                            // This is called when the user toggles the switch.
+                            setState(() {
+                              standard = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: !standard,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,1}')),
+                            ],
+                            controller: _airDensity,
+                            onChanged: (value) {
+                              _calculate();
+                            },
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.white,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintStyle: const TextStyle(color: Colors.white70),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  ColorConstants.lightScaffoldBackgroundColor,
+                              labelText: 'Air Density (p)',
+                              hintText: 'Enter air density [kg/m^3]',
+                              focusColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    // ignore: unnecessary_const
+                                    color: const Color(0xFFcbd5e1)),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Calculated Velocity of Air (V): ',
+                            style: TextStyle(color: Color(0xFFffffff)),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                          child: AbsorbPointer(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              controller: _airDensityAnswer,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintStyle:
+                                    const TextStyle(color: Colors.white70),
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    ColorConstants.lightScaffoldBackgroundColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Text(
-                    'Calculated Total Pressure: ',
-                    style: TextStyle(color: Color(0xFFffffff)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                    child: AbsorbPointer(
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        controller: _thirdController,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(8.0),
+                  Visibility(
+                    visible: standard,
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Calculated Velocity of Air (V): ',
+                            style: TextStyle(color: Color(0xFFffffff)),
                           ),
-                          filled: true,
-                          fillColor:
-                              ColorConstants.lightScaffoldBackgroundColor,
                         ),
-                      ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                          child: AbsorbPointer(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              controller: _thirdController,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintStyle:
+                                    const TextStyle(color: Colors.white70),
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    ColorConstants.lightScaffoldBackgroundColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -280,7 +373,7 @@ class _TotalPressureState extends State<TotalPressure> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Math.tex(
-                    r'TP(Pa) = VP + SP',
+                    r'V_{(stdair)} = 1.225 \times \sqrt{VP}',
                     mathStyle: MathStyle.display,
                     textStyle: const TextStyle(
                       color: Colors.white,
@@ -296,12 +389,18 @@ class _TotalPressureState extends State<TotalPressure> {
       );
 
   void _calculate() {
-    String? str1 = ' Pa';
-    if (_firstController.text.trim().isNotEmpty &&
-        _secondController.text.trim().isNotEmpty) {
-      final firstValue = double.parse(_firstController.text);
-      final secondValue = double.parse(_secondController.text);
-      _thirdController.text = (firstValue + secondValue).toString() + str1;
+    String? str1 = ' m/s';
+    final firstValue = double.parse(_velocityController.text);
+
+    if (_velocityController.text.trim().isNotEmpty && standard == true) {
+      final square = sqrt(firstValue);
+      _thirdController.text = (square * 1.225).toStringAsFixed(2) + str1;
+    }
+    if (_velocityController.text.trim().isNotEmpty &&
+        _airDensity.text.trim().isNotEmpty) {
+      final airD = double.parse(_airDensity.text);
+      final square = sqrt(firstValue);
+      _airDensityAnswer.text = (square * airD).toStringAsFixed(2) + str1;
     }
   }
 }

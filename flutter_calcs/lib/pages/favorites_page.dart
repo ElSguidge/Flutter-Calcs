@@ -13,30 +13,32 @@ class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'My Favourites',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-            ),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text(
+          'My Favourites',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
           ),
-          backgroundColor: Colors.black,
         ),
         backgroundColor: Colors.black,
-        drawer: const CustomDrawer(),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: const [
-              Expanded(
-                  child: Padding(
+      ),
+      drawer: const CustomDrawer(),
+      body: Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(
+          children: const [
+            Expanded(
+              child: Padding(
                 padding: EdgeInsets.all(8),
                 child: FavoritePageList(),
-              ))
-            ],
-          ),
-        ));
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

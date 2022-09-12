@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_calcs/widgets/list_buttons.dart';
@@ -33,12 +34,13 @@ class _AirState extends State<Air> {
           style: TextStyle(
             color: Colors.white,
             fontSize: 25,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: const Color(0xFF111827),
+        backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
       drawer: const CustomDrawer(),
-      backgroundColor: const Color(0xFF111827),
+      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
 
       // ignore: avoid_unnecessary_containers
       body: ListView(
@@ -51,7 +53,7 @@ class _AirState extends State<Air> {
                 padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
                 child: MaterialButton(
                   minWidth: 5,
-                  color: const Color(0xFF6d28d9),
+                  color: ColorConstants.secondaryDarkAppColor,
                   textColor: Colors.white,
                   child: const Icon(Icons.home),
                   onPressed: () =>
@@ -63,7 +65,7 @@ class _AirState extends State<Air> {
                 padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
                 child: MaterialButton(
                   minWidth: 5,
-                  color: const Color(0xFF6d28d9),
+                  color: ColorConstants.secondaryDarkAppColor,
                   textColor: Colors.white,
                   child: const Text('TAB'),
                   onPressed: () => {Navigator.pushNamed(context, calculators)},
@@ -74,7 +76,7 @@ class _AirState extends State<Air> {
                 padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
                 child: MaterialButton(
                   minWidth: 5,
-                  color: const Color(0xFF22c55e),
+                  color: ColorConstants.messageColor,
                   textColor: Colors.white,
                   child: const Text('Air'),
                   onPressed: () => {Navigator.pushNamed(context, air)},
@@ -90,6 +92,7 @@ class _AirState extends State<Air> {
             itemBuilder: (context, index) {
               final calculations = tests[index];
               return InkWell(
+                splashColor: const Color(0xFFa78bfa),
                 onTap: () {
                   Navigator.pushNamed(context, calculations.nav);
                 },
@@ -97,10 +100,10 @@ class _AirState extends State<Air> {
                   padding: const EdgeInsets.all(12.0),
                   child: ListButtons(
                     textColor: Colors.white,
-                    backgroundColor: const Color(0xFF6b7280),
-                    borderColor: Colors.grey[200]!,
+                    backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
+                    borderColor: Colors.grey[900]!,
                     text: calculations.calc,
-                    size: 20,
+                    size: 21,
                   ),
                 ),
               );

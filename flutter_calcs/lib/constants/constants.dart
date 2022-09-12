@@ -17,3 +17,6 @@ const String ductArea = 'ductArea';
 const String favoritePage = 'favoritePage';
 const String registerPage = 'RegisterPage';
 const String openingView = 'openingView';
+const String volFlowRate = 'volFlowRate';
+const String velOfAir = 'velOfAir';
+const String airChange = 'airChange';

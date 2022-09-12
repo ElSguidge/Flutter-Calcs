@@ -1,6 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/database/db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,13 +42,13 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: ColorConstants.darkScaffoldBackgroundColor,
                           ),
                         ),
                         hintText: "something@example.com",
                         labelText: "Email",
                         labelStyle: TextStyle(
-                          color: Colors.black,
+                          color: ColorConstants.darkScaffoldBackgroundColor,
                         ),
                         hintStyle: TextStyle(
                           color: Colors.black,
@@ -114,10 +115,10 @@ class _LoginPageState extends State<LoginPage> {
         hintText: "something@example.com",
         labelText: "Email",
         labelStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white70,
         ),
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.white30,
         ),
       ),
     );
@@ -140,10 +141,10 @@ class _LoginPageState extends State<LoginPage> {
             hintText: "password",
             labelText: "Password",
             labelStyle: TextStyle(
-              color: Colors.white,
+              color: Colors.white70,
             ),
             hintStyle: TextStyle(
-              color: Colors.white,
+              color: Colors.white30,
             ),
           ),
         ),
@@ -182,8 +183,8 @@ class _LoginPageState extends State<LoginPage> {
 
     final loginButton = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(25.0),
-      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.0),
+      color: ColorConstants.darkScaffoldBackgroundColor,
       child: MaterialButton(
         minWidth: mq.size.width / 1.2,
         padding: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
@@ -192,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 20.0,
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -256,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

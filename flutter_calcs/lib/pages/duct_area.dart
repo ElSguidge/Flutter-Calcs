@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
+import '../constants/color_constants.dart';
 import '../database/db.dart';
 
 class Equations {
@@ -69,10 +70,10 @@ class _DuctAreaState extends State<DuctArea> {
             fontSize: 25,
           ),
         ),
-        backgroundColor: const Color(0xFF111827),
+        backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
       drawer: const CustomDrawer(),
-      backgroundColor: const Color(0xFF111827),
+      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: ListView(
         shrinkWrap: true,
         physics: const ScrollPhysics(),
@@ -85,7 +86,7 @@ class _DuctAreaState extends State<DuctArea> {
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
                   child: MaterialButton(
                     minWidth: 5,
-                    color: const Color(0xFF6d28d9),
+                    color: ColorConstants.secondaryDarkAppColor,
                     textColor: Colors.white,
                     child: const Icon(Icons.home),
                     onPressed: () =>
@@ -97,7 +98,7 @@ class _DuctAreaState extends State<DuctArea> {
                   padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
                   child: MaterialButton(
                     minWidth: 5,
-                    color: const Color(0xFF6d28d9),
+                    color: ColorConstants.secondaryDarkAppColor,
                     textColor: Colors.white,
                     child: const Text('TAB'),
                     onPressed: () =>
@@ -109,7 +110,7 @@ class _DuctAreaState extends State<DuctArea> {
                   padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
                   child: MaterialButton(
                     minWidth: 5,
-                    color: const Color(0xFF6d28d9),
+                    color: ColorConstants.secondaryDarkAppColor,
                     textColor: Colors.white,
                     child: const Text('Air'),
                     onPressed: () => {Navigator.pushNamed(context, air)},
@@ -120,7 +121,7 @@ class _DuctAreaState extends State<DuctArea> {
                   padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
                   child: MaterialButton(
                     minWidth: 1,
-                    color: const Color(0xFF6d28d9),
+                    color: ColorConstants.secondaryDarkAppColor,
                     textColor: Colors.white,
                     child: const Text('Airflow &..'),
                     onPressed: () => {Navigator.pushNamed(context, airflowVel)},
@@ -131,7 +132,7 @@ class _DuctAreaState extends State<DuctArea> {
                   padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
                   child: MaterialButton(
                     minWidth: 5,
-                    color: const Color(0xFF22c55e),
+                    color: ColorConstants.messageColor,
                     textColor: Colors.white,
                     child: const Text('Duct Area'),
                     onPressed: () => {Navigator.pushNamed(context, ductArea)},
@@ -162,8 +163,7 @@ class _DuctAreaState extends State<DuctArea> {
               ),
               const Expanded(
                 child: Text(
-                  'Duct Area',
-                  // _products.isEmpty ? '' : _products[index]['name'],
+                  'DUCT AREA',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -176,13 +176,13 @@ class _DuctAreaState extends State<DuctArea> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(8.0),
             child: Card(
               shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xFFe4e4e7)),
+                side: const BorderSide(color: ColorConstants.borderColor),
                 borderRadius: BorderRadius.circular(15.0),
               ),
-              color: const Color(0xFF334155),
+              color: ColorConstants.secondaryDarkAppColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -200,8 +200,9 @@ class _DuctAreaState extends State<DuctArea> {
                             });
                           },
                           child: const Text("Rect"),
-                          color:
-                              _displayRecTextField ? Colors.blue : Colors.black,
+                          color: _displayRecTextField
+                              ? Color(0xFF3b82f6)
+                              : ColorConstants.secondaryDarkAppColor,
                           textColor: Colors.white,
                         )),
                         Expanded(
@@ -215,8 +216,8 @@ class _DuctAreaState extends State<DuctArea> {
                           },
                           child: const Text("Round"),
                           color: _displayRoundTextField
-                              ? Colors.blue
-                              : Colors.black,
+                              ? Color(0xFF3b82f6)
+                              : ColorConstants.secondaryDarkAppColor,
                           textColor: Colors.white,
                         )),
                         Expanded(
@@ -230,8 +231,8 @@ class _DuctAreaState extends State<DuctArea> {
                           },
                           child: const Text("Flat Oval"),
                           color: _displayFlatTextField
-                              ? Colors.blue
-                              : Colors.black,
+                              ? Color(0xFF3b82f6)
+                              : ColorConstants.secondaryDarkAppColor,
                           textColor: Colors.white,
                         )),
                       ],
@@ -241,119 +242,176 @@ class _DuctAreaState extends State<DuctArea> {
                   //Rectangle
                   Visibility(
                     visible: _displayRecTextField,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-                      child: Container(
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d{0,1}')),
-                          ],
-                          controller: _rectWidthController,
-                          onChanged: (value) {
-                            _calculate();
-                          },
-                          keyboardType: TextInputType.number,
-                          cursorColor: Colors.white,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xFF64748b),
-                            labelText: 'Width',
-                            hintText: 'Enter width [in mm]',
-                            focusColor: Colors.white,
-                            labelStyle: const TextStyle(color: Colors.white),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  // ignore: unnecessary_const
-                                  color: const Color(0xFFcbd5e1)),
-                              borderRadius: BorderRadius.circular(20.0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,1}')),
+                            ],
+                            controller: _rectWidthController,
+                            onChanged: (value) {
+                              _calculate();
+                            },
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.white,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  ColorConstants.lightScaffoldBackgroundColor,
+                              labelText: 'Width (mm)',
+                              hintText: 'Enter width [in mm]',
+                              focusColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    // ignore: unnecessary_const
+                                    color: Colors.white60),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _displayRecTextField,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,1}')),
-                        ],
-                        controller: _rectHeightController,
-                        onChanged: (value) {
-                          _calculate();
-                        },
-                        keyboardType: TextInputType.number,
-                        cursorColor: Colors.white,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFF64748b),
-                          labelText: 'Height',
-                          hintText: 'Enter height [in mm]',
-                          focusColor: Colors.white,
-                          labelStyle: const TextStyle(color: Colors.white),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                // ignore: unnecessary_const
-                                color: const Color(0xFFcbd5e1)),
-                            borderRadius: BorderRadius.circular(20.0),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,1}')),
+                            ],
+                            controller: _rectHeightController,
+                            onChanged: (value) {
+                              _calculate();
+                            },
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.white,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  ColorConstants.lightScaffoldBackgroundColor,
+                              labelText: 'Height (mm)',
+                              hintText: 'Enter height [in mm]',
+                              focusColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    // ignore: unnecessary_const
+                                    color: Colors.white60),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        const Text(
+                          "Calculated area (A): ",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        //here
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                          child: AbsorbPointer(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              controller: _rectCalcController,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    ColorConstants.lightScaffoldBackgroundColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
                   //  Round duct
                   Visibility(
                     visible: _displayRoundTextField,
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,1}')),
-                        ],
-                        controller: _roundController,
-                        onChanged: (value) {
-                          _calculate();
-                        },
-                        keyboardType: TextInputType.number,
-                        cursorColor: Colors.white,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFF64748b),
-                          labelText: 'Diameter',
-                          hintText: 'Enter Diameter [in mm]',
-                          focusColor: Colors.white,
-                          labelStyle: const TextStyle(color: Colors.white),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                // ignore: unnecessary_const
-                                color: const Color(0xFFcbd5e1)),
-                            borderRadius: BorderRadius.circular(20.0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,1}')),
+                            ],
+                            controller: _roundController,
+                            onChanged: (value) {
+                              _calculate();
+                            },
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.white,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  ColorConstants.lightScaffoldBackgroundColor,
+                              labelText: 'Diameter (mm)',
+                              hintText: 'Enter Diameter [in mm]',
+                              focusColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    // ignore: unnecessary_const
+                                    color: const Color(0xFFcbd5e1)),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        const Text(
+                          "Calculated area (A): ",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                          child: AbsorbPointer(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              controller: _roundCalcController,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    ColorConstants.lightScaffoldBackgroundColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -361,152 +419,107 @@ class _DuctAreaState extends State<DuctArea> {
 
                   Visibility(
                     visible: _displayFlatTextField,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-                      child: Container(
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d{0,1}')),
-                          ],
-                          controller: _flatWidthController,
-                          onChanged: (value) {
-                            _calculate();
-                          },
-                          keyboardType: TextInputType.number,
-                          cursorColor: Colors.white,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xFF64748b),
-                            labelText: 'Width',
-                            hintText: 'Enter width [in mm]',
-                            focusColor: Colors.white,
-                            labelStyle: const TextStyle(color: Colors.white),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  // ignore: unnecessary_const
-                                  color: const Color(0xFFcbd5e1)),
-                              borderRadius: BorderRadius.circular(20.0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,1}')),
+                            ],
+                            controller: _flatWidthController,
+                            onChanged: (value) {
+                              _calculate();
+                            },
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.white,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  ColorConstants.lightScaffoldBackgroundColor,
+                              labelText: 'Width (mm)',
+                              hintText: 'Enter width [in mm]',
+                              focusColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    // ignore: unnecessary_const
+                                    color: Colors.white60),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _displayFlatTextField,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,1}')),
-                        ],
-                        controller: _flatHeightController,
-                        onChanged: (value) {
-                          _calculate();
-                        },
-                        keyboardType: TextInputType.number,
-                        cursorColor: Colors.white,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFF64748b),
-                          labelText: 'Height',
-                          hintText: 'Enter height [in mm]',
-                          focusColor: Colors.white,
-                          labelStyle: const TextStyle(color: Colors.white),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                // ignore: unnecessary_const
-                                color: const Color(0xFFcbd5e1)),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: const Text(
-                      'Calculated Duct Area: ',
-                      style: TextStyle(color: Color(0xFFffffff)),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _displayRecTextField,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 30.0),
-                      child: AbsorbPointer(
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          controller: _rectCalcController,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(18.0),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,1}')),
+                            ],
+                            controller: _flatHeightController,
+                            onChanged: (value) {
+                              _calculate();
+                            },
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.white,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  ColorConstants.lightScaffoldBackgroundColor,
+                              labelText: 'Height (mm)',
+                              hintText: 'Enter height [in mm]',
+                              focusColor: Colors.white,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    // ignore: unnecessary_const
+                                    color: Colors.white60),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
                             ),
-                            filled: true,
-                            fillColor: const Color(0xFF64748b),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _displayRoundTextField,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 30.0),
-                      child: AbsorbPointer(
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          controller: _roundCalcController,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(18.0),
+                        const Text(
+                          "Calculated area (A): ",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                          child: AbsorbPointer(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              controller: _flatCalcController,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    ColorConstants.lightScaffoldBackgroundColor,
+                              ),
                             ),
-                            filled: true,
-                            fillColor: const Color(0xFF64748b),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _displayFlatTextField,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 30.0),
-                      child: AbsorbPointer(
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          controller: _flatCalcController,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xFF64748b),
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                 ],
@@ -525,7 +538,7 @@ class _DuctAreaState extends State<DuctArea> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
-            backgroundColor: const Color(0xFF64748b),
+            backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
             child: Container(
               height: 300.0, // Change as per your requirement
               width: 500.0, // Change as per your requirement
@@ -584,7 +597,9 @@ class _DuctAreaState extends State<DuctArea> {
                   SmoothPageIndicator(
                       controller: _pageController, // PageController
                       count: eqs.length,
-                      effect: const WormEffect(), // your preferred effect
+                      effect: const WormEffect(
+                          activeDotColor: ColorConstants
+                              .messageColor), // your preferred effect
                       onDotClicked: (index) {})
                 ],
               ),
@@ -592,20 +607,20 @@ class _DuctAreaState extends State<DuctArea> {
           ));
 
   void _calculate() {
-    String? str1 = ' m2';
+    String? str1 = ' mm2';
 
     if (_rectWidthController.text.trim().isNotEmpty &&
         _rectHeightController.text.trim().isNotEmpty) {
       final firstValue = double.parse(_rectWidthController.text);
       final secondValue = double.parse(_rectHeightController.text);
       _rectCalcController.text =
-          (firstValue * secondValue / 1000000).toString() + str1;
+          (firstValue * secondValue / 1000).toStringAsFixed(1) + str1;
     }
     if (_roundController.text.trim().isNotEmpty) {
       final firstValue = double.parse(_roundController.text);
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
-      _roundCalcController.text = (power / 1000000).toStringAsFixed(4) + str1;
+      _roundCalcController.text = (power / 1000).toStringAsFixed(1) + str1;
     }
     if (_flatHeightController.text.trim().isNotEmpty &&
         _flatWidthController.text.trim().isNotEmpty) {
@@ -614,8 +629,8 @@ class _DuctAreaState extends State<DuctArea> {
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
       final subtract = (secondValue - firstValue) * firstValue;
-      final addition = (subtract + power) / 1000000;
-      _flatCalcController.text = addition.toStringAsFixed(4) + str1;
+      final addition = (subtract + power) / 1000;
+      _flatCalcController.text = addition.toStringAsFixed(1) + str1;
     }
   }
 }

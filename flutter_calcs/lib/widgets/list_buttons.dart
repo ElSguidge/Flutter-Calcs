@@ -40,7 +40,7 @@ class ListButtons extends StatelessWidget {
         ),
         decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
               color: borderColor,
               width: 1.0,
