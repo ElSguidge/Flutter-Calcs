@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/database/db.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
@@ -13,7 +14,6 @@ class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text(
           'My Favourites',
@@ -22,22 +22,10 @@ class FavoritePage extends StatelessWidget {
             fontSize: 25,
           ),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
       drawer: const CustomDrawer(),
-      body: Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          children: const [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: FavoritePageList(),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: const FavoritePageList(),
     );
   }
 }
@@ -80,68 +68,88 @@ class _FavoritePageListState extends State<FavoritePageList> {
                     'route': value['route']
                   };
                   bookmarks.add(favoriteMap);
+
+                  // if (value['isFavorite'] == false) {
+                  //   return Container(
+                  //     color: ColorConstants.darkScaffoldBackgroundColor,
+                  //     child: const Align(
+                  //       alignment: Alignment.center,
+                  //       child: Center(
+                  //           child: Text(
+                  //         'You have no favorites!',
+                  //         textAlign: TextAlign.center,
+                  //         style: TextStyle(color: Colors.white70, fontSize: 17),
+                  //       )),
+                  //     ),
+                  //   );
+                  // }
                 }
                 // print(bookmarks);
               }
-              if (bookmarks == []) {
-                return const Align(
-                  alignment: Alignment.center,
-                  child: Center(
-                      child: Text(
-                    'You have no favorites!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black),
-                  )),
-                );
-              }
-              return ListView.builder(
-                itemCount: bookmarks.length,
-                itemBuilder: (BuildContext context, int index) {
-                  // print(bookmarks.length);
-                  return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Material(
-                        color: const Color(0xFFf97316),
-                        borderRadius: BorderRadius.circular(20),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, bookmarks[index]['route']);
-                            },
-                            title: Text(
-                              bookmarks[index]['name'],
-                              style: const TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                                size: 30,
+              return Container(
+                color: ColorConstants.darkScaffoldBackgroundColor,
+                child: ListView.builder(
+                    itemCount: bookmarks.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      // print(bookmarks.length);
+                      // if (bookmarks.isEmpty) {
+                      //   return const Align(
+                      //     alignment: Alignment.center,
+                      //     child: Center(
+                      //         child: Text(
+                      //       'You have no favorites!',
+                      //       textAlign: TextAlign.center,
+                      //       style: TextStyle(color: Colors.white),
+                      //     )),
+                      //   );
+                      // } else {
+                      // print(bookmarks.length);
+                      return Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0),
+                          child: Material(
+                            color: ColorConstants.textBoxColor,
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, bookmarks[index]['route']);
+                                },
+                                title: Text(
+                                  bookmarks[index]['name'],
+                                  style: const TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white70,
+                                    size: 30,
+                                  ),
+                                  onPressed: () async {
+                                    await firebaseServices.update(
+                                        email, bookmarks[index]['name']);
+                                    setState(() {
+                                      if (bookmarks.isNotEmpty) {
+                                        bookmarks.removeAt(index);
+                                      }
+                                    });
+                                  },
+                                ),
+                                subtitle: Text(
+                                  bookmarks[index]['subtitle'],
+                                  style: const TextStyle(
+                                      fontSize: 13, color: Colors.white60),
+                                ),
                               ),
-                              onPressed: () async {
-                                await firebaseServices.update(
-                                    email, bookmarks[index]['name']);
-                                setState(() {
-                                  if (bookmarks.isNotEmpty) {
-                                    bookmarks.removeAt(index);
-                                  }
-                                });
-                              },
                             ),
-                            subtitle: Text(
-                              bookmarks[index]['subtitle'],
-                              style: const TextStyle(
-                                  fontSize: 13, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ));
-                },
+                          ));
+                      // }
+                    }),
               );
             }
             return const CircularProgressIndicator();

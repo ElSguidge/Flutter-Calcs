@@ -141,7 +141,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
               ),
               const Expanded(
                 child: Text(
-                  'Air Changes Per Hour (ACH)',
+                  'Air Changes Per Hour',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -170,22 +170,11 @@ class _AirChangesPhState extends State<AirChangesPh> {
                     children: <Widget>[
                       Text(
                         standard == true
-                            ? "Known room volume (m^3)"
+                            ? "Known room volume (m³)"
                             : "Calculate volume",
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: Text(
-                      //     standard == true ? "Yes" : "No",
-                      //     style: TextStyle(
-                      //         color: standard == true
-                      //             ? CupertinoColors.activeGreen
-                      //             : CupertinoColors.destructiveRed,
-                      //         fontWeight: FontWeight.w600),
-                      //   ),
-                      // ),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: CupertinoSwitch(
@@ -242,7 +231,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -254,8 +245,8 @@ class _AirChangesPhState extends State<AirChangesPh> {
                                     filled: true,
                                     fillColor: ColorConstants
                                         .lightScaffoldBackgroundColor,
-                                    labelText: 'Room volume',
-                                    hintText: 'Enter room volume [in m^3]',
+                                    labelText: 'Room volume (m³)',
+                                    hintText: 'Enter room volume [in m³]',
                                     focusColor: Colors.white,
                                     labelStyle:
                                         const TextStyle(color: Colors.white),
@@ -286,7 +277,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -329,7 +322,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
                               flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(
-                                    10.0, 10.0, 5.0, 10.0),
+                                    20.0, 10.0, 5.0, 10.0),
                                 child: TextFormField(
                                   textAlign: TextAlign.center,
                                   inputFormatters: <TextInputFormatter>[
@@ -340,7 +333,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -384,7 +379,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -417,7 +414,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
                               flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(
-                                    10.0, 10.0, 10.0, 10.0),
+                                    5.0, 10.0, 20.0, 10.0),
                                 child: TextFormField(
                                   textAlign: TextAlign.center,
                                   inputFormatters: <TextInputFormatter>[
@@ -428,7 +425,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -470,7 +469,8 @@ class _AirChangesPhState extends State<AirChangesPh> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
@@ -508,7 +508,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _calculatedVolumeACH,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -546,7 +548,9 @@ class _AirChangesPhState extends State<AirChangesPh> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _knownRoomVolumeACH,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:

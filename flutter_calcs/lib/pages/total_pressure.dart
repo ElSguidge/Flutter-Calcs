@@ -170,7 +170,8 @@ class _TotalPressureState extends State<TotalPressure> {
                         onChanged: (value) {
                           _calculate();
                         },
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
                         cursorColor: Colors.white,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -207,7 +208,8 @@ class _TotalPressureState extends State<TotalPressure> {
                       onChanged: (value) {
                         _calculate();
                       },
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                          signed: true, decimal: true),
                       cursorColor: Colors.white,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
@@ -240,7 +242,8 @@ class _TotalPressureState extends State<TotalPressure> {
                       child: TextField(
                         textAlign: TextAlign.center,
                         controller: _thirdController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           hintStyle: const TextStyle(color: Colors.white70),

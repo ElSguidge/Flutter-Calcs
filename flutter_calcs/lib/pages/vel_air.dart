@@ -174,7 +174,8 @@ class _VelocityAirState extends State<VelocityAir> {
                         onChanged: (value) {
                           _calculate();
                         },
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
                         cursorColor: Colors.white,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -252,7 +253,8 @@ class _VelocityAirState extends State<VelocityAir> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
@@ -264,7 +266,7 @@ class _VelocityAirState extends State<VelocityAir> {
                               fillColor:
                                   ColorConstants.lightScaffoldBackgroundColor,
                               labelText: 'Air Density (p)',
-                              hintText: 'Enter air density [kg/m^3]',
+                              hintText: 'Enter air density [kg/m³]',
                               focusColor: Colors.white,
                               labelStyle: const TextStyle(color: Colors.white),
                               focusedBorder: OutlineInputBorder(
@@ -290,7 +292,9 @@ class _VelocityAirState extends State<VelocityAir> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _airDensityAnswer,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -328,7 +332,9 @@ class _VelocityAirState extends State<VelocityAir> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _thirdController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:

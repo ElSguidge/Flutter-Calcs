@@ -256,10 +256,12 @@ class _DuctAreaState extends State<DuctArea> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              hintStyle: const TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -291,10 +293,12 @@ class _DuctAreaState extends State<DuctArea> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              hintStyle: const TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -326,7 +330,9 @@ class _DuctAreaState extends State<DuctArea> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _rectCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -362,10 +368,12 @@ class _DuctAreaState extends State<DuctArea> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              hintStyle: const TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -396,7 +404,9 @@ class _DuctAreaState extends State<DuctArea> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _roundCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -434,10 +444,12 @@ class _DuctAreaState extends State<DuctArea> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              hintStyle: const TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -470,10 +482,12 @@ class _DuctAreaState extends State<DuctArea> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              hintStyle: const TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -504,7 +518,9 @@ class _DuctAreaState extends State<DuctArea> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _flatCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -607,20 +623,20 @@ class _DuctAreaState extends State<DuctArea> {
           ));
 
   void _calculate() {
-    String? str1 = ' mm2';
+    String? str1 = ' m²';
 
     if (_rectWidthController.text.trim().isNotEmpty &&
         _rectHeightController.text.trim().isNotEmpty) {
       final firstValue = double.parse(_rectWidthController.text);
       final secondValue = double.parse(_rectHeightController.text);
       _rectCalcController.text =
-          (firstValue * secondValue / 1000).toStringAsFixed(1) + str1;
+          (firstValue * secondValue / 1000000).toStringAsFixed(4) + str1;
     }
     if (_roundController.text.trim().isNotEmpty) {
       final firstValue = double.parse(_roundController.text);
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
-      _roundCalcController.text = (power / 1000).toStringAsFixed(1) + str1;
+      _roundCalcController.text = (power / 1000000).toStringAsFixed(4) + str1;
     }
     if (_flatHeightController.text.trim().isNotEmpty &&
         _flatWidthController.text.trim().isNotEmpty) {
@@ -629,8 +645,8 @@ class _DuctAreaState extends State<DuctArea> {
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
       final subtract = (secondValue - firstValue) * firstValue;
-      final addition = (subtract + power) / 1000;
-      _flatCalcController.text = addition.toStringAsFixed(1) + str1;
+      final addition = (subtract + power) / 1000000;
+      _flatCalcController.text = addition.toStringAsFixed(4) + str1;
     }
   }
 }

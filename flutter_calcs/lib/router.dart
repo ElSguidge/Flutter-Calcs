@@ -3,6 +3,7 @@ import 'package:flutter_calcs/constants/constants.dart' as routes;
 import 'package:flutter_calcs/pages/ach_ph.dart';
 import 'package:flutter_calcs/pages/air_home.dart';
 import 'package:flutter_calcs/pages/air_temp.dart';
+import 'package:flutter_calcs/pages/air_temp_convert.dart';
 import 'package:flutter_calcs/pages/airflow_vel.dart';
 import 'package:flutter_calcs/pages/calculators.dart';
 import 'package:flutter_calcs/pages/commissioning_home.dart';
@@ -69,6 +70,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const VelocityAir());
     case routes.airChange:
       return MaterialPageRoute(builder: (_) => const AirChangesPh());
+    case routes.airTempConvert:
+      return MaterialPageRoute(builder: (_) => const AirTempConvert());
 
     default:
       return MaterialPageRoute(

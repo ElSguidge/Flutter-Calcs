@@ -195,7 +195,8 @@ class _VolFlowRateState extends State<VolFlowRate> {
                         onChanged: (value) {
                           _calculate();
                         },
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
                         cursorColor: Colors.white,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -305,13 +306,14 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             textAlign: TextAlign.center,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,3}')),
+                                  RegExp(r'^\d+\.?\d{0,4}')),
                             ],
                             controller: _areaController,
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
@@ -322,8 +324,8 @@ class _VolFlowRateState extends State<VolFlowRate> {
                               filled: true,
                               fillColor:
                                   ColorConstants.lightScaffoldBackgroundColor,
-                              labelText: 'Enter known area (mm^2)',
-                              hintText: 'Enter area [in mm^2]',
+                              labelText: 'Enter known area (m²)',
+                              hintText: 'Enter area [in m²]',
                               focusColor: Colors.white,
                               labelStyle: const TextStyle(
                                 color: Colors.white,
@@ -350,7 +352,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _velCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -393,7 +397,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -436,7 +442,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -477,7 +485,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _rectCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -505,7 +515,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _rectCalcControllerQ,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -543,7 +555,8 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             onChanged: (value) {
                               _calculate();
                             },
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             cursorColor: Colors.white,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
@@ -580,7 +593,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _roundCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -608,7 +623,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _roundCalcControllerQ,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -650,7 +667,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -693,7 +712,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                   onChanged: (value) {
                                     _calculate();
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
@@ -733,7 +754,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _flatCalcController,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -761,7 +784,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: _flatCalcControllerQ,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintStyle:
@@ -822,22 +847,22 @@ class _VolFlowRateState extends State<VolFlowRate> {
       );
 
   void _calculate() {
-    String? str1 = 'mm^2';
-    String? str2 = 'Q = ';
+    String? str1 = 'm²';
+    // String? str2 = 'Q = ';
 
     if (_rectWidthController.text.trim().isNotEmpty &&
         _rectHeightController.text.trim().isNotEmpty) {
       final firstValue = double.parse(_rectWidthController.text);
       final secondValue = double.parse(_rectHeightController.text);
       _rectCalcController.text =
-          (firstValue * secondValue / 1000).toString() + ' ' + str1;
+          (firstValue * secondValue / 1000000).toStringAsFixed(4) + ' ' + str1;
       if (_rectCalcController.text.isNotEmpty &&
           _velController.text.trim().isNotEmpty) {
         final findQ = double.parse(_velController.text);
-        _rectCalcControllerQ.text = str2 +
-            (firstValue * secondValue / 1000 * findQ).toStringAsFixed(1) +
-            ' ' +
-            'l/s';
+        _rectCalcControllerQ.text =
+            ((firstValue * secondValue * findQ) / 1000).toStringAsFixed(1) +
+                ' ' +
+                'l/s';
       }
     }
     if (_roundController.text.trim().isNotEmpty) {
@@ -845,12 +870,12 @@ class _VolFlowRateState extends State<VolFlowRate> {
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
       _roundCalcController.text =
-          (power / 1000).toStringAsFixed(1) + ' ' + str1;
+          (power / 1000000).toStringAsFixed(4) + ' ' + str1;
       if (_roundController.text.isNotEmpty &&
           _velController.text.trim().isNotEmpty) {
         final findQ = double.parse(_velController.text);
         _roundCalcControllerQ.text =
-            str2 + (power / 1000 * findQ).toStringAsFixed(2) + ' ' + 'l/s';
+            (power / 1000 * findQ).toStringAsFixed(2) + ' ' + 'l/s';
       }
     }
     if (_areaController.text.trim().isNotEmpty) {
@@ -859,8 +884,8 @@ class _VolFlowRateState extends State<VolFlowRate> {
           _velController.text.trim().isNotEmpty) {
         final firstValue = double.parse(_areaController.text);
         final second = double.parse(_velController.text);
-        final findQ = (firstValue * second);
-        _velCalcController.text = str2 + findQ.toStringAsFixed(1) + ' ' + 'l/s';
+        final findQ = (firstValue * 1000) * second;
+        _velCalcController.text = findQ.toStringAsFixed(1) + ' ' + 'l/s';
       }
     }
     if (_flatHeightController.text.trim().isNotEmpty &&
@@ -870,13 +895,13 @@ class _VolFlowRateState extends State<VolFlowRate> {
       final divide = (firstValue / 2);
       final power = math.pow(divide, 2) * math.pi;
       final subtract = (secondValue - firstValue) * firstValue;
-      final addition = (subtract + power) / 1000;
-      _flatCalcController.text = addition.toStringAsFixed(2) + ' ' + str1;
+      final addition = (subtract + power) / 1000000;
+      _flatCalcController.text = addition.toStringAsFixed(4) + ' ' + str1;
       if (_flatCalcController.text.isNotEmpty &&
           _velController.text.trim().isNotEmpty) {
         final findQ = double.parse(_velController.text);
         _flatCalcControllerQ.text =
-            str2 + (addition * findQ).toStringAsFixed(1) + ' ' + 'l/s';
+            ((addition * findQ) * 1000).toStringAsFixed(1) + ' ' + 'l/s';
       }
     }
   }
