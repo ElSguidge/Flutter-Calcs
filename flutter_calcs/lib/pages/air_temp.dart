@@ -30,14 +30,6 @@ class _AirTempState extends State<AirTemp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: const Text(
-        //   'Airside Calculators',
-        //   style: TextStyle(
-        //     color: Colors.white,
-        //     fontSize: 25,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        // ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
       drawer: const CustomDrawer(),

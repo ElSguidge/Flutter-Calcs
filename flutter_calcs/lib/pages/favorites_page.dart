@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/database/db.dart';
+import 'package:flutter_calcs/models/favorites.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
 FirebaseServices firebaseServices = FirebaseServices();
@@ -50,12 +51,15 @@ class _FavoritePageListState extends State<FavoritePageList> {
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
-              // get course document
+              if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
               bookmarks = [];
               var userFavoriteDoc = snapshot.data as DocumentSnapshot;
 
               // get sections from the document
               var sections = userFavoriteDoc['bookmarks'];
+
               // print(sections);
               for (final i in sections.entries) {
                 // final key = i.key;
@@ -68,24 +72,24 @@ class _FavoritePageListState extends State<FavoritePageList> {
                     'route': value['route']
                   };
                   bookmarks.add(favoriteMap);
-
-                  // if (value['isFavorite'] == false) {
-                  //   return Container(
-                  //     color: ColorConstants.darkScaffoldBackgroundColor,
-                  //     child: const Align(
-                  //       alignment: Alignment.center,
-                  //       child: Center(
-                  //           child: Text(
-                  //         'You have no favorites!',
-                  //         textAlign: TextAlign.center,
-                  //         style: TextStyle(color: Colors.white70, fontSize: 17),
-                  //       )),
-                  //     ),
-                  //   );
-                  // }
+                  if (bookmarks.isEmpty) {
+                    Container(
+                      color: ColorConstants.darkScaffoldBackgroundColor,
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Center(
+                            child: Text(
+                          'You have no favorites!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white70, fontSize: 17),
+                        )),
+                      ),
+                    );
+                  }
                 }
-                // print(bookmarks);
               }
+              // print(bookmarks);
+
               return Container(
                 color: ColorConstants.darkScaffoldBackgroundColor,
                 child: ListView.builder(
@@ -152,7 +156,7 @@ class _FavoritePageListState extends State<FavoritePageList> {
                     }),
               );
             }
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }),
     );
   }

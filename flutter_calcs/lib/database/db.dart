@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_calcs/models/favorites.dart';
 
 class FirebaseServices {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -26,8 +25,6 @@ class FirebaseServices {
         .collection("calculators")
         .get()
         .then((QuerySnapshot querySnapshot) {
-      int index = 0;
-
       for (var element in querySnapshot.docs) {
         // print(element['id']);
         int id = element['id'];
