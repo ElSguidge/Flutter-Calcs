@@ -4,6 +4,8 @@ import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/app_buttons.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
+import '../widgets/list_buttons.dart';
+
 class Menu {
   final String menuButton;
   final String nav;
@@ -56,29 +58,26 @@ class CommissioningPage extends StatelessWidget {
               ),
             ],
           ),
-          GridView.builder(
+          ListView.builder(
             shrinkWrap: true,
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-            ),
+            physics: const ScrollPhysics(),
             itemCount: items.length,
-            itemBuilder: (BuildContext ctx, index) {
-              final buttons = items[index];
-
+            itemBuilder: (context, index) {
+              final calculations = items[index];
               return InkWell(
-                // padding: const EdgeInsets.fromLTRB(10, 20, 10, 40),
+                splashColor: const Color(0xFFa78bfa),
                 onTap: () {
-                  Navigator.pushNamed(context, buttons.nav);
+                  Navigator.pushNamed(context, calculations.nav);
                 },
-                child: AppButtons(
-                  textColor: Colors.white,
-                  backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
-                  borderColor: Colors.grey[900]!,
-                  text: buttons.menuButton,
-                  size: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ListButtons(
+                    textColor: Colors.white,
+                    backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
+                    borderColor: Colors.grey[900]!,
+                    text: calculations.menuButton,
+                    size: 21,
+                  ),
                 ),
               );
             },

@@ -7,8 +7,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
-import '../constants/color_constants.dart';
-import '../database/db.dart';
+import '../../constants/color_constants.dart';
+import '../../database/db.dart';
 
 class Equations {
   final String eq;

@@ -21,3 +21,4 @@ const String volFlowRate = 'volFlowRate';
 const String velOfAir = 'velOfAir';
 const String airChange = 'airChange';
 const String airTempConvert = 'airTempConvert';
+const String mixedAirTemp = 'mixedAirTemp';

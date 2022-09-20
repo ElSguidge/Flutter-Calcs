@@ -5,10 +5,10 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:math' as math;
 
-import '../constants/color_constants.dart';
-import '../constants/constants.dart';
-import '../widgets/add_button.dart';
-import '../widgets/custom_drawer.dart';
+import '../../constants/color_constants.dart';
+import '../../constants/constants.dart';
+import '../../widgets/add_button.dart';
+import '../../widgets/custom_drawer.dart';
 
 class Equations {
   final String eq;

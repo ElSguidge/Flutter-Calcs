@@ -247,7 +247,7 @@ class _VelocityAirState extends State<VelocityAir> {
                             textAlign: TextAlign.center,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,1}')),
+                                  RegExp(r'^\d+\.?\d{0,5}')),
                             ],
                             controller: _airDensity,
                             onChanged: (value) {

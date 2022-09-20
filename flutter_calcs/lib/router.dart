@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart' as routes;
-import 'package:flutter_calcs/pages/ach_ph.dart';
-import 'package:flutter_calcs/pages/air_home.dart';
+import 'package:flutter_calcs/pages/airflow_vel/ach_ph.dart';
+import 'package:flutter_calcs/pages/menus/air_home.dart';
 import 'package:flutter_calcs/pages/air_temp.dart';
-import 'package:flutter_calcs/pages/air_temp_convert.dart';
-import 'package:flutter_calcs/pages/airflow_vel.dart';
-import 'package:flutter_calcs/pages/calculators.dart';
+import 'package:flutter_calcs/pages/air_temp/air_temp_convert.dart';
+import 'package:flutter_calcs/pages/menus/airflow_vel.dart';
+import 'package:flutter_calcs/pages/menus/calculators.dart';
 import 'package:flutter_calcs/pages/commissioning_home.dart';
 import 'package:flutter_calcs/pages/conversions.dart';
-import 'package:flutter_calcs/pages/duct_area.dart';
+import 'package:flutter_calcs/pages/airflow_vel/duct_area.dart';
 import 'package:flutter_calcs/pages/electrical_home.dart';
 import 'package:flutter_calcs/pages/fan_eq.dart';
 import 'package:flutter_calcs/pages/favorites_page.dart';
@@ -17,12 +17,13 @@ import 'package:flutter_calcs/pages/homepage.dart';
 import 'package:flutter_calcs/pages/hydronic_home.dart';
 import 'package:flutter_calcs/pages/install_home.dart';
 import 'package:flutter_calcs/pages/log_in.dart';
+import 'package:flutter_calcs/pages/air_temp/mixed_air.dart';
 import 'package:flutter_calcs/pages/opening_screen.dart';
 import 'package:flutter_calcs/pages/register_page.dart';
 import 'package:flutter_calcs/pages/sheave_eq.dart';
-import 'package:flutter_calcs/pages/total_pressure.dart';
-import 'package:flutter_calcs/pages/vel_air.dart';
-import 'package:flutter_calcs/pages/vol_flow_rate.dart';
+import 'package:flutter_calcs/pages/airflow_vel/total_pressure.dart';
+import 'package:flutter_calcs/pages/airflow_vel/vel_air.dart';
+import 'package:flutter_calcs/pages/airflow_vel/vol_flow_rate.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -72,6 +73,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const AirChangesPh());
     case routes.airTempConvert:
       return MaterialPageRoute(builder: (_) => const AirTempConvert());
+    case routes.mixedAirTemp:
+      return MaterialPageRoute(builder: (_) => const MixedAir());
 
     default:
       return MaterialPageRoute(

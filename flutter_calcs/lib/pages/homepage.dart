@@ -585,12 +585,25 @@ class _HomePageState extends State<HomePage> {
   void search(String query) {
     List<ProjectSearch> suggestions = searchList.where((search) {
       final projectName = search.name.toLowerCase();
+      final projectNumber = search.jobNumber;
       final input = query.toLowerCase();
+      // if (projectNumber.contains(r'^-?[0-9]+$')) {
+      //   //   print(true);
+      //   return projectNumber.contains(input);
+      // } else {
       return projectName.contains(input);
+      // }
     }).toList();
+
     setState(() {
       finder.clear();
       finder = suggestions;
     });
   }
+
+  // RegExp _numeric = RegExp(r'^-?[0-9]+$');
+
+  // bool isNumeric(String str) {
+  //   return _numeric.hasMatch(str);
+  // }
 }
