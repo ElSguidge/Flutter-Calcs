@@ -267,7 +267,7 @@ class _AirTempConvertState extends State<AirTempConvert> {
                       textAlign: TextAlign.center,
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
-                            RegExp(r'^\d+\.?\d{0,3}')),
+                            RegExp(r'^-?\d*\.?\d{0,2}')),
                       ],
                       controller: _tempInputController,
                       onChanged: (value) {

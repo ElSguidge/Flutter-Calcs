@@ -1,6 +1,4 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/models/project_model.dart';
@@ -18,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController controller = TextEditingController();
-  // late final Future<ProjectModel> futureProjects = fetchProjects();
+  late final Future<ProjectModel> futureProjects;
 
   List<ProjectSearch> searchList = [];
   List<ProjectSearch> finder = [];
@@ -33,12 +31,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // futureProjects = fetchProjects();
+    futureProjects = fetchProjects();
   }
 
   @override
   Widget build(BuildContext context) {
-    Future<ProjectModel> futureProjects = fetchProjects();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -65,7 +62,7 @@ class _HomePageState extends State<HomePage> {
               // finder.clear();
               if (snapshot.hasData) {
                 var data = snapshot.data!;
-                var columns = data.columns;
+                // var columns = data.columns;
                 var rows = data.rows;
                 jobNames = [];
                 jobNumbers = [];
@@ -160,7 +157,6 @@ class _HomePageState extends State<HomePage> {
                 int index = 0;
                 searchList = [];
                 for (int i = 0; i < jobNames.length; i++) {
-                  // List<ProjectSearch> innerMap = [];
                   ProjectSearch myProjects = ProjectSearch(
                       address: jobNames[index],
                       budget: budget[index],
@@ -201,8 +197,7 @@ class _HomePageState extends State<HomePage> {
                             fillColor:
                                 ColorConstants.lightScaffoldBackgroundColor,
                             labelText: 'Search or filter projects',
-                            hintText:
-                                'Search job title, job number, scd/majors....',
+                            hintText: 'Search by name, job number, tech....',
                             focusColor: Colors.white,
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -586,12 +581,11 @@ class _HomePageState extends State<HomePage> {
     List<ProjectSearch> suggestions = searchList.where((search) {
       final projectName = search.name.toLowerCase();
       final projectNumber = search.jobNumber;
+      final tech = search.tech.toLowerCase();
       final input = query.toLowerCase();
-      // if (projectNumber.contains(r'^-?[0-9]+$')) {
-      //   //   print(true);
-      //   return projectNumber.contains(input);
-      // } else {
-      return projectName.contains(input);
+      return projectName.contains(input) ||
+          projectNumber.contains(input) ||
+          tech.contains(input);
       // }
     }).toList();
 
@@ -600,10 +594,4 @@ class _HomePageState extends State<HomePage> {
       finder = suggestions;
     });
   }
-
-  // RegExp _numeric = RegExp(r'^-?[0-9]+$');
-
-  // bool isNumeric(String str) {
-  //   return _numeric.hasMatch(str);
-  // }
 }

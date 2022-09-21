@@ -22,8 +22,8 @@ class _AirTempState extends State<AirTemp> {
   List<Sections> tests = [
     const Sections(calc: 'Convert (°F, °C, R, K)', nav: airTempConvert),
     const Sections(calc: 'Mixed Air Temp.', nav: mixedAirTemp),
-    const Sections(calc: 'Mixed Air Enthalpy', nav: homeRoute),
-    const Sections(calc: 'Outside Air Percent.', nav: homeRoute),
+    const Sections(calc: 'Mixed Air Enthalpy', nav: mixedAirTempEnthalpy),
+    const Sections(calc: 'Outside Air Percent.', nav: outsideAirPer),
   ];
 
   @override

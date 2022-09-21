@@ -96,8 +96,7 @@ class _MixedAirState extends State<MixedAir> {
                       color: ColorConstants.secondaryDarkAppColor,
                       textColor: Colors.white,
                       child: const Text('Air Temp'),
-                      onPressed: () =>
-                          {Navigator.pushNamed(context, airflowVel)},
+                      onPressed: () => {Navigator.pushNamed(context, airTemp)},
                       splashColor: const Color(0xFFa78bfa),
                     ),
                   ),
@@ -109,7 +108,7 @@ class _MixedAirState extends State<MixedAir> {
                       textColor: Colors.white,
                       child: const Text('Mixed Air..'),
                       onPressed: () =>
-                          {Navigator.pushNamed(context, airChange)},
+                          {Navigator.pushNamed(context, mixedAirTemp)},
                       splashColor: const Color(0xFFa78bfa),
                     ),
                   ),
@@ -204,7 +203,7 @@ class _MixedAirState extends State<MixedAir> {
                                             fillColor: ColorConstants
                                                 .lightScaffoldBackgroundColor,
                                             labelText: 'Return Air %',
-                                            hintText: 'Enter room % of RA',
+                                            hintText: 'Enter % of RA',
                                             focusColor: Colors.white,
                                             labelStyle: const TextStyle(
                                                 color: Colors.white),
@@ -230,7 +229,7 @@ class _MixedAirState extends State<MixedAir> {
                                           textAlign: TextAlign.center,
                                           inputFormatters: <TextInputFormatter>[
                                             FilteringTextInputFormatter.allow(
-                                                RegExp(r'^\d+\.?\d{0,1}')),
+                                                RegExp(r'^-?\d*\.?\d{0,1}')),
                                           ],
                                           controller: _raTemp,
                                           onChanged: (value) {
@@ -332,7 +331,7 @@ class _MixedAirState extends State<MixedAir> {
                                           textAlign: TextAlign.center,
                                           inputFormatters: <TextInputFormatter>[
                                             FilteringTextInputFormatter.allow(
-                                                RegExp(r'^\d+\.?\d{0,1}')),
+                                                RegExp(r'^-?\d*\.?\d{0,1}')),
                                           ],
                                           controller: _oaTemp,
                                           onChanged: (value) {

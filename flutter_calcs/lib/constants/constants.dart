@@ -22,3 +22,5 @@ const String velOfAir = 'velOfAir';
 const String airChange = 'airChange';
 const String airTempConvert = 'airTempConvert';
 const String mixedAirTemp = 'mixedAirTemp';
+const String mixedAirTempEnthalpy = 'mixedAirTempEnthalpy';
+const String outsideAirPer = 'outsideAirPer';

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/constants.dart' as routes;
+import 'package:flutter_calcs/pages/air_temp/mix_air_enth.dart';
+import 'package:flutter_calcs/pages/air_temp/oa_percent.dart';
 import 'package:flutter_calcs/pages/airflow_vel/ach_ph.dart';
 import 'package:flutter_calcs/pages/menus/air_home.dart';
 import 'package:flutter_calcs/pages/air_temp/air_temp_convert.dart';
@@ -75,6 +77,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const AirTempConvert());
     case routes.mixedAirTemp:
       return MaterialPageRoute(builder: (_) => const MixedAir());
+    case routes.mixedAirTempEnthalpy:
+      return MaterialPageRoute(builder: (_) => const MixedAirEnthalpy());
+    case routes.outsideAirPer:
+      return MaterialPageRoute(builder: (_) => const OutsideAirPercentage());
 
     default:
       return MaterialPageRoute(
