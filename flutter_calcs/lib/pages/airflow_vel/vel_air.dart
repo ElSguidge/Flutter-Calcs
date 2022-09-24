@@ -10,6 +10,8 @@ import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
+import '../../widgets/pagination.dart';
+
 class VelocityAir extends StatefulWidget {
   const VelocityAir({Key? key}) : super(key: key);
 
@@ -34,6 +36,15 @@ class _VelocityAirState extends State<VelocityAir> {
   }
 
   @override
+  void dispose() {
+    _velocityController.dispose();
+    _thirdController.dispose();
+    _airDensity.dispose();
+    _airDensityAnswer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -55,63 +66,56 @@ class _VelocityAirState extends State<VelocityAir> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Icon(Icons.home),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, commissioningHome)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+              children: const <Widget>[
+                Pagination(
+                  nav: 'commissioning_home',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: true,
+                  icon: Icons.home,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('TAB'),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, calculators)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'TAB',
+                  nav: 'calculators',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Air'),
-                    onPressed: () => {Navigator.pushNamed(context, air)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Air',
+                  nav: 'air',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 1,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Airflow &..'),
-                    onPressed: () => {Navigator.pushNamed(context, airflowVel)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Airflow & Vel.',
+                  nav: 'airflowVel',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.messageColor,
-                    textColor: Colors.white,
-                    child: const Text('Veloc..'),
-                    onPressed: () => {Navigator.pushNamed(context, velOfAir)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Vel. of Air',
+                  nav: 'velOfAir',
+                  buttonColor: ColorConstants.messageColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
               ],
             ),
@@ -163,39 +167,36 @@ class _VelocityAirState extends State<VelocityAir> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,1}')),
-                        ],
-                        controller: _velocityController,
-                        onChanged: (value) {
-                          _calculate();
-                        },
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: true),
-                        cursorColor: Colors.white,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor:
-                              ColorConstants.lightScaffoldBackgroundColor,
-                          labelText: 'Velocity Pressure (VP)',
-                          hintText: 'Enter velocity pressure [in Pa]',
-                          focusColor: Colors.white,
-                          labelStyle: const TextStyle(color: Colors.white),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                // ignore: unnecessary_const
-                                color: Colors.white60),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,1}')),
+                      ],
+                      controller: _velocityController,
+                      onChanged: (value) {
+                        _calculate();
+                      },
+                      keyboardType: const TextInputType.numberWithOptions(
+                          signed: true, decimal: true),
+                      cursorColor: Colors.white,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        filled: true,
+                        fillColor: ColorConstants.lightScaffoldBackgroundColor,
+                        labelText: 'Velocity Pressure (VP)',
+                        hintText: 'Enter velocity pressure [in Pa]',
+                        focusColor: Colors.white,
+                        labelStyle: const TextStyle(color: Colors.white),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              // ignore: unnecessary_const
+                              color: Colors.white60),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
@@ -370,7 +371,7 @@ class _VelocityAirState extends State<VelocityAir> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-          child: Container(
+          child: SizedBox(
             height: 300.0, // Change as per your requirement
             width: 500.0, // Change as per your requirement
             child: Column(

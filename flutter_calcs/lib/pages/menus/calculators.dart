@@ -3,6 +3,7 @@ import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_calcs/widgets/list_buttons.dart';
+import 'package:flutter_calcs/widgets/pagination.dart';
 
 class Menu {
   final String menuButton;
@@ -42,29 +43,26 @@ class CalculatorsHome extends StatelessWidget {
         physics: const ScrollPhysics(),
         children: <Widget>[
           Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
-                child: MaterialButton(
-                  minWidth: 5,
-                  color: ColorConstants.secondaryDarkAppColor,
-                  textColor: Colors.white,
-                  child: const Icon(Icons.home),
-                  onPressed: () =>
-                      {Navigator.pushNamed(context, commissioningHome)},
-                  splashColor: const Color(0xFFa78bfa),
-                ),
+            children: const <Widget>[
+              Pagination(
+                nav: 'commissioning_home',
+                buttonColor: ColorConstants.secondaryDarkAppColor,
+                padding:
+                    Padding(padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                splashColor: ColorConstants.splashButtons,
+                textColor: Colors.white,
+                isIcon: true,
+                icon: Icons.home,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                child: MaterialButton(
-                  minWidth: 5,
-                  color: ColorConstants.messageColor,
-                  textColor: Colors.white,
-                  child: const Text('TAB'),
-                  onPressed: () => {Navigator.pushNamed(context, calculators)},
-                  splashColor: const Color(0xFFa78bfa),
-                ),
+              Pagination(
+                title: 'TAB',
+                nav: 'calculators',
+                buttonColor: ColorConstants.messageColor,
+                padding:
+                    Padding(padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                splashColor: ColorConstants.splashButtons,
+                textColor: Colors.white,
+                isIcon: false,
               ),
             ],
           ),

@@ -421,7 +421,7 @@ class _MixedAirState extends State<MixedAir> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-          child: Container(
+          child: SizedBox(
             height: 300.0, // Change as per your requirement
             width: 500.0, // Change as per your requirement
             child: Column(

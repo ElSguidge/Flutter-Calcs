@@ -4,6 +4,7 @@ import 'package:flutter_calcs/database/db.dart';
 
 import '../constants/color_constants.dart';
 
+// ignore: must_be_immutable
 class AddButton extends StatefulWidget {
   String title;
 

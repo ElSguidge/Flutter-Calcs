@@ -35,6 +35,18 @@ class _MixedAirEnthalpyState extends State<MixedAirEnthalpy> {
   }
 
   @override
+  void dispose() {
+    _oaPercent.dispose();
+    _oaEnth.dispose();
+    _raPercent.dispose();
+    _raEnth.dispose();
+    _mixedAirEnthAnswer.dispose();
+    _enthTempCalc.dispose();
+    _enthTotalAnswer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -404,8 +416,8 @@ class _MixedAirEnthalpyState extends State<MixedAirEnthalpy> {
                                         topRight: Radius.circular(27.0),
                                         topLeft: Radius.circular(27.0)),
                                     child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height,
+                                      // height:
+                                      //     MediaQuery.of(context).size.height,
                                       color:
                                           ColorConstants.secondaryDarkAppColor,
                                       child: Column(
@@ -635,7 +647,7 @@ class _MixedAirEnthalpyState extends State<MixedAirEnthalpy> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-          child: Container(
+          child: SizedBox(
             height: 300.0, // Change as per your requirement
             width: 500.0, // Change as per your requirement
             child: Column(

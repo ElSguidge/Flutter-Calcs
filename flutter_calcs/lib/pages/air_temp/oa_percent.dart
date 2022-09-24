@@ -37,6 +37,19 @@ class _OutsideAirPercentageState extends State<OutsideAirPercentage> {
   }
 
   @override
+  void dispose() {
+    _raTemp.dispose();
+    _mixAirTemp.dispose();
+    _outsideAirTemp.dispose();
+    _tempAnswer.dispose();
+    _enthRa.dispose();
+    _enthMixed.dispose();
+    _enthOutside.dispose();
+    _enthAnswer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -606,7 +619,7 @@ class _OutsideAirPercentageState extends State<OutsideAirPercentage> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-          child: Container(
+          child: SizedBox(
             height: 300.0, // Change as per your requirement
             width: 500.0, // Change as per your requirement
             child: Column(

@@ -10,4 +10,5 @@ class ColorConstants {
   static const Color borderColor = Color(0xFF212121);
   static const Color lightBlue = Color(0xFF3b82f6);
   static const Color lightRed = Color(0xFFf87171);
+  static const Color splashButtons = Color(0xFFa78bfa);
 }

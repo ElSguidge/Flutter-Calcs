@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/constants/constants.dart';
-import 'package:flutter_calcs/widgets/app_buttons.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
+import 'package:flutter_calcs/widgets/pagination.dart';
 
-import '../widgets/list_buttons.dart';
+import '../../widgets/list_buttons.dart';
 
 class Menu {
   final String menuButton;
@@ -43,18 +43,14 @@ class CommissioningPage extends StatelessWidget {
         physics: const ScrollPhysics(),
         children: <Widget>[
           Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 3.0, 0.0),
-                child: MaterialButton(
-                  minWidth: 5,
-                  color: ColorConstants.messageColor,
-                  textColor: Colors.white,
-                  child: const Icon(Icons.home),
-                  onPressed: () =>
-                      {Navigator.pushNamed(context, commissioningHome)},
-                  splashColor: const Color(0xFFa78bfa),
-                ),
+            children: const <Widget>[
+              Pagination(
+                nav: 'commissioning_home',
+                buttonColor: ColorConstants.messageColor,
+                splashColor: ColorConstants.splashButtons,
+                textColor: Colors.white,
+                isIcon: true,
+                icon: Icons.home,
               ),
             ],
           ),

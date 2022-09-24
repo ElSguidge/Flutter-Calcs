@@ -3,19 +3,20 @@ import 'package:flutter_calcs/constants/constants.dart' as routes;
 import 'package:flutter_calcs/pages/air_temp/mix_air_enth.dart';
 import 'package:flutter_calcs/pages/air_temp/oa_percent.dart';
 import 'package:flutter_calcs/pages/airflow_vel/ach_ph.dart';
+import 'package:flutter_calcs/pages/home.dart';
 import 'package:flutter_calcs/pages/menus/air_home.dart';
 import 'package:flutter_calcs/pages/air_temp/air_temp_convert.dart';
 import 'package:flutter_calcs/pages/menus/air_temp.dart';
 import 'package:flutter_calcs/pages/menus/airflow_vel.dart';
 import 'package:flutter_calcs/pages/menus/calculators.dart';
-import 'package:flutter_calcs/pages/commissioning_home.dart';
+import 'package:flutter_calcs/pages/menus/commissioning_home.dart';
 import 'package:flutter_calcs/pages/conversions.dart';
 import 'package:flutter_calcs/pages/airflow_vel/duct_area.dart';
 import 'package:flutter_calcs/pages/electrical_home.dart';
 import 'package:flutter_calcs/pages/fan_eq.dart';
 import 'package:flutter_calcs/pages/favorites_page.dart';
 import 'package:flutter_calcs/pages/heat_transfer.dart';
-import 'package:flutter_calcs/pages/homepage.dart';
+import 'package:flutter_calcs/pages/upcoming_projects.dart';
 import 'package:flutter_calcs/pages/hydronic_home.dart';
 import 'package:flutter_calcs/pages/install_home.dart';
 import 'package:flutter_calcs/pages/log_in.dart';
@@ -81,6 +82,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const MixedAirEnthalpy());
     case routes.outsideAirPer:
       return MaterialPageRoute(builder: (_) => const OutsideAirPercentage());
+    case routes.upComingProjects:
+      return MaterialPageRoute(builder: (_) => const UpcomingProjects());
 
     default:
       return MaterialPageRoute(

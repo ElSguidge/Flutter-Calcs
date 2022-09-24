@@ -9,6 +9,7 @@ import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
 import '../../constants/color_constants.dart';
 import '../../database/db.dart';
+import '../../widgets/pagination.dart';
 
 class Equations {
   final String eq;
@@ -55,8 +56,22 @@ class _DuctAreaState extends State<DuctArea> {
 
   @override
   void initState() {
-    _pageController = PageController();
     super.initState();
+
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _rectWidthController.dispose();
+    _rectHeightController.dispose();
+    _rectCalcController.dispose();
+    _roundController.dispose();
+    _roundCalcController.dispose();
+    _flatWidthController.dispose();
+    _flatHeightController.dispose();
+    _flatCalcController.dispose();
+    super.dispose();
   }
 
   @override
@@ -81,63 +96,56 @@ class _DuctAreaState extends State<DuctArea> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Icon(Icons.home),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, commissioningHome)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+              children: const <Widget>[
+                Pagination(
+                  nav: 'commissioning_home',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: true,
+                  icon: Icons.home,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('TAB'),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, calculators)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'TAB',
+                  nav: 'calculators',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Air'),
-                    onPressed: () => {Navigator.pushNamed(context, air)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Air',
+                  nav: 'air',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 1,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Airflow &..'),
-                    onPressed: () => {Navigator.pushNamed(context, airflowVel)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Airflow & Vel.',
+                  nav: 'airflowVel',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.messageColor,
-                    textColor: Colors.white,
-                    child: const Text('Duct Area'),
-                    onPressed: () => {Navigator.pushNamed(context, ductArea)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Duct Area',
+                  nav: 'ductArea',
+                  buttonColor: ColorConstants.messageColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
               ],
             ),
@@ -201,7 +209,7 @@ class _DuctAreaState extends State<DuctArea> {
                           },
                           child: const Text("Rect"),
                           color: _displayRecTextField
-                              ? Color(0xFF3b82f6)
+                              ? const Color(0xFF3b82f6)
                               : ColorConstants.secondaryDarkAppColor,
                           textColor: Colors.white,
                         )),
@@ -216,7 +224,7 @@ class _DuctAreaState extends State<DuctArea> {
                           },
                           child: const Text("Round"),
                           color: _displayRoundTextField
-                              ? Color(0xFF3b82f6)
+                              ? const Color(0xFF3b82f6)
                               : ColorConstants.secondaryDarkAppColor,
                           textColor: Colors.white,
                         )),
@@ -231,7 +239,7 @@ class _DuctAreaState extends State<DuctArea> {
                           },
                           child: const Text("Flat Oval"),
                           color: _displayFlatTextField
-                              ? Color(0xFF3b82f6)
+                              ? const Color(0xFF3b82f6)
                               : ColorConstants.secondaryDarkAppColor,
                           textColor: Colors.white,
                         )),
@@ -555,7 +563,7 @@ class _DuctAreaState extends State<DuctArea> {
               borderRadius: BorderRadius.circular(20.0),
             ),
             backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-            child: Container(
+            child: SizedBox(
               height: 300.0, // Change as per your requirement
               width: 500.0, // Change as per your requirement
               child: Column(

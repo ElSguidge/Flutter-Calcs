@@ -4,8 +4,6 @@ import 'package:flutter_calcs/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../database/db.dart';
-
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -155,8 +153,8 @@ class _RegisterPageState extends State<RegisterPage> {
               email: _emailController.text,
               password: _passwordController.text,
             );
-            final user = FirebaseAuth.instance.currentUser;
-            final email = _emailController.text;
+            // final user = FirebaseAuth.instance.currentUser;
+            // final email = _emailController.text;
             final prefs = await SharedPreferences.getInstance();
             final String name = _usernameController.text;
             await result.user?.updateDisplayName(name);

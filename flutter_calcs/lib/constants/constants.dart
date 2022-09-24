@@ -24,3 +24,4 @@ const String airTempConvert = 'airTempConvert';
 const String mixedAirTemp = 'mixedAirTemp';
 const String mixedAirTempEnthalpy = 'mixedAirTempEnthalpy';
 const String outsideAirPer = 'outsideAirPer';
+const String upComingProjects = 'upComingProjects';

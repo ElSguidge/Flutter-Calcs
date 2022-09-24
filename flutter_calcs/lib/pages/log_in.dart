@@ -1,4 +1,3 @@
-// import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
@@ -62,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(25.0),
                         color: const Color(0xff8c52ff),
                         child: MaterialButton(
-                          minWidth: mq.size.width / 2,
+                          // minWidth: mq.size.width / 2,
                           padding:
                               const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
                           child: const Text(
@@ -80,8 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                                   email: _emailControllerField.text);
                               Navigator.of(context).pop();
                             } catch (e) {
-                              print(e);
-                              // TODO: Add snackbar reporting error
+                              // print(e);
                             }
                           },
                         ),
@@ -96,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final logo = Image.asset(
       "lib/icons/agc-logo-white.png",
-      height: mq.size.height / 4,
+      // height: mq.size.height / 4,
     );
 
     final emailField = TextFormField(
@@ -186,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
       borderRadius: BorderRadius.circular(8.0),
       color: ColorConstants.darkScaffoldBackgroundColor,
       child: MaterialButton(
-        minWidth: mq.size.width / 1.2,
+        // minWidth: mq.size.width / 1.2,
         padding: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
         child: const Text(
           "Login",
@@ -263,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(36),
           child: SizedBox(
-            height: mq.size.height,
+            // height: mq.size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[

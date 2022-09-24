@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/database/db.dart';
-import 'package:flutter_calcs/models/favorites.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
 FirebaseServices firebaseServices = FirebaseServices();

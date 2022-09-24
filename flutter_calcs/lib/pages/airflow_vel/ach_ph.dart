@@ -8,6 +8,8 @@ import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
+import '../../widgets/pagination.dart';
+
 class AirChangesPh extends StatefulWidget {
   const AirChangesPh({Key? key}) : super(key: key);
 
@@ -30,9 +32,23 @@ class _AirChangesPhState extends State<AirChangesPh> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _calculatedAreaAirflow = TextEditingController();
   final TextEditingController _calculatedVolumeACH = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _knownRoomVolume.dispose();
+    _knownRoomVolumeAirflow.dispose();
+    _knownRoomVolumeACH.dispose();
+    _lengthController.dispose();
+    _widthController.dispose();
+    _heightController.dispose();
+    _calculatedAreaAirflow.dispose();
+    _calculatedVolumeACH.dispose();
+    super.dispose();
   }
 
   @override
@@ -57,63 +73,56 @@ class _AirChangesPhState extends State<AirChangesPh> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Icon(Icons.home),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, commissioningHome)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+              children: const <Widget>[
+                Pagination(
+                  nav: 'commissioning_home',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: true,
+                  icon: Icons.home,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('TAB'),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, calculators)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'TAB',
+                  nav: 'calculators',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Air'),
-                    onPressed: () => {Navigator.pushNamed(context, air)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Air',
+                  nav: 'air',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 1,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Airflow &..'),
-                    onPressed: () => {Navigator.pushNamed(context, airflowVel)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Airflow & Vel.',
+                  nav: 'airflowVel',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.messageColor,
-                    textColor: Colors.white,
-                    child: const Text('Air Ch..'),
-                    onPressed: () => {Navigator.pushNamed(context, airChange)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Air Change...',
+                  nav: 'airChange',
+                  buttonColor: ColorConstants.messageColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
               ],
             ),
@@ -584,7 +593,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-          child: Container(
+          child: SizedBox(
             height: 300.0, // Change as per your requirement
             width: 500.0, // Change as per your requirement
             child: Column(
@@ -620,7 +629,6 @@ class _AirChangesPhState extends State<AirChangesPh> {
         _widthController.text.trim().isNotEmpty &&
         _lengthController.text.trim().isNotEmpty &&
         _calculatedAreaAirflow.text.trim().isNotEmpty) {
-      print("OK");
       final height = double.parse(_heightController.text);
       final length = double.parse(_lengthController.text);
       final width = double.parse(_widthController.text);

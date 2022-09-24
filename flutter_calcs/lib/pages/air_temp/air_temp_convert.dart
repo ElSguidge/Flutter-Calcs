@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_calcs/database/db.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'dart:math' as math;
 
 import '../../constants/color_constants.dart';
 import '../../constants/constants.dart';
@@ -56,6 +55,13 @@ class _AirTempConvertState extends State<AirTempConvert> {
   void initState() {
     _pageController = PageController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tempInputController.dispose();
+    _tempAnswerController.dispose();
+    super.dispose();
   }
 
   @override
@@ -420,7 +426,7 @@ class _AirTempConvertState extends State<AirTempConvert> {
               borderRadius: BorderRadius.circular(20.0),
             ),
             backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-            child: Container(
+            child: SizedBox(
               height: 300.0, // Change as per your requirement
               width: 500.0, // Change as per your requirement
               child: Column(

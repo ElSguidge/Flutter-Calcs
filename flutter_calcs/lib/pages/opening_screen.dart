@@ -34,7 +34,7 @@ class OpeningViewState extends State<OpeningView> {
 
     final logo = Image.asset(
       "lib/icons/agc-logo-white.png",
-      height: mq.size.height / 6,
+      // height: mq.size.height / 6,
     );
 
     final loginButton = Material(
