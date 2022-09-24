@@ -41,7 +41,7 @@ class _AirState extends State<Air> {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
 
       // ignore: avoid_unnecessary_containers

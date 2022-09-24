@@ -60,7 +60,7 @@ class _VelocityAirState extends State<VelocityAir> {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: ListView(
         shrinkWrap: true,

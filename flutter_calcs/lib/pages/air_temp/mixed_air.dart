@@ -55,7 +55,7 @@ class _MixedAirState extends State<MixedAir> {
           ),
           backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
         ),
-        drawer: const CustomDrawer(),
+        drawer: CustomDrawer(),
         backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
         body: ListView(
           shrinkWrap: true,

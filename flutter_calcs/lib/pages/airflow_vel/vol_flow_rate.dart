@@ -21,25 +21,25 @@ class _VolFlowRateState extends State<VolFlowRate> {
 
   String title = 'Volumetric Flow Rate (Q)';
 
-  final TextEditingController _rectWidthController = TextEditingController();
-  final TextEditingController _rectHeightController = TextEditingController();
-  final TextEditingController _rectCalcController = TextEditingController();
-  final TextEditingController _rectCalcControllerQ = TextEditingController();
+  final _rectWidthController = TextEditingController();
+  final _rectHeightController = TextEditingController();
+  final _rectCalcController = TextEditingController();
+  final _rectCalcControllerQ = TextEditingController();
 
-  final TextEditingController _roundController = TextEditingController();
-  final TextEditingController _roundCalcController = TextEditingController();
-  final TextEditingController _roundCalcControllerQ = TextEditingController();
+  final _roundController = TextEditingController();
+  final _roundCalcController = TextEditingController();
+  final _roundCalcControllerQ = TextEditingController();
 
-  final TextEditingController _flatWidthController = TextEditingController();
-  final TextEditingController _flatHeightController = TextEditingController();
-  final TextEditingController _flatCalcController = TextEditingController();
-  final TextEditingController _flatCalcControllerQ = TextEditingController();
+  final _flatWidthController = TextEditingController();
+  final _flatHeightController = TextEditingController();
+  final _flatCalcController = TextEditingController();
+  final _flatCalcControllerQ = TextEditingController();
 
-  final TextEditingController _areaController = TextEditingController();
-  final TextEditingController _areaCalcController = TextEditingController();
+  final _areaController = TextEditingController();
+  final _areaCalcController = TextEditingController();
 
-  final TextEditingController _velController = TextEditingController();
-  final TextEditingController _velCalcController = TextEditingController();
+  final _velController = TextEditingController();
+  final _velCalcController = TextEditingController();
 
   bool _displayAreaTextField = true;
   bool _displayRecTextField = false;
@@ -98,7 +98,7 @@ class _VolFlowRateState extends State<VolFlowRate> {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: ListView(
         shrinkWrap: true,

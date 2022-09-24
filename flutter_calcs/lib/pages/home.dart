@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
 
       // ignore: avoid_unnecessary_containers

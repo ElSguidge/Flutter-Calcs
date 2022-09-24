@@ -33,7 +33,7 @@ class _AirTempState extends State<AirTemp> {
       appBar: AppBar(
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
 
       // ignore: avoid_unnecessary_containers
