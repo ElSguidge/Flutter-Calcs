@@ -37,6 +37,8 @@ class _TotalPressureState extends State<TotalPressure> {
     _firstController.dispose();
     _secondController.dispose();
     _thirdController.dispose();
+    _firstController.removeListener(_calculate);
+    _secondController.removeListener(_calculate);
     super.dispose();
   }
 
