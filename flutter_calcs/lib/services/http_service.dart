@@ -15,7 +15,7 @@ Future<ProjectModel> fetchProjects() async {
   );
   // print(response.body);
   if (response.statusCode == 200) {
-    print("Fetching data from api: ");
+    // print("Fetching data from api: ");
     // final responseJson = json.decode(response.body);
     // print(responseJson.length);
     final Map<String, dynamic> projectMap = json.decode(response.body);

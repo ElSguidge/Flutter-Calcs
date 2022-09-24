@@ -4,7 +4,6 @@ import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'dart:math' as math;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
 import '../../constants/color_constants.dart';

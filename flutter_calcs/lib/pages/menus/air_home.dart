@@ -24,7 +24,7 @@ class _AirState extends State<Air> {
     const Sections(calc: 'Airflow and Velocity', nav: airflowVel),
     const Sections(calc: 'Air Temp.', nav: airTemp),
     const Sections(calc: 'Heat Transfer', nav: heatTransfer),
-    const Sections(calc: 'Fan Equations', nav: fanEquations),
+    const Sections(calc: 'Fan Equations', nav: homeRoute),
     const Sections(calc: 'Sheave Equations', nav: sheaveEquations),
   ];
   @override

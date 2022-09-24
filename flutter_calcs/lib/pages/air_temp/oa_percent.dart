@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
-import 'package:flutter_calcs/constants/constants.dart';
 import 'package:flutter_calcs/database/db.dart';
 import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+
+import '../../widgets/pagination.dart';
 
 class OutsideAirPercentage extends StatefulWidget {
   const OutsideAirPercentage({Key? key}) : super(key: key);
@@ -71,64 +72,56 @@ class _OutsideAirPercentageState extends State<OutsideAirPercentage> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 3.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Icon(Icons.home),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, commissioningHome)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+              children: const <Widget>[
+                Pagination(
+                  nav: 'commissioning_home',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: true,
+                  icon: Icons.home,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('TAB'),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, calculators)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'TAB',
+                  nav: 'calculators',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Air'),
-                    onPressed: () => {Navigator.pushNamed(context, air)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Air',
+                  nav: 'air',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 1,
-                    color: ColorConstants.secondaryDarkAppColor,
-                    textColor: Colors.white,
-                    child: const Text('Air Temp.'),
-                    onPressed: () => {Navigator.pushNamed(context, airTemp)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Air Temp.',
+                  nav: 'airTemp',
+                  buttonColor: ColorConstants.secondaryDarkAppColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 5.0),
-                  child: MaterialButton(
-                    minWidth: 5,
-                    color: ColorConstants.messageColor,
-                    textColor: Colors.white,
-                    child: const Text('Outside ai...'),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, outsideAirPer)},
-                    splashColor: const Color(0xFFa78bfa),
-                  ),
+                Pagination(
+                  title: 'Outside Air Per.',
+                  nav: 'outsideAirPer',
+                  buttonColor: ColorConstants.messageColor,
+                  padding: Padding(
+                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                  splashColor: ColorConstants.splashButtons,
+                  textColor: Colors.white,
+                  isIcon: false,
                 ),
               ],
             ),

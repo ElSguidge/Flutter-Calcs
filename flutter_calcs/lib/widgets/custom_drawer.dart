@@ -17,7 +17,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   signOut() async {
     await _auth.signOut();
 
-    print("user logged out");
+    // print("user logged out");
   }
 
   @override

@@ -13,7 +13,6 @@ import 'package:flutter_calcs/pages/menus/commissioning_home.dart';
 import 'package:flutter_calcs/pages/conversions.dart';
 import 'package:flutter_calcs/pages/airflow_vel/duct_area.dart';
 import 'package:flutter_calcs/pages/electrical_home.dart';
-import 'package:flutter_calcs/pages/fan_eq.dart';
 import 'package:flutter_calcs/pages/favorites_page.dart';
 import 'package:flutter_calcs/pages/heat_transfer.dart';
 import 'package:flutter_calcs/pages/upcoming_projects.dart';
@@ -52,8 +51,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const AirTemp());
     case routes.heatTransfer:
       return MaterialPageRoute(builder: (_) => const HeatTransfer());
-    case routes.fanEquations:
-      return MaterialPageRoute(builder: (_) => const FanEquations());
     case routes.sheaveEquations:
       return MaterialPageRoute(builder: (_) => const SheaveEquations());
     case routes.totalPressure:

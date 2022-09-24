@@ -162,12 +162,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
             Navigator.pushNamed(context, openingView);
           } catch (e) {
-            print(e);
+            // print(e);
             _usernameController.text = "";
             _passwordController.text = "";
             _repasswordController.text = "";
             _emailController.text = "";
-            // TODO: alertdialog with error
           }
         },
       ),
