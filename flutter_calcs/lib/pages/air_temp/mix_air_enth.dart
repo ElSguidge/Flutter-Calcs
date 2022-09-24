@@ -689,6 +689,8 @@ class _MixedAirEnthalpyState extends State<MixedAirEnthalpy> {
 
   void _calculateEnth() {
     var str = ' kJ/kg';
+    print(_enthTempCalc.text);
+    // final enthTempInputCalc = double.parse(_enthTempCalc.text);
     if (_enthTempCalc.text.trim().isNotEmpty) {
       final enthTempInputCalc = double.parse(_enthTempCalc.text);
       final airEnth = (1.007 * enthTempInputCalc) - 0.026;

@@ -27,9 +27,19 @@ class _MixedAirState extends State<MixedAir> {
   final TextEditingController _raPercent = TextEditingController();
   final TextEditingController _raTemp = TextEditingController();
   final TextEditingController _mixedAirTempAnswer = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _raTemp.dispose();
+    _oaPercent.dispose();
+    _oaTemp.dispose();
+    _raPercent.dispose();
+    super.dispose();
   }
 
   @override

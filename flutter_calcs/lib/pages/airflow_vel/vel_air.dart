@@ -399,14 +399,15 @@ class _VelocityAirState extends State<VelocityAir> {
       );
   void _calculate() {
     String? str1 = ' m/s';
-    final firstValue = double.parse(_velocityController.text);
 
     if (_velocityController.text.trim().isNotEmpty && standard == true) {
+      final firstValue = double.parse(_velocityController.text);
       final square = sqrt(firstValue);
       _thirdController.text = (square * 1.225).toStringAsFixed(2) + str1;
     }
     if (_velocityController.text.trim().isNotEmpty &&
         _airDensity.text.trim().isNotEmpty) {
+      final firstValue = double.parse(_velocityController.text);
       final airD = double.parse(_airDensity.text);
       final square = sqrt(firstValue);
       _airDensityAnswer.text = (square * airD).toStringAsFixed(2) + str1;

@@ -646,13 +646,11 @@ class _OutsideAirPercentageState extends State<OutsideAirPercentage> {
 
     if (_raTemp.text.trim().isNotEmpty &&
         _mixAirTemp.text.trim().isNotEmpty &&
-        _outsideAirTemp.text.trim().isNotEmpty &&
-        standard == true) {
+        _outsideAirTemp.text.trim().isNotEmpty) {
       final rat = double.parse(_raTemp.text);
       final mat = double.parse(_mixAirTemp.text);
       final oat = double.parse(_outsideAirTemp.text);
       final mix = (rat - mat) / (rat - oat);
-
       _tempAnswer.text = (mix * 100).toStringAsFixed(2) + str1;
     }
     if (_enthRa.text.trim().isNotEmpty &&

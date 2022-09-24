@@ -49,6 +49,13 @@ class _VolFlowRateState extends State<VolFlowRate> {
   @override
   void initState() {
     super.initState();
+    _rectWidthController.addListener(_calculate);
+    _rectHeightController.addListener(_calculate);
+    _roundController.addListener(_calculate);
+    _flatWidthController.addListener(_calculate);
+    _flatHeightController.addListener(_calculate);
+    _areaController.addListener(_calculate);
+    _velController.addListener(_calculate);
   }
 
   @override
@@ -68,6 +75,13 @@ class _VolFlowRateState extends State<VolFlowRate> {
     _areaCalcController.dispose();
     _velController.dispose();
     _velCalcController.dispose();
+    _rectWidthController.removeListener(_calculate);
+    _rectHeightController.removeListener(_calculate);
+    _roundController.removeListener(_calculate);
+    _flatWidthController.removeListener(_calculate);
+    _flatHeightController.removeListener(_calculate);
+    _areaController.removeListener(_calculate);
+    _velController.removeListener(_calculate);
     super.dispose();
   }
 
@@ -202,9 +216,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                               RegExp(r'^\d+\.?\d{0,3}')),
                         ],
                         controller: _velController,
-                        onChanged: (value) {
-                          _calculate();
-                        },
+                        // onChanged: (value) {
+                        //   _calculate();
+                        // },
                         keyboardType: const TextInputType.numberWithOptions(
                             signed: true, decimal: true),
                         cursorColor: Colors.white,
@@ -319,9 +333,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                   RegExp(r'^\d+\.?\d{0,4}')),
                             ],
                             controller: _areaController,
-                            onChanged: (value) {
-                              _calculate();
-                            },
+                            // onChanged: (value) {
+                            //   _calculate();
+                            // },
                             keyboardType: const TextInputType.numberWithOptions(
                                 signed: true, decimal: true),
                             cursorColor: Colors.white,
@@ -404,9 +418,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                         RegExp(r'^\d+\.?\d{0,1}')),
                                   ],
                                   controller: _rectWidthController,
-                                  onChanged: (value) {
-                                    _calculate();
-                                  },
+                                  // onChanged: (value) {
+                                  //   _calculate();
+                                  // },
                                   keyboardType:
                                       const TextInputType.numberWithOptions(
                                           signed: true, decimal: true),
@@ -449,9 +463,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                         RegExp(r'^\d+\.?\d{0,1}')),
                                   ],
                                   controller: _rectHeightController,
-                                  onChanged: (value) {
-                                    _calculate();
-                                  },
+                                  // onChanged: (value) {
+                                  //   _calculate();
+                                  // },
                                   keyboardType:
                                       const TextInputType.numberWithOptions(
                                           signed: true, decimal: true),
@@ -562,9 +576,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                   RegExp(r'^\d+\.?\d{0,1}')),
                             ],
                             controller: _roundController,
-                            onChanged: (value) {
-                              _calculate();
-                            },
+                            // onChanged: (value) {
+                            //   _calculate();
+                            // },
                             keyboardType: const TextInputType.numberWithOptions(
                                 signed: true, decimal: true),
                             cursorColor: Colors.white,
@@ -674,9 +688,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                         RegExp(r'^\d+\.?\d{0,1}')),
                                   ],
                                   controller: _flatWidthController,
-                                  onChanged: (value) {
-                                    _calculate();
-                                  },
+                                  // onChanged: (value) {
+                                  //   _calculate();
+                                  // },
                                   keyboardType:
                                       const TextInputType.numberWithOptions(
                                           signed: true, decimal: true),
@@ -719,9 +733,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
                                         RegExp(r'^\d+\.?\d{0,1}')),
                                   ],
                                   controller: _flatHeightController,
-                                  onChanged: (value) {
-                                    _calculate();
-                                  },
+                                  // onChanged: (value) {
+                                  //   _calculate();
+                                  // },
                                   keyboardType:
                                       const TextInputType.numberWithOptions(
                                           signed: true, decimal: true),

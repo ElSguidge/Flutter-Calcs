@@ -53,8 +53,8 @@ class _AirTempConvertState extends State<AirTempConvert> {
 
   @override
   void initState() {
-    _pageController = PageController();
     super.initState();
+    _pageController = PageController();
   }
 
   @override
@@ -488,6 +488,7 @@ class _AirTempConvertState extends State<AirTempConvert> {
   void _calculate() {
     if (_tempInputController.text.trim().isNotEmpty) {
       final tempInput = double.parse(_tempInputController.text);
+
       if (_isCelcius == true && _isCelcius1 == true) {
         final celcius = tempInput;
         _tempAnswerController.text = celcius.toStringAsFixed(1) + ' °C';
