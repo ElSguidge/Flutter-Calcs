@@ -32,6 +32,8 @@ class _VelocityAirState extends State<VelocityAir> {
   @override
   void initState() {
     super.initState();
+    _velocityController.addListener(_calculate);
+    _airDensity.addListener(_calculate);
   }
 
   @override
@@ -40,6 +42,8 @@ class _VelocityAirState extends State<VelocityAir> {
     _thirdController.dispose();
     _airDensity.dispose();
     _airDensityAnswer.dispose();
+    _airDensity.removeListener(_calculate);
+    _velocityController.removeListener(_calculate);
     super.dispose();
   }
 
@@ -173,9 +177,9 @@ class _VelocityAirState extends State<VelocityAir> {
                             RegExp(r'^\d+\.?\d{0,1}')),
                       ],
                       controller: _velocityController,
-                      onChanged: (value) {
-                        _calculate();
-                      },
+                      // onChanged: (value) {
+                      //   _calculate();
+                      // },
                       keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
                       cursorColor: Colors.white,
@@ -250,9 +254,9 @@ class _VelocityAirState extends State<VelocityAir> {
                                   RegExp(r'^\d+\.?\d{0,5}')),
                             ],
                             controller: _airDensity,
-                            onChanged: (value) {
-                              _calculate();
-                            },
+                            // onChanged: (value) {
+                            //   _calculate();
+                            // },
                             keyboardType: const TextInputType.numberWithOptions(
                                 signed: true, decimal: true),
                             cursorColor: Colors.white,
@@ -393,7 +397,6 @@ class _VelocityAirState extends State<VelocityAir> {
           ),
         ),
       );
-
   void _calculate() {
     String? str1 = ' m/s';
     final firstValue = double.parse(_velocityController.text);
