@@ -27,6 +27,9 @@ class _TotalPressureState extends State<TotalPressure> {
   @override
   void initState() {
     super.initState();
+
+    _firstController.addListener(_calculate);
+    _secondController.addListener(_calculate);
   }
 
   @override
@@ -35,6 +38,16 @@ class _TotalPressureState extends State<TotalPressure> {
     _secondController.dispose();
     _thirdController.dispose();
     super.dispose();
+  }
+
+  void _calculate() {
+    String? str1 = ' Pa';
+    if (_firstController.text.trim().isNotEmpty &&
+        _secondController.text.trim().isNotEmpty) {
+      final firstValue = double.parse(_firstController.text);
+      final secondValue = double.parse(_secondController.text);
+      _thirdController.text = (firstValue + secondValue).toString() + str1;
+    }
   }
 
   @override
@@ -167,9 +180,9 @@ class _TotalPressureState extends State<TotalPressure> {
                             RegExp(r'^\d+\.?\d{0,1}')),
                       ],
                       controller: _firstController,
-                      onChanged: (value) {
-                        _calculate();
-                      },
+                      // onChanged: (value) {
+                      //   _calculate();
+                      // },
                       keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
                       cursorColor: Colors.white,
@@ -203,9 +216,9 @@ class _TotalPressureState extends State<TotalPressure> {
                             RegExp(r'^\d+\.?\d{0,1}')),
                       ],
                       controller: _secondController,
-                      onChanged: (value) {
-                        _calculate();
-                      },
+                      // onChanged: (value) {
+                      //   _calculate();
+                      // },
                       keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
                       cursorColor: Colors.white,
@@ -295,14 +308,4 @@ class _TotalPressureState extends State<TotalPressure> {
           ),
         ),
       );
-
-  void _calculate() {
-    String? str1 = ' Pa';
-    if (_firstController.text.trim().isNotEmpty &&
-        _secondController.text.trim().isNotEmpty) {
-      final firstValue = double.parse(_firstController.text);
-      final secondValue = double.parse(_secondController.text);
-      _thirdController.text = (firstValue + secondValue).toString() + str1;
-    }
-  }
 }
