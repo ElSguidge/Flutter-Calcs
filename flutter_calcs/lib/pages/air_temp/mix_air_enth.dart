@@ -60,7 +60,7 @@ class _MixedAirEnthalpyState extends State<MixedAirEnthalpy> {
           ),
           backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
         ),
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
         body: ListView(
           shrinkWrap: true,
@@ -689,7 +689,6 @@ class _MixedAirEnthalpyState extends State<MixedAirEnthalpy> {
 
   void _calculateEnth() {
     var str = ' kJ/kg';
-    print(_enthTempCalc.text);
     // final enthTempInputCalc = double.parse(_enthTempCalc.text);
     if (_enthTempCalc.text.trim().isNotEmpty) {
       final enthTempInputCalc = double.parse(_enthTempCalc.text);

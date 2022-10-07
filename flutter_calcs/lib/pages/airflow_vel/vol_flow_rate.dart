@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
+import 'package:flutter_calcs/pages/airflow_vel/bloc/vol_flow/vol_flow_bloc.dart';
 import 'package:flutter_calcs/widgets/add_button.dart';
+import 'package:flutter_calcs/widgets/answer_field.dart';
+import 'package:flutter_calcs/widgets/formula_button.dart';
+import 'package:flutter_calcs/widgets/main_buttons.dart';
 import 'package:flutter_calcs/widgets/pagination.dart';
+import 'package:flutter_calcs/widgets/text_fields.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'dart:math' as math;
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
+import 'package:provider/provider.dart';
 
 import '../../database/db.dart';
+import '../../providers/button_state.dart';
+import '../../widgets/header.dart';
 
 class VolFlowRate extends StatefulWidget {
   const VolFlowRate({Key? key}) : super(key: key);
@@ -36,805 +43,491 @@ class _VolFlowRateState extends State<VolFlowRate> {
   final _flatCalcControllerQ = TextEditingController();
 
   final _areaController = TextEditingController();
-  final _areaCalcController = TextEditingController();
 
   final _velController = TextEditingController();
   final _velCalcController = TextEditingController();
 
-  bool _displayAreaTextField = true;
-  bool _displayRecTextField = false;
-  bool _displayRoundTextField = false;
-  bool _displayFlatTextField = false;
-
   @override
   void initState() {
     super.initState();
-    _rectWidthController.addListener(_calculate);
-    _rectHeightController.addListener(_calculate);
-    _roundController.addListener(_calculate);
-    _flatWidthController.addListener(_calculate);
-    _flatHeightController.addListener(_calculate);
-    _areaController.addListener(_calculate);
-    _velController.addListener(_calculate);
+    context.read<VolumeBloc>().add(InitialVolumeEvent());
+    _rectWidthController.addListener(_changed);
+    _rectHeightController.addListener(_changed);
+
+    _roundController.addListener(_changed);
+
+    _flatWidthController.addListener(_changed);
+    _flatHeightController.addListener(_changed);
+
+    _areaController.addListener(_changed);
+
+    _velController.addListener(_changed);
   }
 
   @override
   void dispose() {
-    _rectWidthController.dispose();
-    _rectHeightController.dispose();
+    _rectWidthController.removeListener(_changed);
+    _rectHeightController.removeListener(_changed);
     _rectCalcController.dispose();
     _rectCalcControllerQ.dispose();
-    _roundController.dispose();
+
+    _roundController.removeListener(_changed);
     _roundCalcController.dispose();
     _roundCalcControllerQ.dispose();
-    _flatWidthController.dispose();
+
+    _flatWidthController.removeListener(_changed);
     _flatCalcController.dispose();
-    _flatHeightController.dispose();
+    _flatHeightController.removeListener(_changed);
     _flatCalcControllerQ.dispose();
-    _areaController.dispose();
-    _areaCalcController.dispose();
-    _velController.dispose();
+
+    _areaController.removeListener(_changed);
+
+    _velController.removeListener(_changed);
     _velCalcController.dispose();
-    _rectWidthController.removeListener(_calculate);
-    _rectHeightController.removeListener(_calculate);
-    _roundController.removeListener(_calculate);
-    _flatWidthController.removeListener(_calculate);
-    _flatHeightController.removeListener(_calculate);
-    _areaController.removeListener(_calculate);
-    _velController.removeListener(_calculate);
     super.dispose();
+  }
+
+  _changed() {
+    if (_areaController.text.trim().isNotEmpty &&
+        _velController.text.trim().isNotEmpty) {
+      context.read<VolumeBloc>().add(AreaKnown(
+          velocity: double.parse(_velController.text),
+          area: double.parse(_areaController.text)));
+    }
+    if (_rectWidthController.text.trim().isNotEmpty &&
+        _rectHeightController.text.trim().isNotEmpty &&
+        _velController.text.trim().isNotEmpty) {
+      context.read<VolumeBloc>().add(RectangleArea(
+          velocity: double.parse(_velController.text),
+          height: double.parse(_rectHeightController.text),
+          width: double.parse(_rectWidthController.text)));
+    }
+    if (_roundController.text.isNotEmpty &&
+        _velController.text.trim().isNotEmpty) {
+      context.read<VolumeBloc>().add(RoundArea(
+          velocity: double.parse(_velController.text),
+          diameter: double.parse(_roundController.text)));
+    }
+    if (_flatHeightController.text.trim().isNotEmpty &&
+        _flatWidthController.text.trim().isNotEmpty) {
+      context.read<VolumeBloc>().add(FlatArea(
+          velocity: double.parse(_velController.text),
+          flatHeight: double.parse(_flatHeightController.text),
+          flatWidth: double.parse(_flatWidthController.text)));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 25,
-          ),
-        ),
-        backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
-      ),
-      drawer: CustomDrawer(),
-      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-      body: ListView(
-        shrinkWrap: true,
-        physics: const ScrollPhysics(),
-        children: <Widget>[
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: const <Widget>[
-                Pagination(
-                  nav: 'commissioning_home',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: true,
-                  icon: Icons.home,
-                ),
-                Pagination(
-                  title: 'TAB',
-                  nav: 'calculators',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-                Pagination(
-                  title: 'Air',
-                  nav: 'air',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-                Pagination(
-                  title: 'Airflow & Vel.',
-                  nav: 'airflowVel',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-                Pagination(
-                  title: 'Vol. Flow..',
-                  nav: 'volFlowRate',
-                  buttonColor: ColorConstants.messageColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-              ],
+    return BlocListener<VolumeBloc, VolumeState>(
+      listener: (BuildContext context, VolumeState state) {
+        if (state is VolumeDataState) {
+          if (state.answer1 != null) {
+            _velCalcController.text =
+                state.answer1!.toStringAsFixed(2) + ' l/s';
+          }
+          if (state.answer2A != null) {
+            _rectCalcController.text =
+                state.answer2A!.toStringAsFixed(4) + ' m²';
+          }
+          if (state.answer2 != null) {
+            _rectCalcControllerQ.text =
+                state.answer2!.toStringAsFixed(2) + ' l/s';
+          }
+          if (state.answer3 != null) {
+            _roundCalcController.text =
+                state.answer3!.toStringAsFixed(4) + ' m²';
+          }
+          if (state.answer3A != null) {
+            _roundCalcControllerQ.text =
+                state.answer3A!.toStringAsFixed(2) + ' l/s';
+          }
+          if (state.answer4 != null) {
+            _flatCalcController.text =
+                state.answer4!.toStringAsFixed(4) + ' m²';
+          }
+          if (state.answer4A != null) {
+            _flatCalcControllerQ.text =
+                state.answer4A!.toStringAsFixed(2) + ' l/s';
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            '',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Expanded(
-                child: MaterialButton(
-                  onPressed: () {
-                    openDialog();
-                  },
-                  child: Math.tex(
-                    r'\sqrt{abc}',
-                    mathStyle: MathStyle.display,
-                    textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+          backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
+        ),
+        drawer: const CustomDrawer(),
+        backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
+        body: ListView(
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: const <Widget>[
+                  Pagination(
+                    nav: 'commissioning_home',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: true,
+                    icon: Icons.home,
                   ),
-                ),
-              ),
-              const Expanded(
-                child: Text(
-                  'VOLUMETRIC FLOW RATE (Q)',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  Pagination(
+                    title: 'TAB',
+                    nav: 'calculators',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
-                ),
-              ),
-              AddButton(title: title),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: ColorConstants.borderColor),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              color: ColorConstants.secondaryDarkAppColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,3}')),
-                        ],
-                        controller: _velController,
-                        // onChanged: (value) {
-                        //   _calculate();
-                        // },
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: true),
-                        cursorColor: Colors.white,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor:
-                              ColorConstants.lightScaffoldBackgroundColor,
-                          labelText: 'Enter  Air Velocity (V)',
-                          hintText: 'Enter velocity [in m/s]',
-                          focusColor: Colors.white,
-                          labelStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              // ignore: unnecessary_const
-                              color: Colors.white60,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                    ),
+                  Pagination(
+                    title: 'Air',
+                    nav: 'air',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
-
-                  ListTile(
-                    title: Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayAreaTextField = true;
-                              _displayRecTextField = false;
-                              _displayRoundTextField = false;
-                              _displayFlatTextField = false;
-                            });
-                          },
-                          child: const Text("Area"),
-                          color: _displayAreaTextField
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayRecTextField = true;
-                              _displayAreaTextField = false;
-                              _displayRoundTextField = false;
-                              _displayFlatTextField = false;
-                            });
-                          },
-                          child: const Text("Rect"),
-                          color: _displayRecTextField
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayRecTextField = false;
-                              _displayRoundTextField = true;
-                              _displayFlatTextField = false;
-                              _displayAreaTextField = false;
-                            });
-                          },
-                          child: const Text("Round"),
-                          color: _displayRoundTextField
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _displayRecTextField = false;
-                              _displayRoundTextField = false;
-                              _displayFlatTextField = true;
-                              _displayAreaTextField = false;
-                            });
-                          },
-                          child: const Text("Oval"),
-                          color: _displayFlatTextField
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                      ],
-                    ),
+                  Pagination(
+                    title: 'Airflow & Vel.',
+                    nav: 'airflowVel',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
-                  //Area known
-                  Visibility(
-                    visible: _displayAreaTextField,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,4}')),
-                            ],
-                            controller: _areaController,
-                            // onChanged: (value) {
-                            //   _calculate();
-                            // },
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: true, decimal: true),
-                            cursorColor: Colors.white,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintStyle: const TextStyle(color: Colors.white70),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              filled: true,
-                              fillColor:
-                                  ColorConstants.lightScaffoldBackgroundColor,
-                              labelText: 'Enter known area (m²)',
-                              hintText: 'Enter area [in m²]',
-                              focusColor: Colors.white,
-                              labelStyle: const TextStyle(
-                                color: Colors.white,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  // ignore: unnecessary_const
-                                  color: Colors.white60,
-                                ),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          "Calculated Flow Rate (Q): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _velCalcController,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //Rectangle with height added
-                  Visibility(
-                    visible: _displayRecTextField,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: TextFormField(
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,1}')),
-                                  ],
-                                  controller: _rectWidthController,
-                                  // onChanged: (value) {
-                                  //   _calculate();
-                                  // },
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: true, decimal: true),
-                                  cursorColor: Colors.white,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    hintStyle:
-                                        const TextStyle(color: Colors.white70),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: ColorConstants
-                                        .lightScaffoldBackgroundColor,
-                                    labelText: 'Width(mm)',
-                                    hintText: 'Width [in mm]',
-                                    focusColor: Colors.white,
-                                    labelStyle:
-                                        const TextStyle(color: Colors.white),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          // ignore: unnecessary_const
-                                          color: Colors.white60),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              // optional flex property if flex is 1 because the default flex is 1
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: TextFormField(
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,1}')),
-                                  ],
-                                  controller: _rectHeightController,
-                                  // onChanged: (value) {
-                                  //   _calculate();
-                                  // },
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: true, decimal: true),
-                                  cursorColor: Colors.white,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    hintStyle:
-                                        const TextStyle(color: Colors.white70),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: ColorConstants
-                                        .lightScaffoldBackgroundColor,
-                                    labelText: 'Height(mm)',
-                                    hintText: 'Height [in mm]',
-                                    focusColor: Colors.white,
-                                    labelStyle:
-                                        const TextStyle(color: Colors.white),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          // ignore: unnecessary_const
-                                          color: Colors.white60),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          "Calculated area (A): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        //here
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _rectCalcController,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "Calculated Flow Rate (Q): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _rectCalcControllerQ,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white60),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //Round
-                  Visibility(
-                    visible: _displayRoundTextField,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,1}')),
-                            ],
-                            controller: _roundController,
-                            // onChanged: (value) {
-                            //   _calculate();
-                            // },
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: true, decimal: true),
-                            cursorColor: Colors.white,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintStyle: const TextStyle(color: Colors.white70),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              filled: true,
-                              fillColor:
-                                  ColorConstants.lightScaffoldBackgroundColor,
-                              labelText: 'Diameter (mm)',
-                              hintText: 'Enter Diameter [in mm]',
-                              focusColor: Colors.white,
-                              labelStyle: const TextStyle(color: Colors.white),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    // ignore: unnecessary_const
-                                    color: Colors.white60),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                        //here
-                        const Text(
-                          "Calculated area (A): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        //here
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _roundCalcController,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "Calculated Flow Rate (Q): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _roundCalcControllerQ,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //  Flat oval duct with height added
-                  Visibility(
-                    visible: _displayFlatTextField,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: TextFormField(
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,1}')),
-                                  ],
-                                  controller: _flatWidthController,
-                                  // onChanged: (value) {
-                                  //   _calculate();
-                                  // },
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: true, decimal: true),
-                                  cursorColor: Colors.white,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    hintStyle:
-                                        const TextStyle(color: Colors.white70),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: ColorConstants
-                                        .lightScaffoldBackgroundColor,
-                                    labelText: 'Width(mm)',
-                                    hintText: 'Width [in mm]',
-                                    focusColor: Colors.white,
-                                    labelStyle:
-                                        const TextStyle(color: Colors.white),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          // ignore: unnecessary_const
-                                          color: Colors.white60),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              // optional flex property if flex is 1 because the default flex is 1
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: TextFormField(
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,1}')),
-                                  ],
-                                  controller: _flatHeightController,
-                                  // onChanged: (value) {
-                                  //   _calculate();
-                                  // },
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: true, decimal: true),
-                                  cursorColor: Colors.white,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    hintStyle:
-                                        const TextStyle(color: Colors.white70),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: ColorConstants
-                                        .lightScaffoldBackgroundColor,
-                                    labelText: 'Height(mm)',
-                                    hintText: 'Height [in mm]',
-                                    focusColor: Colors.white,
-                                    labelStyle:
-                                        const TextStyle(color: Colors.white),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          // ignore: unnecessary_const
-                                          color: Colors.white60),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          "Calculated area (A): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _flatCalcController,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "Calculated Flow Rate (Q): ",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: _flatCalcControllerQ,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  Pagination(
+                    title: 'Vol. Flow..',
+                    nav: 'volFlowRate',
+                    buttonColor: ColorConstants.messageColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                FormulaButton(
+                    onPressed: () => openDialog(), formula: r'\sqrt{abc}'),
+                const Header(title: 'VOLUMETRIC FLOW RATE (Q)'),
+                AddButton(title: title),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: ColorConstants.borderColor),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                color: ColorConstants.secondaryDarkAppColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: CustomTextField(
+                            // onChanged: _calculate,
+                            controller: _velController,
+                            regExp: RegExp(r'^\d+\.?\d{0,3}'),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
+                            hintText: 'Enter velocity [in m/s]',
+                            labelText: 'Enter  Air Velocity (V)',
+                          )),
+                    ),
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          MainButtons(
+                              onPressed: () => Provider.of<AirButtonProvider>(
+                                      context,
+                                      listen: false)
+                                  .closeArea(),
+                              name: 'Area',
+                              textColor: Colors.white,
+                              active: Provider.of<AirButtonProvider>(context)
+                                  .displayArea),
+                          MainButtons(
+                              onPressed: () => Provider.of<AirButtonProvider>(
+                                      context,
+                                      listen: false)
+                                  .closeRect(),
+                              name: 'Rect',
+                              textColor: Colors.white,
+                              active: Provider.of<AirButtonProvider>(context)
+                                  .displayRect),
+                          MainButtons(
+                              onPressed: () => Provider.of<AirButtonProvider>(
+                                      context,
+                                      listen: false)
+                                  .closeRound(),
+                              name: 'Round',
+                              textColor: Colors.white,
+                              active: Provider.of<AirButtonProvider>(context)
+                                  .displayRound),
+                          MainButtons(
+                              onPressed: () => Provider.of<AirButtonProvider>(
+                                      context,
+                                      listen: false)
+                                  .closeFlat(),
+                              name: 'Flat',
+                              textColor: Colors.white,
+                              active: Provider.of<AirButtonProvider>(context)
+                                  .displayFlat),
+                        ],
+                      ),
+                    ),
+                    //Area known
+                    Visibility(
+                      visible:
+                          Provider.of<AirButtonProvider>(context).displayArea,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: CustomTextField(
+                                  // onChanged: () => _calculate,
+                                  hintText: 'Enter area [in m²]',
+                                  regExp: RegExp(r'^\d+\.?\d{0,4}'),
+                                  controller: _areaController,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
+                                  labelText: 'Enter known area (m²)')),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Calculated Flow Rate (Q): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                                child: AnswerField(
+                              controller: _velCalcController,
+                            )),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    //Rectangle with height added
+                    Visibility(
+                      visible:
+                          Provider.of<AirButtonProvider>(context).displayRect,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: CustomTextField(
+                                        // onChanged: _calculate,
+                                        hintText: 'Width [in mm]',
+                                        regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                        controller: _rectWidthController,
+                                        keyboardType: const TextInputType
+                                                .numberWithOptions(
+                                            signed: true, decimal: true),
+                                        labelText: 'Width(mm)')),
+                              ),
+                              const SizedBox(width: 20.0),
+                              Expanded(
+                                // optional flex property if flex is 1 because the default flex is 1
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: CustomTextField(
+                                      // onChanged: _calculate,
+                                      hintText: 'Height [in mm]',
+                                      regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                      controller: _rectHeightController,
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                              signed: true, decimal: true),
+                                      labelText: 'Height(mm)'),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Text(
+                            "Calculated area (A): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          //here
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                                child: AnswerField(
+                                    controller: _rectCalcController)),
+                          ),
+                          const Text(
+                            "Calculated Flow Rate (Q): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                                child: AnswerField(
+                                    controller: _rectCalcControllerQ)),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    //Round
+                    Visibility(
+                      visible:
+                          Provider.of<AirButtonProvider>(context).displayRound,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: CustomTextField(
+                                // onChanged: _calculate,
+                                hintText: 'Enter Diameter [in mm]',
+                                regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                controller: _roundController,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        signed: true, decimal: true),
+                                labelText: 'Diameter (mm)'),
+                          ),
+                          //here
+                          const Text(
+                            "Calculated area (A): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          //here
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                                child: AnswerField(
+                                    controller: _roundCalcController)),
+                          ),
+                          const Text(
+                            "Calculated Flow Rate (Q): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                                child: AnswerField(
+                                    controller: _roundCalcControllerQ)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //  Flat oval duct with height added
+                    Visibility(
+                      visible:
+                          Provider.of<AirButtonProvider>(context).displayFlat,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: CustomTextField(
+                                    controller: _flatWidthController,
+                                    regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                    hintText: 'Width [in mm]',
+                                    labelText: 'Width(mm)',
+                                    // onChanged: _calculate,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            signed: true, decimal: true),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 20.0),
+                              Expanded(
+                                // optional flex property if flex is 1 because the default flex is 1
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: CustomTextField(
+                                    controller: _flatHeightController,
+                                    // onChanged: _calculate,
+                                    regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            signed: true, decimal: true),
+                                    hintText: 'Height [in mm]',
+                                    labelText: 'Height(mm)',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Text(
+                            "Calculated area (A): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                              child:
+                                  AnswerField(controller: _flatCalcController),
+                            ),
+                          ),
+                          const Text(
+                            "Calculated Flow Rate (Q): ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 30.0),
+                            child: AbsorbPointer(
+                              child:
+                                  AnswerField(controller: _flatCalcControllerQ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -869,64 +562,4 @@ class _VolFlowRateState extends State<VolFlowRate> {
           ),
         ),
       );
-
-  void _calculate() {
-    String? str1 = 'm²';
-    // String? str2 = 'Q = ';
-
-    if (_rectWidthController.text.trim().isNotEmpty &&
-        _rectHeightController.text.trim().isNotEmpty) {
-      final firstValue = double.parse(_rectWidthController.text);
-      final secondValue = double.parse(_rectHeightController.text);
-      _rectCalcController.text =
-          (firstValue * secondValue / 1000000).toStringAsFixed(4) + ' ' + str1;
-      if (_rectCalcController.text.isNotEmpty &&
-          _velController.text.trim().isNotEmpty) {
-        final findQ = double.parse(_velController.text);
-        _rectCalcControllerQ.text =
-            ((firstValue * secondValue * findQ) / 1000).toStringAsFixed(1) +
-                ' ' +
-                'l/s';
-      }
-    }
-    if (_roundController.text.trim().isNotEmpty) {
-      final firstValue = double.parse(_roundController.text);
-      final divide = (firstValue / 2);
-      final power = math.pow(divide, 2) * math.pi;
-      _roundCalcController.text =
-          (power / 1000000).toStringAsFixed(4) + ' ' + str1;
-      if (_roundController.text.isNotEmpty &&
-          _velController.text.trim().isNotEmpty) {
-        final findQ = double.parse(_velController.text);
-        _roundCalcControllerQ.text =
-            (power / 1000 * findQ).toStringAsFixed(2) + ' ' + 'l/s';
-      }
-    }
-    if (_areaController.text.trim().isNotEmpty) {
-      _areaCalcController.text = _areaController.text + str1;
-      if (_areaController.text.trim().isNotEmpty &&
-          _velController.text.trim().isNotEmpty) {
-        final firstValue = double.parse(_areaController.text);
-        final second = double.parse(_velController.text);
-        final findQ = (firstValue * 1000) * second;
-        _velCalcController.text = findQ.toStringAsFixed(1) + ' ' + 'l/s';
-      }
-    }
-    if (_flatHeightController.text.trim().isNotEmpty &&
-        _flatWidthController.text.trim().isNotEmpty) {
-      final firstValue = double.parse(_flatHeightController.text);
-      final secondValue = double.parse(_flatWidthController.text);
-      final divide = (firstValue / 2);
-      final power = math.pow(divide, 2) * math.pi;
-      final subtract = (secondValue - firstValue) * firstValue;
-      final addition = (subtract + power) / 1000000;
-      _flatCalcController.text = addition.toStringAsFixed(4) + ' ' + str1;
-      if (_flatCalcController.text.isNotEmpty &&
-          _velController.text.trim().isNotEmpty) {
-        final findQ = double.parse(_velController.text);
-        _flatCalcControllerQ.text =
-            ((addition * findQ) * 1000).toStringAsFixed(1) + ' ' + 'l/s';
-      }
-    }
-  }
 }

@@ -43,7 +43,7 @@ class _AirFlowVelMenuState extends State<AirFlowVelMenu> {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       // ignore: avoid_unnecessary_containers
       body: ListView(

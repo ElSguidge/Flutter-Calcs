@@ -86,7 +86,7 @@ class _DuctAreaState extends State<DuctArea> {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: ListView(
         shrinkWrap: true,

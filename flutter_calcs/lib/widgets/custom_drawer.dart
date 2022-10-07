@@ -4,9 +4,14 @@ import 'package:flutter_calcs/constants/color_constants.dart';
 
 import '../constants/constants.dart';
 
-class CustomDrawer extends StatelessWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({Key? key}) : super(key: key);
 
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   signOut() async {

@@ -24,7 +24,7 @@ class FavoritePage extends StatelessWidget {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: const FavoritePageList(),
     );
   }

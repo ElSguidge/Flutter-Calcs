@@ -36,8 +36,7 @@ class CommissioningPage extends StatelessWidget {
         ),
         backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
       ),
-      // drawer:
-      // const CustomDrawer(),
+      drawer: const CustomDrawer(),
       backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
       body: ListView(
         shrinkWrap: true,
