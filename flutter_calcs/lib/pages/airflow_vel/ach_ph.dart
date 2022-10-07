@@ -439,26 +439,4 @@ class _AirChangesPhState extends State<AirChangesPh> {
           ),
         ),
       );
-
-  // void _calculate() {
-  //   if (_knownRoomVolume.text.trim().isNotEmpty &&
-  //       _knownRoomVolumeAirflow.text.trim().isNotEmpty) {
-  //     final volume = double.parse(_knownRoomVolume.text);
-  //     final airflow = double.parse(_knownRoomVolumeAirflow.text);
-
-  //     _knownRoomVolumeACH.text = (airflow * 3.6 / volume).toStringAsFixed(1);
-  //   }
-  //   if (_heightController.text.trim().isNotEmpty &&
-  //       _widthController.text.trim().isNotEmpty &&
-  //       _lengthController.text.trim().isNotEmpty &&
-  //       _calculatedAreaAirflow.text.trim().isNotEmpty) {
-  //     final height = double.parse(_heightController.text);
-  //     final length = double.parse(_lengthController.text);
-  //     final width = double.parse(_widthController.text);
-  //     final airflow = double.parse(_calculatedAreaAirflow.text);
-  //     final area = height * length * width;
-
-  //     _calculatedVolumeACH.text = (airflow * 3.6 / area).toStringAsFixed(1);
-  //   }
-  // }
 }
