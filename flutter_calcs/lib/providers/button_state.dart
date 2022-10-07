@@ -6,6 +6,7 @@ class AirButtonProvider extends ChangeNotifier {
   late bool displayRound = false;
   late bool displayFlat = false;
   late bool isStandardAir = true;
+  late bool isKnownAirChange = true;
 
   // bool get buttonArea => displayArea;
   // bool get buttonRect => displayArea;
@@ -46,6 +47,11 @@ class AirButtonProvider extends ChangeNotifier {
 
   void standardAir(bool value) {
     isStandardAir = value;
+    notifyListeners();
+  }
+
+  void knownACH(bool value) {
+    isKnownAirChange = value;
     notifyListeners();
   }
 }

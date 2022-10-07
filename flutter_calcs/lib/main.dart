@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_calcs/pages/airflow_vel/bloc/ach/ach_bloc.dart';
 import 'package:flutter_calcs/pages/airflow_vel/bloc/total_pressure/total_p_bloc.dart';
 import 'package:flutter_calcs/pages/airflow_vel/bloc/velocity_of_air/vel_air_bloc.dart';
 import 'package:flutter_calcs/pages/airflow_vel/bloc/vol_flow/vol_flow_bloc.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => VolumeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AchBloc(),
         ),
       ],
       child: MultiProvider(

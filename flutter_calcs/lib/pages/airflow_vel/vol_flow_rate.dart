@@ -115,6 +115,25 @@ class _VolFlowRateState extends State<VolFlowRate> {
           flatHeight: double.parse(_flatHeightController.text),
           flatWidth: double.parse(_flatWidthController.text)));
     }
+    if (_areaController.text.isEmpty || _velCalcController.text.isEmpty) {
+      _velCalcController.text = '';
+    }
+    if (_rectHeightController.text.isEmpty ||
+        _rectWidthController.text.isEmpty ||
+        _velController.text.isEmpty) {
+      _rectCalcController.text = '';
+      _rectCalcControllerQ.text = '';
+    }
+    if (_flatHeightController.text.isEmpty ||
+        _flatWidthController.text.isEmpty ||
+        _velController.text.isEmpty) {
+      _flatCalcController.text = '';
+      _flatCalcControllerQ.text = '';
+    }
+    if (_roundController.text.isEmpty || _velCalcController.text.isEmpty) {
+      _roundCalcController.text = '';
+      _roundCalcControllerQ.text = '';
+    }
   }
 
   @override
