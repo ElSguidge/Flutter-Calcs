@@ -1,10 +1,9 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calcs/constants/color_constants.dart';
 import 'package:flutter_calcs/database/db.dart';
-import 'package:flutter_calcs/providers/button_state.dart';
+import 'package:flutter_calcs/providers/airflow_button_state.dart';
 import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/answer_field.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
@@ -72,6 +71,10 @@ class _VelocityAirState extends State<VelocityAir> {
 
   @override
   Widget build(BuildContext context) {
+    AirFlowButtonProvider airflow =
+        Provider.of<AirFlowButtonProvider>(context, listen: false);
+    AirFlowButtonProvider active = Provider.of<AirFlowButtonProvider>(context);
+
     return BlocListener<VelBloc, VelocityState>(
       listener: (BuildContext context, VelocityState state) {
         if (state is VelocityDataState) {
@@ -199,13 +202,9 @@ class _VelocityAirState extends State<VelocityAir> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            Provider.of<AirButtonProvider>(context)
-                                    .isStandardAir
-                                ? "Yes"
-                                : "No",
+                            active.isStandardAir ? "Yes" : "No",
                             style: TextStyle(
-                                color: Provider.of<AirButtonProvider>(context)
-                                        .isStandardAir
+                                color: active.isStandardAir
                                     ? CupertinoColors.activeGreen
                                     : CupertinoColors.destructiveRed,
                                 fontWeight: FontWeight.w600),
@@ -215,23 +214,19 @@ class _VelocityAirState extends State<VelocityAir> {
                           padding: const EdgeInsets.all(10.0),
                           child: CupertinoSwitch(
                             // This bool value toggles the switch.
-                            value: Provider.of<AirButtonProvider>(context)
-                                .isStandardAir,
+                            value: active.isStandardAir,
                             thumbColor: Colors.white,
                             trackColor: ColorConstants.borderColor,
                             activeColor: ColorConstants.lightGreen,
                             onChanged: (bool value) {
-                              Provider.of<AirButtonProvider>(context,
-                                      listen: false)
-                                  .standardAir(value);
+                              airflow.standardAir(value);
                             },
                           ),
                         ),
                       ],
                     ),
                     Visibility(
-                      visible: !Provider.of<AirButtonProvider>(context)
-                          .isStandardAir,
+                      visible: !active.isStandardAir,
                       child: Column(
                         children: [
                           Padding(
@@ -267,8 +262,7 @@ class _VelocityAirState extends State<VelocityAir> {
                       ),
                     ),
                     Visibility(
-                      visible:
-                          Provider.of<AirButtonProvider>(context).isStandardAir,
+                      visible: active.isStandardAir,
                       child: Column(
                         children: [
                           const Padding(

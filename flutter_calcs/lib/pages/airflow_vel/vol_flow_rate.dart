@@ -13,7 +13,7 @@ import 'package:flutter_calcs/widgets/custom_drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../../database/db.dart';
-import '../../providers/button_state.dart';
+import '../../providers/airflow_button_state.dart';
 import '../../widgets/header.dart';
 
 class VolFlowRate extends StatefulWidget {
@@ -138,6 +138,9 @@ class _VolFlowRateState extends State<VolFlowRate> {
 
   @override
   Widget build(BuildContext context) {
+    AirFlowButtonProvider airflow =
+        Provider.of<AirFlowButtonProvider>(context, listen: false);
+    AirFlowButtonProvider active = Provider.of<AirFlowButtonProvider>(context);
     return BlocListener<VolumeBloc, VolumeState>(
       listener: (BuildContext context, VolumeState state) {
         if (state is VolumeDataState) {
@@ -283,48 +286,33 @@ class _VolFlowRateState extends State<VolFlowRate> {
                       title: Row(
                         children: <Widget>[
                           MainButtons(
-                              onPressed: () => Provider.of<AirButtonProvider>(
-                                      context,
-                                      listen: false)
-                                  .closeArea(),
+                              onPressed: () => airflow.closeArea(),
                               name: 'Area',
                               textColor: Colors.white,
-                              active: Provider.of<AirButtonProvider>(context)
-                                  .displayArea),
+                              active:
+                                  Provider.of<AirFlowButtonProvider>(context)
+                                      .displayArea),
                           MainButtons(
-                              onPressed: () => Provider.of<AirButtonProvider>(
-                                      context,
-                                      listen: false)
-                                  .closeRect(),
+                              onPressed: () => airflow.closeRect(),
                               name: 'Rect',
                               textColor: Colors.white,
-                              active: Provider.of<AirButtonProvider>(context)
-                                  .displayRect),
+                              active: active.displayRect),
                           MainButtons(
-                              onPressed: () => Provider.of<AirButtonProvider>(
-                                      context,
-                                      listen: false)
-                                  .closeRound(),
+                              onPressed: () => airflow.closeRound(),
                               name: 'Round',
                               textColor: Colors.white,
-                              active: Provider.of<AirButtonProvider>(context)
-                                  .displayRound),
+                              active: active.displayRound),
                           MainButtons(
-                              onPressed: () => Provider.of<AirButtonProvider>(
-                                      context,
-                                      listen: false)
-                                  .closeFlat(),
+                              onPressed: () => airflow.closeFlat(),
                               name: 'Flat',
                               textColor: Colors.white,
-                              active: Provider.of<AirButtonProvider>(context)
-                                  .displayFlat),
+                              active: active.displayFlat),
                         ],
                       ),
                     ),
                     //Area known
                     Visibility(
-                      visible:
-                          Provider.of<AirButtonProvider>(context).displayArea,
+                      visible: active.displayArea,
                       child: Column(
                         children: <Widget>[
                           Padding(
@@ -357,8 +345,7 @@ class _VolFlowRateState extends State<VolFlowRate> {
 
                     //Rectangle with height added
                     Visibility(
-                      visible:
-                          Provider.of<AirButtonProvider>(context).displayRect,
+                      visible: active.displayRect,
                       child: Column(
                         children: [
                           Row(
@@ -426,8 +413,7 @@ class _VolFlowRateState extends State<VolFlowRate> {
 
                     //Round
                     Visibility(
-                      visible:
-                          Provider.of<AirButtonProvider>(context).displayRound,
+                      visible: active.displayRound,
                       child: Column(
                         children: [
                           Padding(
@@ -471,8 +457,7 @@ class _VolFlowRateState extends State<VolFlowRate> {
                     ),
                     //  Flat oval duct with height added
                     Visibility(
-                      visible:
-                          Provider.of<AirButtonProvider>(context).displayFlat,
+                      visible: active.displayFlat,
                       child: Column(
                         children: [
                           Row(

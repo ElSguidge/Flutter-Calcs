@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_calcs/pages/air_temp/bloc/mixed_air/mixed_air_bloc.dart';
+import 'package:flutter_calcs/widgets/answer_field.dart';
+import 'package:flutter_calcs/widgets/text_fields.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
 import 'package:flutter_calcs/constants/color_constants.dart';
@@ -7,6 +10,8 @@ import 'package:flutter_calcs/database/db.dart';
 import 'package:flutter_calcs/widgets/add_button.dart';
 import 'package:flutter_calcs/widgets/custom_drawer.dart';
 
+import '../../widgets/formula_button.dart';
+import '../../widgets/header.dart';
 import '../../widgets/pagination.dart';
 
 class MixedAir extends StatefulWidget {
@@ -31,20 +36,51 @@ class _MixedAirState extends State<MixedAir> {
   @override
   void initState() {
     super.initState();
+    context.read<MixedAirTempBloc>().add(InitialMixedAirEvent());
+    _raTemp.addListener(_calculate);
+    _oaPercent.addListener(_calculate);
+    _oaTemp.addListener(_calculate);
+    _raPercent.addListener(_calculate);
   }
 
   @override
   void dispose() {
-    _raTemp.dispose();
-    _oaPercent.dispose();
-    _oaTemp.dispose();
-    _raPercent.dispose();
+    _raTemp.removeListener(_calculate);
+    _oaPercent.removeListener(_calculate);
+    _oaTemp.removeListener(_calculate);
+    _raPercent.removeListener(_calculate);
+    _mixedAirTempAnswer.dispose();
     super.dispose();
+  }
+
+  _calculate() {
+    if (_oaTemp.text.trim().isNotEmpty &&
+        _oaPercent.text.trim().isNotEmpty &&
+        _raPercent.text.trim().isNotEmpty &&
+        _raTemp.text.trim().isNotEmpty) {
+      context.read<MixedAirTempBloc>().add(MixedAirCalc(
+          raPercent: double.parse(_raPercent.text),
+          rat: double.parse(_raTemp.text),
+          oaPercent: double.parse(_oaPercent.text),
+          oat: double.parse(_oaTemp.text)));
+    }
+    if (_oaTemp.text.isEmpty ||
+        _oaPercent.text.isEmpty ||
+        _raPercent.text.isEmpty ||
+        _raTemp.text.isEmpty) {
+      _mixedAirTempAnswer.text = '';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<MixedAirTempBloc, MixedAirState>(
+      listener: (BuildContext context, MixedAirState state) {
+        if (state is MixedAirDataState) {
+          _mixedAirTempAnswer.text = state.answer1.toStringAsFixed(1) + ' °C';
+        }
+      },
+      child: Scaffold(
         appBar: AppBar(
           title: const Text(
             '',
@@ -121,33 +157,9 @@ class _MixedAirState extends State<MixedAir> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Expanded(
-                  child: MaterialButton(
-                    onPressed: () {
-                      openDialog();
-                    },
-                    child: Math.tex(
-                      r'\sqrt{abc}',
-                      mathStyle: MathStyle.display,
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  child: Text(
-                    'Mixed Air Temperature',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                FormulaButton(
+                    onPressed: () => openDialog(), formula: r'\sqrt{abc}'),
+                const Header(title: 'Mixed Air Temperature'),
                 AddButton(title: title),
               ],
             ),
@@ -179,45 +191,14 @@ class _MixedAirState extends State<MixedAir> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             20.0, 10.0, 10.0, 10.0),
-                                        child: TextFormField(
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'^\d+\.?\d{0,1}')),
-                                          ],
+                                        child: CustomTextField(
                                           controller: _raPercent,
-                                          onChanged: (value) {
-                                            _calculate();
-                                          },
+                                          regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                          hintText: 'Enter % of RA',
+                                          labelText: 'Return Air %',
                                           keyboardType: const TextInputType
                                                   .numberWithOptions(
                                               signed: true, decimal: true),
-                                          cursorColor: Colors.white,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
-                                                color: Colors.white70),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            filled: true,
-                                            fillColor: ColorConstants
-                                                .lightScaffoldBackgroundColor,
-                                            labelText: 'Return Air %',
-                                            hintText: 'Enter % of RA',
-                                            focusColor: Colors.white,
-                                            labelStyle: const TextStyle(
-                                                color: Colors.white),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  // ignore: unnecessary_const
-                                                  color: Colors.white60),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),
@@ -228,45 +209,14 @@ class _MixedAirState extends State<MixedAir> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             10.0, 10.0, 20.0, 10.0),
-                                        child: TextFormField(
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'^-?\d*\.?\d{0,1}')),
-                                          ],
+                                        child: CustomTextField(
                                           controller: _raTemp,
-                                          onChanged: (value) {
-                                            _calculate();
-                                          },
+                                          regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                          hintText: 'Enter RA temp',
+                                          labelText: 'RA Temp °C',
                                           keyboardType: const TextInputType
                                                   .numberWithOptions(
                                               signed: true, decimal: true),
-                                          cursorColor: Colors.white,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
-                                                color: Colors.white70),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            filled: true,
-                                            fillColor: ColorConstants
-                                                .lightScaffoldBackgroundColor,
-                                            labelText: 'RA Temp °C',
-                                            hintText: 'Enter RA temp',
-                                            focusColor: Colors.white,
-                                            labelStyle: const TextStyle(
-                                                color: Colors.white),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  // ignore: unnecessary_const
-                                                  color: Colors.white60),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),
@@ -281,45 +231,14 @@ class _MixedAirState extends State<MixedAir> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             20.0, 10.0, 10.0, 10.0),
-                                        child: TextFormField(
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'^\d+\.?\d{0,1}')),
-                                          ],
+                                        child: CustomTextField(
                                           controller: _oaPercent,
-                                          onChanged: (value) {
-                                            _calculate();
-                                          },
+                                          regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                          hintText: 'Enter % OA',
+                                          labelText: 'Outside Air %',
                                           keyboardType: const TextInputType
                                                   .numberWithOptions(
                                               signed: true, decimal: true),
-                                          cursorColor: Colors.white,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
-                                                color: Colors.white70),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            filled: true,
-                                            fillColor: ColorConstants
-                                                .lightScaffoldBackgroundColor,
-                                            labelText: 'Outside Air %',
-                                            hintText: 'Enter % OA',
-                                            focusColor: Colors.white,
-                                            labelStyle: const TextStyle(
-                                                color: Colors.white),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  // ignore: unnecessary_const
-                                                  color: Colors.white60),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),
@@ -330,45 +249,14 @@ class _MixedAirState extends State<MixedAir> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             10.0, 10.0, 20.0, 10.0),
-                                        child: TextFormField(
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'^-?\d*\.?\d{0,1}')),
-                                          ],
+                                        child: CustomTextField(
                                           controller: _oaTemp,
-                                          onChanged: (value) {
-                                            _calculate();
-                                          },
+                                          regExp: RegExp(r'^\d+\.?\d{0,1}'),
+                                          hintText: 'Enter OA Temp',
+                                          labelText: 'OA Temp °C',
                                           keyboardType: const TextInputType
                                                   .numberWithOptions(
                                               signed: true, decimal: true),
-                                          cursorColor: Colors.white,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
-                                                color: Colors.white70),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            filled: true,
-                                            fillColor: ColorConstants
-                                                .lightScaffoldBackgroundColor,
-                                            labelText: 'OA Temp °C',
-                                            hintText: 'Enter OA Temp',
-                                            focusColor: Colors.white,
-                                            labelStyle: const TextStyle(
-                                                color: Colors.white),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  // ignore: unnecessary_const
-                                                  color: Colors.white60),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),
@@ -389,32 +277,17 @@ class _MixedAirState extends State<MixedAir> {
                           padding:
                               const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                           child: AbsorbPointer(
-                            child: TextField(
-                              textAlign: TextAlign.center,
+                            child: AnswerField(
                               controller: _mixedAirTempAnswer,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintStyle:
-                                    const TextStyle(color: Colors.white70),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor:
-                                    ColorConstants.lightScaffoldBackgroundColor,
-                              ),
                             ),
                           ),
                         ),
                       ],
                     ))),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Future openDialog() => showDialog(
@@ -453,21 +326,21 @@ class _MixedAirState extends State<MixedAir> {
         ),
       );
 
-  void _calculate() {
-    var str = ' °C';
-    if (_oaTemp.text.trim().isNotEmpty &&
-        _oaPercent.text.trim().isNotEmpty &&
-        _raPercent.text.trim().isNotEmpty &&
-        _raTemp.text.trim().isNotEmpty) {
-      final outsideT = double.parse(_oaTemp.text);
-      final outsideP = double.parse(_oaPercent.text);
-      final returnT = double.parse(_raTemp.text);
-      final returnP = double.parse(_raPercent.text);
+  // void _calculate() {
+  //   var str = ' °C';
+  //   if (_oaTemp.text.trim().isNotEmpty &&
+  //       _oaPercent.text.trim().isNotEmpty &&
+  //       _raPercent.text.trim().isNotEmpty &&
+  //       _raTemp.text.trim().isNotEmpty) {
+  //     final outsideT = double.parse(_oaTemp.text);
+  //     final outsideP = double.parse(_oaPercent.text);
+  //     final returnT = double.parse(_raTemp.text);
+  //     final returnP = double.parse(_raPercent.text);
 
-      final oa = (outsideP / 100) * outsideT;
-      final ra = (returnP / 100) * returnT;
+  //     final oa = (outsideP / 100) * outsideT;
+  //     final ra = (returnP / 100) * returnT;
 
-      _mixedAirTempAnswer.text = (oa + ra).toStringAsFixed(1) + str;
-    }
-  }
+  //     _mixedAirTempAnswer.text = (oa + ra).toStringAsFixed(1) + str;
+  //   }
+  // }
 }

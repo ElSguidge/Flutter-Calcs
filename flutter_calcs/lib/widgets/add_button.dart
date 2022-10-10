@@ -4,11 +4,10 @@ import 'package:flutter_calcs/database/db.dart';
 
 import '../constants/color_constants.dart';
 
-// ignore: must_be_immutable
 class AddButton extends StatefulWidget {
-  String title;
+  final String title;
 
-  AddButton({required this.title, Key? key}) : super(key: key);
+  const AddButton({required this.title, Key? key}) : super(key: key);
 
   @override
   State<AddButton> createState() => _AddButtonState();

@@ -12,7 +12,7 @@ import 'package:flutter_calcs/widgets/text_fields.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/button_state.dart';
+import '../../providers/airflow_button_state.dart';
 import '../../widgets/header.dart';
 import '../../widgets/pagination.dart';
 
@@ -80,10 +80,23 @@ class _AirChangesPhState extends State<AirChangesPh> {
           width: double.parse(_widthController.text),
           airflow: double.parse(_calculatedAreaAirflow.text)));
     }
+    if (_knownRoomVolume.text.isEmpty || _knownRoomVolumeAirflow.text.isEmpty) {
+      _knownRoomVolumeACH.text = '';
+    }
+    if (_lengthController.text.isEmpty ||
+        _heightController.text.isEmpty ||
+        _widthController.text.isEmpty ||
+        _calculatedAreaAirflow.text.isEmpty) {
+      _calculatedVolumeACH.text = '';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    AirFlowButtonProvider airflow =
+        Provider.of<AirFlowButtonProvider>(context, listen: false);
+    AirFlowButtonProvider active = Provider.of<AirFlowButtonProvider>(context);
+
     return BlocListener<AchBloc, AchState>(
       listener: (BuildContext context, AchState state) {
         if (state is AchDataState) {
@@ -196,8 +209,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text(
-                          Provider.of<AirButtonProvider>(context)
-                                  .isKnownAirChange
+                          active.isKnownAirChange
                               ? "Known room volume (m³)"
                               : "Calculate volume",
                           style: const TextStyle(
@@ -207,15 +219,12 @@ class _AirChangesPhState extends State<AirChangesPh> {
                           padding: const EdgeInsets.all(15.0),
                           child: CupertinoSwitch(
                             // This bool value toggles the switch.
-                            value: Provider.of<AirButtonProvider>(context)
-                                .isKnownAirChange,
+                            value: active.isKnownAirChange,
                             thumbColor: Colors.white,
                             trackColor: ColorConstants.borderColor,
                             activeColor: ColorConstants.lightGreen,
                             onChanged: (bool value) {
-                              Provider.of<AirButtonProvider>(context,
-                                      listen: false)
-                                  .knownACH(value);
+                              airflow.knownACH(value);
                             },
                           ),
                         ),
@@ -238,8 +247,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
 
                     // Known room volume
                     Visibility(
-                      visible: Provider.of<AirButtonProvider>(context)
-                          .isKnownAirChange,
+                      visible: active.isKnownAirChange,
                       child: Column(
                         children: [
                           Row(
@@ -285,8 +293,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
                       ),
                     ),
                     Visibility(
-                      visible: !Provider.of<AirButtonProvider>(context)
-                          .isKnownAirChange,
+                      visible: !active.isKnownAirChange,
                       child: Column(
                         children: [
                           Row(
@@ -378,8 +385,7 @@ class _AirChangesPhState extends State<AirChangesPh> {
                       ),
                     ),
                     Visibility(
-                      visible: Provider.of<AirButtonProvider>(context)
-                          .isKnownAirChange,
+                      visible: active.isKnownAirChange,
                       child: Column(
                         children: [
                           const Padding(

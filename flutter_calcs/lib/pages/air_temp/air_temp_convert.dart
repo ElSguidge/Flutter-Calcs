@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calcs/database/db.dart';
+import 'package:flutter_calcs/providers/air_temp_buttons.dart';
+import 'package:flutter_calcs/widgets/answer_field.dart';
+import 'package:flutter_calcs/widgets/formula_button.dart';
+import 'package:flutter_calcs/widgets/header.dart';
+import 'package:flutter_calcs/widgets/main_buttons.dart';
+import 'package:flutter_calcs/widgets/text_fields.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constants/color_constants.dart';
 import '../../widgets/add_button.dart';
 import '../../widgets/custom_drawer.dart';
 import '../../widgets/pagination.dart';
+import 'bloc/air_temp/air_temp_bloc.dart';
 
 class Equations {
   final String eq;
@@ -41,521 +49,409 @@ class _AirTempConvertState extends State<AirTempConvert> {
   final TextEditingController _tempInputController = TextEditingController();
   final TextEditingController _tempAnswerController = TextEditingController();
 
-  bool _isCelcius = true;
-  bool _isFahrenheit = false;
-  bool _isR = false;
-  bool _isK = false;
-
-  bool _isCelcius1 = true;
-  bool _isFahrenheit1 = false;
-  bool _isR1 = false;
-  bool _isK1 = false;
-
   @override
   void initState() {
     super.initState();
+    context.read<AirTempBloc>().add(InitialAirTempEvent());
+    _tempInputController.addListener(_tempConvert);
     _pageController = PageController();
   }
 
   @override
   void dispose() {
-    _tempInputController.dispose();
+    _tempInputController.removeListener(_tempConvert);
     _tempAnswerController.dispose();
     super.dispose();
   }
 
+  _tempConvert() {
+    AirTempButtons active = Provider.of<AirTempButtons>(context, listen: false);
+    if (_tempInputController.text.trim().isNotEmpty) {
+      context.read<AirTempBloc>().add(Conversion(
+          temp: double.parse(_tempInputController.text),
+          isCelcius: active.isCelcius,
+          isCelcius1: active.isCelcius1,
+          isFahrenheit: active.isFahrenheit,
+          isFahrenheit1: active.isFahrenheit1,
+          isR: active.isR,
+          isR1: active.isR1,
+          isK1: active.isK1,
+          isK: active.isK));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 25,
-          ),
-        ),
-        backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
-      ),
-      drawer: const CustomDrawer(),
-      backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-      body: ListView(
-        shrinkWrap: true,
-        physics: const ScrollPhysics(),
-        children: <Widget>[
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: const <Widget>[
-                Pagination(
-                  nav: 'commissioning_home',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: true,
-                  icon: Icons.home,
-                ),
-                Pagination(
-                  title: 'TAB',
-                  nav: 'calculators',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-                Pagination(
-                  title: 'Air',
-                  nav: 'air',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-                Pagination(
-                  title: 'Air Temp.',
-                  nav: 'airTemp',
-                  buttonColor: ColorConstants.secondaryDarkAppColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-                Pagination(
-                  title: 'Convert (°F...',
-                  nav: 'airTempConvert',
-                  buttonColor: ColorConstants.messageColor,
-                  padding: Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
-                  splashColor: ColorConstants.splashButtons,
-                  textColor: Colors.white,
-                  isIcon: false,
-                ),
-              ],
+    AirTempButtons convert =
+        Provider.of<AirTempButtons>(context, listen: false);
+    AirTempButtons active = Provider.of<AirTempButtons>(context);
+
+    return BlocListener<AirTempBloc, AirTempState>(
+      listener: (BuildContext context, AirTempState state) {
+        if (state is AirTempDataState) {
+          if (state.answer1 != null) {
+            _tempAnswerController.text =
+                state.answer1!.toStringAsFixed(1) + ' °C';
+          }
+          if (state.answer2 != null) {
+            _tempAnswerController.text =
+                state.answer2!.toStringAsFixed(1) + ' °F';
+          }
+          if (state.answer3 != null) {
+            _tempAnswerController.text =
+                state.answer3!.toStringAsFixed(1) + ' °R';
+          }
+          if (state.answer4 != null) {
+            _tempAnswerController.text =
+                state.answer4!.toStringAsFixed(1) + ' K';
+          }
+          if (state.answer5 != null) {
+            _tempAnswerController.text =
+                state.answer5!.toStringAsFixed(1) + ' °F';
+          }
+          if (state.answer6 != null) {
+            _tempAnswerController.text =
+                state.answer6!.toStringAsFixed(1) + ' °C';
+          }
+          if (state.answer7 != null) {
+            _tempAnswerController.text =
+                state.answer7!.toStringAsFixed(1) + ' °R';
+          }
+          if (state.answer8 != null) {
+            _tempAnswerController.text =
+                state.answer8!.toStringAsFixed(1) + ' K';
+          }
+          if (state.answer9 != null) {
+            _tempAnswerController.text =
+                state.answer9!.toStringAsFixed(1) + ' °R';
+          }
+          if (state.answer10 != null) {
+            _tempAnswerController.text =
+                state.answer10!.toStringAsFixed(1) + ' °C';
+          }
+          if (state.answer11 != null) {
+            _tempAnswerController.text =
+                state.answer11!.toStringAsFixed(1) + ' F';
+          }
+          if (state.answer12 != null) {
+            _tempAnswerController.text =
+                state.answer12!.toStringAsFixed(1) + ' K';
+          }
+          if (state.answer13 != null) {
+            _tempAnswerController.text =
+                state.answer13!.toStringAsFixed(1) + ' K';
+          }
+          if (state.answer14 != null) {
+            _tempAnswerController.text =
+                state.answer14!.toStringAsFixed(1) + ' °C';
+          }
+          if (state.answer15 != null) {
+            _tempAnswerController.text =
+                state.answer15!.toStringAsFixed(1) + ' °F';
+          }
+          if (state.answer16 != null) {
+            _tempAnswerController.text =
+                state.answer16!.toStringAsFixed(1) + ' R';
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            '',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Expanded(
-                child: MaterialButton(
-                  onPressed: () {
-                    openDialog();
-                  },
-                  child: Math.tex(
-                    r'\sqrt{abc}',
-                    mathStyle: MathStyle.display,
-                    textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+          backgroundColor: ColorConstants.darkScaffoldBackgroundColor,
+        ),
+        drawer: const CustomDrawer(),
+        backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
+        body: ListView(
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: const <Widget>[
+                  Pagination(
+                    nav: 'commissioning_home',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: true,
+                    icon: Icons.home,
                   ),
-                ),
-              ),
-              const Expanded(
-                child: Text(
-                  'CONVERT \n(°F, °C, R, K)',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  Pagination(
+                    title: 'TAB',
+                    nav: 'calculators',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
-                ),
-              ),
-              AddButton(title: title),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: ColorConstants.borderColor),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              color: ColorConstants.secondaryDarkAppColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    title: Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isCelcius = true;
-                              _isFahrenheit = false;
-                              _isR = false;
-                              _isK = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("°C"),
-                          color: _isCelcius
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isFahrenheit = true;
-                              _isCelcius = false;
-                              _isR = false;
-                              _isK = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("°F"),
-                          color: _isFahrenheit
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isCelcius = false;
-                              _isR = true;
-                              _isK = false;
-                              _isFahrenheit = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("R"),
-                          color: _isR
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isCelcius = false;
-                              _isFahrenheit = false;
-                              _isK = true;
-                              _isR = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("K"),
-                          color: _isK
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                      ],
-                    ),
+                  Pagination(
+                    title: 'Air',
+                    nav: 'air',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^-?\d*\.?\d{0,2}')),
-                      ],
-                      controller: _tempInputController,
-                      onChanged: (value) {
-                        _calculate();
-                      },
-                      keyboardType: const TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
-                      cursorColor: Colors.white,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.white70),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        filled: true,
-                        fillColor: ColorConstants.lightScaffoldBackgroundColor,
-                        labelText: 'Enter  temp',
-                        hintText: 'Temperature',
-                        focusColor: Colors.white,
-                        labelStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            // ignore: unnecessary_const
-                            color: Colors.white60,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
+                  Pagination(
+                    title: 'Air Temp.',
+                    nav: 'airTemp',
+                    buttonColor: ColorConstants.secondaryDarkAppColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
-                  ListTile(
-                    title: Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isCelcius1 = true;
-                              _isFahrenheit1 = false;
-                              _isR1 = false;
-                              _isK1 = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("°C"),
-                          color: _isCelcius1
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isFahrenheit1 = true;
-                              _isCelcius1 = false;
-                              _isR1 = false;
-                              _isK1 = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("°F"),
-                          color: _isFahrenheit1
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isCelcius1 = false;
-                              _isR1 = true;
-                              _isK1 = false;
-                              _isFahrenheit1 = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("R"),
-                          color: _isR1
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                        Expanded(
-                            child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isCelcius1 = false;
-                              _isFahrenheit1 = false;
-                              _isK1 = true;
-                              _isR1 = false;
-                              _calculate();
-                            });
-                          },
-                          child: const Text("K"),
-                          color: _isK1
-                              ? const Color(0xFF3b82f6)
-                              : ColorConstants.secondaryDarkAppColor,
-                          textColor: Colors.white,
-                        )),
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 5.0),
-                    child: Text(
-                      "Converted temperature: ",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
-                    child: AbsorbPointer(
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        controller: _tempAnswerController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: true),
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor:
-                              ColorConstants.lightScaffoldBackgroundColor,
-                        ),
-                      ),
-                    ),
+                  Pagination(
+                    title: 'Convert (°F...',
+                    nav: 'airTempConvert',
+                    buttonColor: ColorConstants.messageColor,
+                    padding: Padding(
+                        padding: EdgeInsets.fromLTRB(50.0, 5.0, 0.0, 5.0)),
+                    splashColor: ColorConstants.splashButtons,
+                    textColor: Colors.white,
+                    isIcon: false,
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                FormulaButton(
+                    onPressed: () => openDialog(), formula: r'\sqrt{abc}'),
+                const Header(title: 'CONVERT \n(°F, °C, R, K)'),
+                AddButton(title: title),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: ColorConstants.borderColor),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                color: ColorConstants.secondaryDarkAppColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          MainButtons(
+                              onPressed: () {
+                                convert.isC();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "°C",
+                              textColor: Colors.white,
+                              active: active.isCelcius),
+                          MainButtons(
+                              onPressed: () {
+                                convert.isF();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "°F",
+                              textColor: Colors.white,
+                              active: active.isFahrenheit),
+                          MainButtons(
+                              onPressed: () {
+                                convert.isRankine();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "R",
+                              textColor: Colors.white,
+                              active: active.isR),
+                          MainButtons(
+                              onPressed: () {
+                                convert.isKelvin();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "K",
+                              textColor: Colors.white,
+                              active: active.isK),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: CustomTextField(
+                        controller: _tempInputController,
+                        regExp: RegExp(r'^-?\d*\.?\d{0,2}'),
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
+                        hintText: 'Temperature',
+                        labelText: 'Enter  temp',
+                      ),
+                    ),
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          MainButtons(
+                              onPressed: () {
+                                convert.isLowerCelcius();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "°C",
+                              textColor: Colors.white,
+                              active: active.isCelcius1),
+                          MainButtons(
+                              onPressed: () {
+                                convert.isLowerFahrenhiet();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "°F",
+                              textColor: Colors.white,
+                              active: active.isFahrenheit1),
+                          MainButtons(
+                              onPressed: () {
+                                convert.isLowerRankine();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "R",
+                              textColor: Colors.white,
+                              active: active.isR1),
+                          MainButtons(
+                              onPressed: () {
+                                convert.isLowerKelvin();
+                                setState(() {
+                                  _tempConvert();
+                                });
+                              },
+                              name: "K",
+                              textColor: Colors.white,
+                              active: active.isK1),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 5.0),
+                      child: Text(
+                        "Converted temperature: ",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+                      child: AbsorbPointer(
+                        child: AnswerField(
+                          controller: _tempAnswerController,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Future openDialog() => showDialog(
-      barrierDismissible: true,
-      context: context,
-      builder: (BuildContext context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
-            child: SizedBox(
-              height: 300.0, // Change as per your requirement
-              width: 500.0, // Change as per your requirement
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 200,
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      pageSnapping: true,
-                      itemCount: eqs.length,
-                      controller: _pageController,
-                      itemBuilder: (context, index) {
-                        final titles = eqs[index];
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Text(
-                                    titles.eqTitle,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Math.tex(
-                                    titles.eq,
-                                    mathStyle: MathStyle.display,
-                                    textStyle: const TextStyle(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          backgroundColor: ColorConstants.lightScaffoldBackgroundColor,
+          child: SizedBox(
+            height: 300.0, // Change as per your requirement
+            width: 500.0, // Change as per your requirement
+            child: Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 200,
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    pageSnapping: true,
+                    itemCount: eqs.length,
+                    controller: _pageController,
+                    itemBuilder: (context, index) {
+                      final titles = eqs[index];
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  titles.eqTitle,
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Math.tex(
+                                  titles.eq,
+                                  mathStyle: MathStyle.display,
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        );
-                      },
-                    ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                  SmoothPageIndicator(
-                      controller: _pageController, // PageController
-                      count: eqs.length,
-                      effect: const WormEffect(
-                          activeDotColor: ColorConstants
-                              .messageColor), // your preferred effect
-                      onDotClicked: (index) {})
-                ],
-              ),
+                ),
+                SmoothPageIndicator(
+                    controller: _pageController, // PageController
+                    count: eqs.length,
+                    effect: const WormEffect(
+                        activeDotColor: ColorConstants
+                            .messageColor), // your preferred effect
+                    onDotClicked: (index) {})
+              ],
             ),
-          ));
-
-  void _calculate() {
-    if (_tempInputController.text.trim().isNotEmpty) {
-      final tempInput = double.parse(_tempInputController.text);
-
-      if (_isCelcius == true && _isCelcius1 == true) {
-        final celcius = tempInput;
-        _tempAnswerController.text = celcius.toStringAsFixed(1) + ' °C';
-      }
-      if (_isCelcius == true && _isFahrenheit1 == true) {
-        final celcius = (tempInput * 1.8) + 32;
-        _tempAnswerController.text = celcius.toStringAsFixed(1) + ' °F';
-      }
-      if (_isCelcius == true && _isR1 == true) {
-        final fahrenheit = (tempInput * 1.8) + 32;
-        final r = fahrenheit + 460;
-        _tempAnswerController.text = r.toStringAsFixed(1) + ' °R';
-      }
-      if (_isCelcius == true && _isK1 == true) {
-        final k = tempInput + 273;
-        _tempAnswerController.text = k.toStringAsFixed(1) + ' K';
-      }
-      if (_isFahrenheit == true && _isFahrenheit1 == true) {
-        final f = tempInput;
-        _tempAnswerController.text = f.toStringAsFixed(1) + ' °F';
-      }
-      if (_isFahrenheit == true && _isCelcius1 == true) {
-        final celcius1 = (tempInput - 32) / 1.8;
-        _tempAnswerController.text = celcius1.toStringAsFixed(1) + ' °C';
-      }
-      if (_isFahrenheit == true && _isR1 == true) {
-        final r1 = tempInput + 460;
-        _tempAnswerController.text = r1.toStringAsFixed(1) + ' °R';
-      }
-      if (_isFahrenheit == true && _isK1 == true) {
-        final c = (tempInput - 32) / 1.8;
-        final k1 = c + 273;
-        _tempAnswerController.text = k1.toStringAsFixed(1) + ' K';
-      }
-      if (_isR == true && _isR1 == true) {
-        final rR = tempInput;
-        _tempAnswerController.text = rR.toStringAsFixed(1) + ' °R';
-      }
-      if (_isR == true && _isCelcius1 == true) {
-        final rC = (tempInput - 491.67) * 5 / 9;
-        _tempAnswerController.text = rC.toStringAsFixed(1) + ' °C';
-      }
-      if (_isR == true && _isFahrenheit1 == true) {
-        final rF = tempInput - 459.67;
-        _tempAnswerController.text = rF.toStringAsFixed(1) + ' °F';
-      }
-      if (_isR == true && _isK1 == true) {
-        final rK = tempInput * 5 / 9;
-        _tempAnswerController.text = rK.toStringAsFixed(1) + ' K';
-      }
-      if (_isK == true && _isK1 == true) {
-        final kK = tempInput;
-        _tempAnswerController.text = kK.toStringAsFixed(1) + ' K';
-      }
-
-      if (_isK == true && _isCelcius1 == true) {
-        final kC = (tempInput - 273.15);
-        _tempAnswerController.text = kC.toStringAsFixed(1) + ' °C';
-      }
-      if (_isK == true && _isFahrenheit1 == true) {
-        final kF = (tempInput - 273.15) * 9 / 5 + 32;
-        _tempAnswerController.text = kF.toStringAsFixed(1) + ' °F';
-      }
-      if (_isK == true && _isR1 == true) {
-        final rK = tempInput * 1.8;
-        _tempAnswerController.text = rK.toStringAsFixed(1) + ' °R';
-      }
-    }
-  }
+          ),
+        ),
+      );
 }
